@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 244574048}
   - component: {fileID: 244574052}
   - component: {fileID: 244574053}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,6 +526,7 @@ GameObject:
   - component: {fileID: 671077417}
   - component: {fileID: 671077419}
   - component: {fileID: 671077420}
+  - component: {fileID: 671077421}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -610,6 +611,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+--- !u!114 &671077421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671077416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b88bab522228a9647b549dd4ca6326e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAmmo: 30
+  currentAmmo: 0
+  fireRate: 0.2
+  reloadTime: 1.5
+  range: 100
+  playerCamera: {fileID: 963194227}
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,8 +829,7 @@ GameObject:
   - component: {fileID: 1126428118}
   - component: {fileID: 1126428122}
   - component: {fileID: 1126428121}
-  - component: {fileID: 1126428120}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,27 +851,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 244574051}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1126428120
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1126428117}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1126428121
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1017,7 +1017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 671077420}
-  healthSlider: {fileID: 0}
+  healthSlider: {fileID: 1585166922}
 --- !u!1 &1582250278
 GameObject:
   m_ObjectHideFlags: 0
