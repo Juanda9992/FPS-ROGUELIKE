@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "FPS ROGUELIKE.sln"
+    "dotnet.defaultSolution": "ROGUELIKE FPS SURVIVAL.sln"
 }
