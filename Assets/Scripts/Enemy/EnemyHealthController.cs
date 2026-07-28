@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyHealthController : MonoBehaviour, IDamageable
 {
     [SerializeField] private int health = 100;
+    [SerializeField] private DamageFeedback damageFeedback;
 
     public int Health
     {
@@ -14,8 +15,7 @@ public class EnemyHealthController : MonoBehaviour, IDamageable
     {
         health -= damage;
 
-        Debug.Log($"{gameObject.name} recibió {damage} de daño. Vida restante: {health}");
-
+        damageFeedback.PlayDamageFlash();
         if (health <= 0)
         {
             Die();
@@ -24,9 +24,6 @@ public class EnemyHealthController : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        Debug.Log($"{gameObject.name} ha muerto");
-
-        // Aquí puedes agregar animaciones, efectos, etc.
         Destroy(gameObject);
     }
 
