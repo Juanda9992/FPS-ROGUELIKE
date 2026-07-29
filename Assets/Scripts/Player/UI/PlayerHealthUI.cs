@@ -6,6 +6,10 @@ public class PlayerHealthUI : MonoBehaviour
     [SerializeField] private PlayerHealthController playerHealth;
     [SerializeField] private Slider healthSlider;
 
+    void Awake()
+    {
+        healthSlider.value = 1f;
+    }
     private void OnEnable()
     {
         playerHealth.OnHealthChanged += UpdateHealthUI;

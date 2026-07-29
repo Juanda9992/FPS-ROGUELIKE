@@ -8,15 +8,15 @@ public class EnemyFollow : MonoBehaviour
 
     void Update()
     {
-        if (player == null) return;
+        if (player == null) 
+        {
+            return;
+        }
 
-        // Dirección hacia el jugador
         Vector3 direction = (player.position - transform.position).normalized;
 
-        // Movimiento
         transform.position += direction * speed * Time.deltaTime;
 
-        // Rotación hacia el jugador
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
     }

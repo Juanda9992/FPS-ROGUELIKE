@@ -248,13 +248,14 @@ GameObject:
   - component: {fileID: 244574052}
   - component: {fileID: 244574053}
   - component: {fileID: 244574054}
+  - component: {fileID: 244574055}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &244574048
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -388,6 +389,21 @@ MonoBehaviour:
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.15
   vibrato: 1
+--- !u!114 &244574055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244574047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c389f68832afa548aebcfc7c1dae559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageDistance: 2
+  damage: 10
+  attackRate: 1
 --- !u!1 &459489535
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,7 +850,7 @@ GameObject:
   - component: {fileID: 671077423}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -916,6 +932,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  timeBetweenHits: 1
+  canBeHit: 1
 --- !u!114 &671077421
 MonoBehaviour:
   m_ObjectHideFlags: 0
