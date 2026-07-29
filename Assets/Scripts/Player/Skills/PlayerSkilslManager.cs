@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class PlayerSkillsManager : MonoBehaviour
 {
-    public int maxSlots = 3;
+    [SerializeField] private int maxSlots = 3;
     [Header("Skill Slots")]
     public SkillSlot[] slots;
 
+
+    [SerializeField] private SkillUIManager skillUIManager;
     private void Awake()
     {
         slots = new SkillSlot[maxSlots];
@@ -42,6 +44,7 @@ public class PlayerSkillsManager : MonoBehaviour
             {
                 Debug.Log($"Adding skill {skill.skillName} to slot {i}");
                 slots[i].SetSkill(skill);
+                skillUIManager.TurnSkillSlotOn(i, skill);
                 return true;
             }
         }
