@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 public class WeaponUI : MonoBehaviour
 {
-    public FPSWeapon weapon;
+    [SerializeField] FPSWeapon weapon;
 
     [SerializeField] private TextMeshProUGUI ammoText;
     void OnEnable()
@@ -31,9 +31,9 @@ public class WeaponUI : MonoBehaviour
 
     void UpdateAmmo(int ammo)
     {
-        ammoText.text = $"Ammo: {ammo}/{weapon.maxAmmo}";
+        ammoText.text = $"Ammo: {ammo}/{weapon.GetCurrentWeapon().weaponData.ammo}";
 
-        if(weapon.currentAmmo <= 0)
+        if(weapon.GetCurrentWeapon().currentAmmo <= 0)
         {
             ammoText.color = Color.red;
         }

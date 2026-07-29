@@ -4,15 +4,22 @@ public class PlayerWeaponManager : MonoBehaviour
 {
     [Header("Weapons")]
     public Weapon[] weapons;
+    [SerializeField] private PlayerWeaponInstance[] weaponInstances;
 
     [SerializeField] private GameObject[] weaponPrefabs;
     [SerializeField] private FPSWeapon fpsWeapon;
     private int currentIndex = 0;
-    private Weapon currentWeapon;
+    private PlayerWeaponInstance currentWeapon;
 
     private void Start()
     {
-        if (weapons.Length > 0)
+        weaponInstances = new PlayerWeaponInstance[weapons.Length];
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weaponInstances[i] = new PlayerWeaponInstance(weapons[i]);
+        }
+
+        if (weaponInstances.Length > 0)
         {
             EquipWeapon(0);
         }
@@ -61,7 +68,7 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void EquipWeapon(int index)
     {
-        currentWeapon = weapons[index];
+        currentWeapon = weaponInstances[index];
 
 
         fpsWeapon.SetWeapon(currentWeapon);
@@ -70,11 +77,11 @@ public class PlayerWeaponManager : MonoBehaviour
         {
             weaponPrefabs[i].SetActive(i == index);
         }
-        Debug.Log($"Equipped weapon: {currentWeapon.weaponName}");
+        Debug.Log($"Equipped weapon: {currentWeapon.weaponData.weaponName}");
     }
 
     public Weapon GetCurrentWeapon()
     {
-        return currentWeapon;
+        return currentWeapon.weaponData;
     }
 }

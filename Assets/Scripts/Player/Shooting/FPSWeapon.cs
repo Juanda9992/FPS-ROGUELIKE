@@ -3,13 +3,6 @@ using UnityEngine;
 
 public class FPSWeapon : MonoBehaviour
 {
-    [Header("Weapon Settings")]
-    public int maxAmmo = 30;
-    public int currentAmmo;
-    public float fireRate = 0.2f;
-    public float reloadTime = 1.5f;
-    public float range = 100f;
-
     [Header("References")]
     public Camera playerCamera;
     public LayerMask hitMask;
@@ -22,11 +15,10 @@ public class FPSWeapon : MonoBehaviour
     public event Action OnReload;
     public event Action<int> OnAmmoChanged;
 
-    private Weapon currentWeapon;
+    private PlayerWeaponInstance currentWeapon;
 
     void Start()
     {
-        currentAmmo = maxAmmo;
         NotifyAmmoChanged();
     }
 
@@ -46,42 +38,41 @@ public class FPSWeapon : MonoBehaviour
         // Recarga
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (currentAmmo < maxAmmo)
+            if (currentWeapon.currentAmmo < currentWeapon.weaponData.ammo)
             {
+                StopCoroutine(Reload());
                 StartCoroutine(Reload());
             }
         }
     }
 
-    public void SetWeapon(Weapon weapon)
+    public void SetWeapon(PlayerWeaponInstance weapon)
     {
+        isReloading = false;
+        nextFireTime = 0f;
+        StopCoroutine(Reload());
         currentWeapon = weapon;
-        maxAmmo = weapon.ammo;
-        currentAmmo = maxAmmo;
-        fireRate = weapon.fireRate;
-        reloadTime = weapon.reloadTime;
-
         NotifyAmmoChanged();
     }
 
     void Shoot()
     {
-        if (currentAmmo <= 0)
+        if (currentWeapon.currentAmmo <= 0)
         {
             Debug.Log("Sin munición");
             return;
         }
 
-        nextFireTime = Time.time + fireRate;
+        nextFireTime = Time.time + currentWeapon.fireRate;
 
-        currentAmmo--;
+        currentWeapon.currentAmmo--;
         NotifyAmmoChanged();
 
         // Raycast
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, range, hitMask))
+        if (Physics.Raycast(ray, out hit, 50, hitMask))
         {
             if(hit.collider.GetComponent<IDamageable>() is IDamageable damageable)
             {
@@ -101,15 +92,20 @@ public class FPSWeapon : MonoBehaviour
         OnReload?.Invoke();
 
         Debug.Log("Recargando...");
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(currentWeapon.weaponData.reloadTime);
 
-        currentAmmo = maxAmmo;
+        currentWeapon.currentAmmo = currentWeapon.weaponData.ammo;
         NotifyAmmoChanged();
 
         isReloading = false;
     }
     void NotifyAmmoChanged()
     {
-        OnAmmoChanged?.Invoke(currentAmmo);
+        OnAmmoChanged?.Invoke(currentWeapon.currentAmmo);
+    }
+
+    public PlayerWeaponInstance GetCurrentWeapon()
+    {
+        return currentWeapon;
     }
 }
