@@ -79,6 +79,13 @@ public class PlayerSkillsManager : MonoBehaviour
             return;
         }
 
+        if(!slots[index].CanUse())
+        {
+            Debug.Log($"Skill in slot {index} is on cooldown or not assigned.");
+            return;
+        }
+
+        skillUIManager.TriggerCooldown(index);
         slots[index].Use(gameObject);
     }
 }
@@ -100,7 +107,10 @@ public class SkillSlot
 
     public void Use(GameObject owner)
     {
-        if (!CanUse()) return;
+        if (!CanUse()) 
+        {
+            return;
+        }
 
         skill.Activate(owner);
         lastUseTime = Time.time;
