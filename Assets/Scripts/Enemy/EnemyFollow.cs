@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class EnemyFollow : MonoBehaviour
 {
-    public Transform player;      // Referencia al jugador
-    public float speed = 3f;      // Velocidad de movimiento
+    private Transform player;
+    public float speed = 3f;
     public float rotationSpeed = 5f;
 
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+    }
     void Update()
     {
         if (player == null) 
