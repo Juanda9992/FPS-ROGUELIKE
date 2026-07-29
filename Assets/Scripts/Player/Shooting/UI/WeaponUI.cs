@@ -26,7 +26,7 @@ public class WeaponUI : MonoBehaviour
 
     void HandleReload()
     {
-        Debug.Log("Recarga detectada (UI)");
+        ammoText.text = "Reloading...";
     }
 
     void UpdateAmmo(int ammo)

@@ -593,10 +593,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 72
   m_fontSizeBase: 100
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -677,6 +677,7 @@ GameObject:
   - component: {fileID: 671077421}
   - component: {fileID: 671077422}
   - component: {fileID: 671077423}
+  - component: {fileID: 671077424}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -812,6 +813,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testSkill: {fileID: 11400000, guid: 95dcddf092cef7a4da0ffc624124a83f, type: 2}
+--- !u!114 &671077424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671077416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 164ba2b6f69653b4cb7d0a55ae939d94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 11400000, guid: fe698f51975e6864790ba69410652b59, type: 2}
+  - {fileID: 11400000, guid: 4cd68c646f949f5408b9766841f86e74, type: 2}
+  - {fileID: 11400000, guid: 47aa717551063624e904e6b7e31e61ef, type: 2}
 --- !u!1 &673562056
 GameObject:
   m_ObjectHideFlags: 0
