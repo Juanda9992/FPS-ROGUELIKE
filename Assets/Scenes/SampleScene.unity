@@ -829,6 +829,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fe698f51975e6864790ba69410652b59, type: 2}
   - {fileID: 11400000, guid: 4cd68c646f949f5408b9766841f86e74, type: 2}
   - {fileID: 11400000, guid: 47aa717551063624e904e6b7e31e61ef, type: 2}
+  fpsWeapon: {fileID: 671077421}
 --- !u!1 &673562056
 GameObject:
   m_ObjectHideFlags: 0

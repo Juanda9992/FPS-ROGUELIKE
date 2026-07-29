@@ -22,6 +22,8 @@ public class FPSWeapon : MonoBehaviour
     public event Action OnReload;
     public event Action<int> OnAmmoChanged;
 
+    private Weapon currentWeapon;
+
     void Start()
     {
         currentAmmo = maxAmmo;
@@ -51,6 +53,17 @@ public class FPSWeapon : MonoBehaviour
         }
     }
 
+    public void SetWeapon(Weapon weapon)
+    {
+        currentWeapon = weapon;
+        maxAmmo = weapon.ammo;
+        currentAmmo = maxAmmo;
+        fireRate = weapon.fireRate;
+        reloadTime = weapon.reloadTime;
+
+        NotifyAmmoChanged();
+    }
+
     void Shoot()
     {
         if (currentAmmo <= 0)
@@ -72,7 +85,7 @@ public class FPSWeapon : MonoBehaviour
         {
             if(hit.collider.GetComponent<IDamageable>() is IDamageable damageable)
             {
-                damageable.TakeDamage(10);
+                damageable.TakeDamage((int)currentWeapon.damage);
                 Debug.Log(hit.collider.name);
             }
         }

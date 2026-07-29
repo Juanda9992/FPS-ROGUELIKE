@@ -5,6 +5,7 @@ public class PlayerWeaponManager : MonoBehaviour
     [Header("Weapons")]
     public Weapon[] weapons;
 
+    [SerializeField] private FPSWeapon fpsWeapon;
     private int currentIndex = 0;
     private Weapon currentWeapon;
 
@@ -61,9 +62,8 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         currentWeapon = weapons[index];
 
-        Debug.Log("Arma equipada: " + currentWeapon.weaponName);
-        Debug.Log("Daño: " + currentWeapon.damage);
-        Debug.Log("Ammo: " + currentWeapon.ammo);
+        fpsWeapon.SetWeapon(currentWeapon);
+        Debug.Log($"Equipped weapon: {currentWeapon.weaponName}");
     }
 
     public Weapon GetCurrentWeapon()
