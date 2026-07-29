@@ -5,6 +5,7 @@ public class PlayerWeaponManager : MonoBehaviour
     [Header("Weapons")]
     public Weapon[] weapons;
 
+    [SerializeField] private GameObject[] weaponPrefabs;
     [SerializeField] private FPSWeapon fpsWeapon;
     private int currentIndex = 0;
     private Weapon currentWeapon;
@@ -62,7 +63,13 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         currentWeapon = weapons[index];
 
+
         fpsWeapon.SetWeapon(currentWeapon);
+
+        for (int i = 0; i < weaponPrefabs.Length; i++)
+        {
+            weaponPrefabs[i].SetActive(i == index);
+        }
         Debug.Log($"Equipped weapon: {currentWeapon.weaponName}");
     }
 

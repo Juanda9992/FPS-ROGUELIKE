@@ -16,4 +16,4 @@ MonoBehaviour:
   damage: 7
   ammo: 50
   reloadTime: 2
-  fireRate: 0.2
+  fireRate: 0.1
