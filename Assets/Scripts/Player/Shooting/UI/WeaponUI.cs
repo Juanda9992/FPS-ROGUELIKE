@@ -21,7 +21,6 @@ public class WeaponUI : MonoBehaviour
 
     void HandleShoot()
     {
-        Debug.Log("Disparo detectado (UI)");
     }
 
     void HandleReload()

@@ -16,12 +16,6 @@ public class FPSWeapon : MonoBehaviour
     public event Action<int> OnAmmoChanged;
 
     private PlayerWeaponInstance currentWeapon;
-
-    void Start()
-    {
-        NotifyAmmoChanged();
-    }
-
     void Update()
     {
         if (isReloading)
