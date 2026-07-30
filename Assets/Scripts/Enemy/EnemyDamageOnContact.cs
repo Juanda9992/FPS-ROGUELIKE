@@ -37,7 +37,7 @@ public class EnemyDamageOnContact : MonoBehaviour
 
             if (attackTimer >= attackRate)
             {
-                playerHealth.OnTakeDamage(damage);
+                playerHealth.TakeDamage(damage);
                 attackTimer = 0f;
             }
         }
