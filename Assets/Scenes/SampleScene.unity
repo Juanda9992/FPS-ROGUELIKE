@@ -320,7 +320,9 @@ MonoBehaviour:
   - statName: Shield
     BaseValue: 0
   - statName: FireRateMultiplier
-    BaseValue: 0
+    BaseValue: 1
+  - statName: InvulnerabilityTime
+    BaseValue: 0.2
 --- !u!4 &443332108
 Transform:
   m_ObjectHideFlags: 0

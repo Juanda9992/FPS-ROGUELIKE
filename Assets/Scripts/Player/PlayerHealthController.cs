@@ -5,6 +5,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
 {
     [SerializeField] private Stat maxHealthStat;
     [SerializeField] private Stat healthRegenStat;
+    [SerializeField] private Stat invulnerabilityTimeStat;
     [SerializeField] private float health = 100;
 
     public int Health
@@ -26,6 +27,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     {
         maxHealthStat = PlayerStatsManager.Instance.GetStatByName("Health");
         healthRegenStat = PlayerStatsManager.Instance.GetStatByName("HealthRegen");
+        invulnerabilityTimeStat = PlayerStatsManager.Instance.GetStatByName("InvulnerabilityTime");
 
         health = Mathf.RoundToInt(maxHealthStat.Value);
         OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
@@ -77,7 +79,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     private System.Collections.IEnumerator InvulnerabilityCoroutine()
     {
         canBeHit = false;
-        yield return new WaitForSeconds(timeBetweenHits);
+        yield return new WaitForSeconds(invulnerabilityTimeStat.Value);
         canBeHit = true;
     }
 
