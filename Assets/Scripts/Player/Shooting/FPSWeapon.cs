@@ -4,6 +4,7 @@ using UnityEngine;
 public class FPSWeapon : MonoBehaviour
 {
     [SerializeField] private Stat damageMultiplierStat;
+    [SerializeField] private Stat reloadSpeedStat;
     [Header("References")]
     public Camera playerCamera;
     public LayerMask hitMask;
@@ -21,6 +22,7 @@ public class FPSWeapon : MonoBehaviour
     private void Start()
     {
         damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName("DamageMultiplier");
+        reloadSpeedStat = PlayerStatsManager.Instance.GetStatByName("ReloadSpeedMultiplier");
     }
     void Update()
     {
@@ -91,8 +93,9 @@ public class FPSWeapon : MonoBehaviour
 
         OnReload?.Invoke();
 
-        Debug.Log("Recargando...");
-        yield return new WaitForSeconds(currentWeapon.weaponData.reloadTime);
+        float reloadTime = currentWeapon.reloadTime / reloadSpeedStat.Value;
+        Debug.Log($"Recargando... Tiempo de recarga: {reloadTime} segundos");
+        yield return new WaitForSeconds(currentWeapon.reloadTime / reloadSpeedStat.Value);
 
         currentWeapon.currentAmmo = currentWeapon.weaponData.ammo;
         NotifyAmmoChanged();
