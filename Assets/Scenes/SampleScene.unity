@@ -316,8 +316,10 @@ MonoBehaviour:
   - statName: CooldownMultiplier
     BaseValue: 1
   - statName: ReloadSpeedMultiplier
-    BaseValue: 1
+    BaseValue: 5
   - statName: Shield
+    BaseValue: 0
+  - statName: FireRateMultiplier
     BaseValue: 0
 --- !u!4 &443332108
 Transform:
@@ -896,6 +898,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageMultiplierStat:
+    statName: 
+    BaseValue: 0
+  reloadSpeedStat:
+    statName: 
+    BaseValue: 0
+  fireRateMultiplierStat:
     statName: 
     BaseValue: 0
   playerCamera: {fileID: 963194227}

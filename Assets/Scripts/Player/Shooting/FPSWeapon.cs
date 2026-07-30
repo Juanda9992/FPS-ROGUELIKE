@@ -5,6 +5,7 @@ public class FPSWeapon : MonoBehaviour
 {
     [SerializeField] private Stat damageMultiplierStat;
     [SerializeField] private Stat reloadSpeedStat;
+    [SerializeField] private Stat fireRateMultiplierStat;
     [Header("References")]
     public Camera playerCamera;
     public LayerMask hitMask;
@@ -23,6 +24,7 @@ public class FPSWeapon : MonoBehaviour
     {
         damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName("DamageMultiplier");
         reloadSpeedStat = PlayerStatsManager.Instance.GetStatByName("ReloadSpeedMultiplier");
+        fireRateMultiplierStat = PlayerStatsManager.Instance.GetStatByName("FireRateMultiplier");
     }
     void Update()
     {
@@ -65,8 +67,10 @@ public class FPSWeapon : MonoBehaviour
             return;
         }
 
-        nextFireTime = Time.time + currentWeapon.fireRate;
+        float fireRate = currentWeapon.fireRate / fireRateMultiplierStat.Value;
+        nextFireTime = Time.time + fireRate;
 
+        Debug.Log($"Disparando... Tiempo de disparo: {fireRate} segundos");
         currentWeapon.currentAmmo--;
         NotifyAmmoChanged();
 
