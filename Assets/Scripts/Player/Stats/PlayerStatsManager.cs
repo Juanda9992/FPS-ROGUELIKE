@@ -16,9 +16,8 @@ public class PlayerStatsManager : MonoBehaviour
             Instance = this;
         }
     }
-    public Stat GetStatByName(string statName, out Stat stat)
+    public Stat GetStatByName(string statName)
     {
-        stat = stats.Find(s => s.statName == statName);
-        return stat;
+        return stats.Find(s => s.statName == statName);
     }
 }

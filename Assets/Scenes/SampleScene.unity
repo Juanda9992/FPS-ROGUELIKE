@@ -301,7 +301,7 @@ MonoBehaviour:
     BaseValue: 100
   - statName: HealthRegen
     BaseValue: 0
-  - statName: MoveSpeed
+  - statName: WalkSpeed
     BaseValue: 5
   - statName: JumpHeight
     BaseValue: 5
@@ -315,6 +315,10 @@ MonoBehaviour:
     BaseValue: 1
   - statName: Shield
     BaseValue: 0
+  - statName: RunSpeed
+    BaseValue: 5
+  - statName: CrouchSpeed
+    BaseValue: 5
 --- !u!4 &443332108
 Transform:
   m_ObjectHideFlags: 0
@@ -838,10 +842,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bdef3d9081a92a4f9f41d21a9018478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 9
-  crouchSpeed: 2.5
-  jumpForce: 1.5
+  walkSpeedStat:
+    statName: 
+    BaseValue: 0
+  runSpeedStat:
+    statName: 
+    BaseValue: 0
+  crouchSpeedStat:
+    statName: 
+    BaseValue: 0
+  jumpForceStat:
+    statName: 
+    BaseValue: 0
   gravity: -9.81
   cameraPivot: {fileID: 963194228}
   mouseSensitivity: 100

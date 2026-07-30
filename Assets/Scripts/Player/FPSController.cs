@@ -5,21 +5,23 @@ using UnityEngine.InputSystem;
 public class FPSController : MonoBehaviour
 {
     [Header("Movimiento")]
-    public float walkSpeed = 5f;
-    public float runSpeed = 9f;
-    public float crouchSpeed = 2.5f;
+    [SerializeField] public Stat walkSpeedStat;
+    [SerializeField] public Stat runSpeedStat;
+    [SerializeField] public Stat crouchSpeedStat;
 
     [Header("Salto")]
-    public float jumpForce = 1.5f;
-    public float gravity = -9.81f;
+    [SerializeField] private Stat jumpForceStat; 
+    [SerializeField] private Stat jumpCountStat; 
+    private int currentJumpCount;
+    [SerializeField] private float gravity = -9.81f;
 
     [Header("Cámara")]
-    public Transform cameraPivot;
-    public float mouseSensitivity = 100f;
+    [SerializeField] public Transform cameraPivot;
+    [SerializeField] public float mouseSensitivity = 100f;
 
     [Header("Agacharse")]
-    public float crouchHeight = 1f;
-    public float normalHeight = 2f;
+    [SerializeField] public float crouchHeight = 1f;
+    [SerializeField] public float normalHeight = 2f;
 
     private CharacterController controller;
     private PlayerInputActions input;
@@ -64,6 +66,15 @@ public class FPSController : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        walkSpeedStat = PlayerStatsManager.Instance.GetStatByName("WalkSpeed");
+        runSpeedStat = PlayerStatsManager.Instance.GetStatByName("RunSpeed");
+        crouchSpeedStat = PlayerStatsManager.Instance.GetStatByName("CrouchSpeed");
+
+        jumpForceStat = PlayerStatsManager.Instance.GetStatByName("JumpHeight");
+        jumpCountStat = PlayerStatsManager.Instance.GetStatByName("JumpCount");
+
+        currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
     }
 
     void Update()
@@ -71,6 +82,11 @@ public class FPSController : MonoBehaviour
         Look();
         Move();
         ApplyGravity();
+
+        if(controller.isGrounded)
+        {
+            currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
+        }
     }
 
     void Look()
@@ -87,15 +103,15 @@ public class FPSController : MonoBehaviour
 
     void Move()
     {
-        float speed = walkSpeed;
+        float speed = walkSpeedStat.Value;
 
         if (isCrouching)
         {
-            speed = crouchSpeed;
+            speed = crouchSpeedStat.Value;
         }
         else if (isRunning)
         {
-            speed = runSpeed;
+            speed = runSpeedStat.Value;
         }
 
         Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
@@ -104,9 +120,10 @@ public class FPSController : MonoBehaviour
 
     void Jump()
     {
-        if (controller.isGrounded && !isCrouching)
+        if ((controller.isGrounded || currentJumpCount > 0) && !isCrouching)
         {
-            yVelocity = Mathf.Sqrt(jumpForce * -2f * gravity);
+            yVelocity = Mathf.Sqrt(jumpForceStat.Value * -2f * gravity);
+            currentJumpCount--;
         }
     }
 
