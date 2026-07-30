@@ -11,13 +11,13 @@ public class PlayerUIHitIndicator : MonoBehaviour
     private void Awake()
     {
         hitIndicatorImage.color = new Color(hitIndicatorImage.color.r, hitIndicatorImage.color.g, hitIndicatorImage.color.b, 0f);
-        playerHealth.OnHealthChanged += ShowHitIndicator;
+        playerHealth.OnTakeDamageEvent += ShowHitIndicator;
     }
 
-    public void ShowHitIndicator(int health, int maxHealth)
+    public void ShowHitIndicator(int damage)
     {
         StopAllCoroutines();
-        if (health > 0 || health != maxHealth)
+        if (playerHealth.Health > 0)
         {
             StartCoroutine(FadeInAndOut());
         }

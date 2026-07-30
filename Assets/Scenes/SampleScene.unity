@@ -307,6 +307,10 @@ MonoBehaviour:
     BaseValue: 5
   - statName: JumpCount
     BaseValue: 1
+  - statName: RunSpeed
+    BaseValue: 9
+  - statName: CrouchSpeed
+    BaseValue: 1
   - statName: DamageMultiplier
     BaseValue: 1
   - statName: CooldownMultiplier
@@ -315,10 +319,6 @@ MonoBehaviour:
     BaseValue: 1
   - statName: Shield
     BaseValue: 0
-  - statName: RunSpeed
-    BaseValue: 5
-  - statName: CrouchSpeed
-    BaseValue: 5
 --- !u!4 &443332108
 Transform:
   m_ObjectHideFlags: 0
@@ -852,6 +852,9 @@ MonoBehaviour:
     statName: 
     BaseValue: 0
   jumpForceStat:
+    statName: 
+    BaseValue: 0
+  jumpCountStat:
     statName: 
     BaseValue: 0
   gravity: -9.81

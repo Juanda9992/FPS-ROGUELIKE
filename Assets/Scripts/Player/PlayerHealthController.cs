@@ -3,12 +3,13 @@ using System;
 
 public class PlayerHealthController : MonoBehaviour, IDamageable
 {
-    [SerializeField] private int maxHealth = 100;
-    [SerializeField] private int health = 100;
+    [SerializeField] private Stat maxHealthStat;
+    [SerializeField] private Stat healthRegenStat;
+    [SerializeField] private float health = 100;
 
     public int Health
     {
-        get => health;
+        get => Mathf.RoundToInt(health);
         set => health = value;
     }
 
@@ -21,12 +22,29 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     public event Action<int> OnHealthRestoredEvent;
     public event Action<int, int> OnHealthChanged; // (current, max)
 
-    private void Awake()
+    private void Start()
     {
-        health = maxHealth;
-        OnHealthChanged?.Invoke(health, maxHealth);
+        maxHealthStat = PlayerStatsManager.Instance.GetStatByName("Health");
+        healthRegenStat = PlayerStatsManager.Instance.GetStatByName("HealthRegen");
+
+        health = Mathf.RoundToInt(maxHealthStat.Value);
+        OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
     }
 
+    private void Update()
+    {
+        HandleHealthRegen();
+    }
+
+    private void HandleHealthRegen()
+    {
+        if (health < Mathf.RoundToInt(maxHealthStat.Value))
+        {
+            health += healthRegenStat.Value * Time.deltaTime;
+            health = Mathf.Clamp(health, 0, Mathf.RoundToInt(maxHealthStat.Value));
+            OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+        }
+    }
     public void TakeDamage(int damage)
     {
         if (!canBeHit)
@@ -34,10 +52,10 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
             return;
         }
         health -= damage;
-        health = Mathf.Clamp(health, 0, maxHealth);
+        health = Mathf.Clamp(health, 0, Mathf.RoundToInt(maxHealthStat.Value));
 
         OnTakeDamageEvent?.Invoke(damage);
-        OnHealthChanged?.Invoke(health, maxHealth);
+        OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
 
         if (health <= 0)
         {
@@ -51,10 +69,10 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     public void OnHealthRestored(int amount)
     {
         health += amount;
-        health = Mathf.Clamp(health, 0, maxHealth);
+        health = Mathf.Clamp(health, 0, Mathf.RoundToInt(maxHealthStat.Value));
 
         OnHealthRestoredEvent?.Invoke(amount);
-        OnHealthChanged?.Invoke(health, maxHealth);
+        OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
     }
     private System.Collections.IEnumerator InvulnerabilityCoroutine()
     {
