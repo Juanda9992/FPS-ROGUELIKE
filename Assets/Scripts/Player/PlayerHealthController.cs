@@ -1,10 +1,16 @@
 using UnityEngine;
 using System;
 
-public class PlayerHealthController : MonoBehaviour
+public class PlayerHealthController : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 100;
-    [SerializeField] private int currentHealth;
+    [SerializeField] private int health = 100;
+
+    public int Health
+    {
+        get => health;
+        set => health = value;
+    }
 
     [Header("Invulnerability")]
     [SerializeField] private float timeBetweenHits = 1f;
@@ -17,23 +23,23 @@ public class PlayerHealthController : MonoBehaviour
 
     private void Awake()
     {
-        currentHealth = maxHealth;
-        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        health = maxHealth;
+        OnHealthChanged?.Invoke(health, maxHealth);
     }
 
-    public void OnTakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
-        if(!canBeHit)
+        if (!canBeHit)
         {
             return;
         }
-        currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        health -= damage;
+        health = Mathf.Clamp(health, 0, maxHealth);
 
         OnTakeDamageEvent?.Invoke(damage);
-        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        OnHealthChanged?.Invoke(health, maxHealth);
 
-        if (currentHealth <= 0)
+        if (health <= 0)
         {
             Die();
             return;
@@ -44,11 +50,11 @@ public class PlayerHealthController : MonoBehaviour
 
     public void OnHealthRestored(int amount)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        health += amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
 
         OnHealthRestoredEvent?.Invoke(amount);
-        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        OnHealthChanged?.Invoke(health, maxHealth);
     }
     private System.Collections.IEnumerator InvulnerabilityCoroutine()
     {
@@ -65,7 +71,7 @@ public class PlayerHealthController : MonoBehaviour
     [ContextMenu("Take 20 Damage")]
     private void TakeDamageContextMenu()
     {
-        OnTakeDamage(20);
+        TakeDamage(20);
     }
 
     [ContextMenu("Restore 20 Health")]
