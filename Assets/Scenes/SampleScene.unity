@@ -874,7 +874,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea8fbff3b5267244b0ab2facf5b569b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealthStat:
+    statName: 
+    BaseValue: 0
+  healthRegenStat:
+    statName: 
+    BaseValue: 0
   health: 100
   timeBetweenHits: 0.2
   canBeHit: 1
@@ -890,6 +895,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b88bab522228a9647b549dd4ca6326e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplierStat:
+    statName: 
+    BaseValue: 0
   playerCamera: {fileID: 963194227}
   hitMask:
     serializedVersion: 2

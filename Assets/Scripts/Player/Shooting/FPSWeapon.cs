@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class FPSWeapon : MonoBehaviour
 {
+    [SerializeField] private Stat damageMultiplierStat;
     [Header("References")]
     public Camera playerCamera;
     public LayerMask hitMask;
@@ -16,6 +17,11 @@ public class FPSWeapon : MonoBehaviour
     public event Action<int> OnAmmoChanged;
 
     private PlayerWeaponInstance currentWeapon;
+
+    private void Start()
+    {
+        damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName("DamageMultiplier");
+    }
     void Update()
     {
         if (isReloading)
@@ -70,7 +76,7 @@ public class FPSWeapon : MonoBehaviour
         {
             if(hit.collider.GetComponent<IDamageable>() is IDamageable damageable)
             {
-                damageable.TakeDamage((int)currentWeapon.damage);
+                damageable.TakeDamage((Mathf.RoundToInt(currentWeapon.damage * damageMultiplierStat.Value)));
                 Debug.Log(hit.collider.name);
             }
         }
