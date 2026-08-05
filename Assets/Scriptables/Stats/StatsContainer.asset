@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
   - statName: Health
-    BaseValue: 100.3
+    displayName: Max Health
+    BaseValue: 100
     upgradeParameters:
       allowPercentageScaling: 1
       allowFlatScaling: 1
@@ -29,6 +30,7 @@ MonoBehaviour:
       - 15
       - 25
   - statName: HealthRegen
+    displayName: Health Regeneration Per Second
     BaseValue: 0
     upgradeParameters:
       allowPercentageScaling: 0
@@ -40,6 +42,7 @@ MonoBehaviour:
       - 3
       - 5
   - statName: WalkSpeed
+    displayName: Walk Speed
     BaseValue: 5
     upgradeParameters:
       allowPercentageScaling: 1
@@ -50,6 +53,7 @@ MonoBehaviour:
       - 5
       flatScalingValues: []
   - statName: JumpHeight
+    displayName: Jump Force
     BaseValue: 5
     upgradeParameters:
       allowPercentageScaling: 1
@@ -60,6 +64,7 @@ MonoBehaviour:
       - 5
       flatScalingValues: []
   - statName: JumpCount
+    displayName: Total Jumps
     BaseValue: 1
     upgradeParameters:
       allowPercentageScaling: 0
@@ -68,6 +73,7 @@ MonoBehaviour:
       - 1
       flatScalingValues: []
   - statName: RunSpeed
+    displayName: Run Speed
     BaseValue: 9
     upgradeParameters:
       allowPercentageScaling: 1
@@ -78,6 +84,7 @@ MonoBehaviour:
       - 2
       - 3
   - statName: CrouchSpeed
+    displayName: Crouch Speed
     BaseValue: 1
     upgradeParameters:
       allowPercentageScaling: 0
@@ -85,6 +92,7 @@ MonoBehaviour:
       percentageScalingValues: []
       flatScalingValues: []
   - statName: DamageMultiplier
+    displayName: Damage Multiplier
     BaseValue: 1
     upgradeParameters:
       allowPercentageScaling: 1
@@ -99,6 +107,7 @@ MonoBehaviour:
       - 0.3
       - 0.5
   - statName: CooldownMultiplier
+    displayName: Cooldown Multiplier
     BaseValue: 1
     upgradeParameters:
       allowPercentageScaling: 1
@@ -110,6 +119,7 @@ MonoBehaviour:
       - 5
       flatScalingValues: []
   - statName: ReloadSpeedMultiplier
+    displayName: Reload Speed
     BaseValue: 5
     upgradeParameters:
       allowPercentageScaling: 1
@@ -125,6 +135,7 @@ MonoBehaviour:
       - 0.3
       - 0.5
   - statName: Shield
+    displayName: Max Shield
     BaseValue: 0
     upgradeParameters:
       allowPercentageScaling: 1
@@ -136,6 +147,7 @@ MonoBehaviour:
       - 10
       flatScalingValues: []
   - statName: FireRateMultiplier
+    displayName: Fire Rate multiplier
     BaseValue: 1
     upgradeParameters:
       allowPercentageScaling: 1
@@ -149,6 +161,7 @@ MonoBehaviour:
       - 2
       - 3
   - statName: InvulnerabilityTime
+    displayName: Invencibility Time
     BaseValue: 5
     upgradeParameters:
       allowPercentageScaling: 0

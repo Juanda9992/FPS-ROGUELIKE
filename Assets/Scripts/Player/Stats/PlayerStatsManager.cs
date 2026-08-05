@@ -33,10 +33,22 @@ public class PlayerStatsManager : MonoBehaviour
             Stat newStat = new Stat
             {
                 statName = stat.statName,
+                displayName = stat.displayName,
                 BaseValue = stat.BaseValue,
                 upgradeParameters = stat.upgradeParameters
             };
             stats.Add(newStat);
         }
+    }
+
+    public Stat GetRandomStat()
+    {
+        if (stats.Count == 0)
+        {
+            return null;
+        }
+
+        int randomIndex = Random.Range(0, stats.Count);
+        return stats[randomIndex];
     }
 }

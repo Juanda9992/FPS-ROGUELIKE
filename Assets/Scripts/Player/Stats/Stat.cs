@@ -4,6 +4,7 @@ using UnityEngine;
 public class Stat
 {
     public string statName;
+    public string displayName;
     public float BaseValue;
     private List<float> additiveModifiers = new List<float>();
     private List<float> multiplicativeModifiers = new List<float>();
@@ -87,5 +88,16 @@ public class StatUpgrade
 
         int randomIndex = Random.Range(0, percentageScalingValues.Length);
         return percentageScalingValues[randomIndex];
+    }
+
+    public float GetRandomFlatScalingValue()
+    {
+        if (flatScalingValues.Length == 0)
+        {
+            return 0f;
+        }
+
+        int randomIndex = Random.Range(0, flatScalingValues.Length);
+        return flatScalingValues[randomIndex];
     }
 }
