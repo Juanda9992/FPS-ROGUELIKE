@@ -322,7 +322,7 @@ MonoBehaviour:
   - statName: FireRateMultiplier
     BaseValue: 1
   - statName: InvulnerabilityTime
-    BaseValue: 0.2
+    BaseValue: 5
 --- !u!4 &443332108
 Transform:
   m_ObjectHideFlags: 0
@@ -884,6 +884,9 @@ MonoBehaviour:
   healthRegenStat:
     statName: 
     BaseValue: 0
+  invulnerabilityTimeStat:
+    statName: 
+    BaseValue: 0
   health: 100
   timeBetweenHits: 0.2
   canBeHit: 1
@@ -924,6 +927,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56c177b075658334f89547d2322dc9cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillCooldownMultiplierStat:
+    statName: 
+    BaseValue: 0
   maxSlots: 3
   slots: []
   skillUIManager: {fileID: 1386484574}

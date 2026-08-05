@@ -97,7 +97,7 @@ public class SkillUISlot
         }
 
         float elapsed = Time.time - lastUseTime;
-        float cd = currentSkill.cooldown;
+        float cd = GetEffectiveCooldown(currentSkill);
 
         if (elapsed >= cd)
         {
@@ -107,5 +107,22 @@ public class SkillUISlot
 
         float normalized = 1f - (elapsed / cd);
         cooldownFill.fillAmount = normalized;
+    }
+
+    private float GetEffectiveCooldown(ActiveSkillSO skill)
+    {
+        if (skill == null)
+        {
+            return 0f;
+        }
+
+        var cooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("CooldownMultiplier");
+
+        float multiplier = cooldownMultiplierStat.Value;
+
+        multiplier = Mathf.Max(multiplier, 0.0001f);
+
+        //Debug.Log($"Real Cooldown: {skill.cooldown / multiplier}");
+        return skill.cooldown / multiplier;
     }
 }

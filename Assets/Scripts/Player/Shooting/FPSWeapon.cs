@@ -70,7 +70,6 @@ public class FPSWeapon : MonoBehaviour
         float fireRate = currentWeapon.fireRate / fireRateMultiplierStat.Value;
         nextFireTime = Time.time + fireRate;
 
-        Debug.Log($"Disparando... Tiempo de disparo: {fireRate} segundos");
         currentWeapon.currentAmmo--;
         NotifyAmmoChanged();
 
@@ -98,7 +97,6 @@ public class FPSWeapon : MonoBehaviour
         OnReload?.Invoke();
 
         float reloadTime = currentWeapon.reloadTime / reloadSpeedStat.Value;
-        Debug.Log($"Recargando... Tiempo de recarga: {reloadTime} segundos");
         yield return new WaitForSeconds(currentWeapon.reloadTime / reloadSpeedStat.Value);
 
         currentWeapon.currentAmmo = currentWeapon.weaponData.ammo;

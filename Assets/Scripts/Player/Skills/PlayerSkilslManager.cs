@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerSkillsManager : MonoBehaviour
 {
+    [SerializeField] private Stat skillCooldownMultiplierStat;
     [SerializeField] private int maxSlots = 3;
     [Header("Skill Slots")]
     public SkillSlot[] slots;
@@ -16,6 +17,11 @@ public class PlayerSkillsManager : MonoBehaviour
         {
             slots[i] = new SkillSlot();
         }
+    }
+
+    private void Start()
+    {
+        skillCooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("SkillCooldownMultiplierStat");
     }
 
     public bool CanAddItem()
@@ -33,12 +39,12 @@ public class PlayerSkillsManager : MonoBehaviour
 
     public bool TryAddSkill(ActiveSkillSO skill)
     {
-        if (!CanAddItem()) 
+        if (!CanAddItem())
         {
             return false;
         }
 
-        for(int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
             if (!slots[i].HasSkill)
             {
@@ -79,7 +85,7 @@ public class PlayerSkillsManager : MonoBehaviour
             return;
         }
 
-        if(!slots[index].CanUse())
+        if (!slots[index].CanUse())
         {
             Debug.Log($"Skill in slot {index} is on cooldown or not assigned.");
             return;
@@ -101,13 +107,16 @@ public class SkillSlot
 
     public bool CanUse()
     {
-        if (!HasSkill) return false;
-        return Time.time >= lastUseTime + skill.cooldown;
+        if (!HasSkill)
+        {
+            return false;
+        }
+        return Time.time >= lastUseTime + GetEffectiveCooldown();
     }
 
     public void Use(GameObject owner)
     {
-        if (!CanUse()) 
+        if (!CanUse())
         {
             return;
         }
@@ -120,6 +129,19 @@ public class SkillSlot
     {
         skill = newSkill;
         lastUseTime = -999f;
+    }
+
+    private float GetEffectiveCooldown()
+    {
+        if (skill == null)
+        {
+            return 0f;
+        }
+
+        Stat cooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("CooldownMultiplier");
+
+        float calculatedMultiplier = skill.cooldown / cooldownMultiplierStat.Value;
+        return calculatedMultiplier;
     }
 
     public void Clear()
