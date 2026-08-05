@@ -66,13 +66,23 @@ public class UpgradeManager : MonoBehaviour
 
         return false;
     }
+    public void SelectUpgrade(UpgradeData upgrade)
+    {   
+        Debug.Log($"Upgrade selected: {upgrade.targetStat.statName} with value {upgrade.upgradeValue} (Flat Scaling: {upgrade.usedFlatScaling})");
+        //upgrade.Select();
+    }
 
-    // Called when player selects an upgrade
-    public void SelectUpgrade(Upgrade upgrade)
+    [ContextMenu("Test Upgrade values not being zero")]
+    public void TestUpgradeValues()
     {
-        if (upgrade != null)
+        for(int i = 0; i < 1000; i++)
         {
-            upgrade.Select();
+            Stat randomStat = PlayerStatsManager.Instance.GetRandomStat();
+            bool usedFlatScaling = GenerateRandomUpgradeValue(randomStat, out float upgradeValue);
+            if(upgradeValue == 0f)
+            {
+                Debug.LogError($"Upgrade value is zero for stat {randomStat.statName} with flat scaling: {usedFlatScaling}");
+            }
         }
     }
 }

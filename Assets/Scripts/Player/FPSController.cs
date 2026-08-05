@@ -65,7 +65,7 @@ public class FPSController : MonoBehaviour
     }
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        CursorManager.SetCursorVisible(false);
 
         walkSpeedStat = PlayerStatsManager.Instance.GetStatByName("WalkSpeed");
         runSpeedStat = PlayerStatsManager.Instance.GetStatByName("RunSpeed");
