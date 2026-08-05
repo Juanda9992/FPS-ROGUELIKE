@@ -7,6 +7,8 @@ public class PlayerStatsManager : MonoBehaviour
 
     [SerializeField] private List<Stat> stats = new List<Stat>();
 
+    [SerializeField] private PlayerStatVisualizerUI statVisualizerUI;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -19,6 +21,8 @@ public class PlayerStatsManager : MonoBehaviour
         }
 
         CopyStatsFromContainer();
+
+        statVisualizerUI.CreateStatsOnPanel(stats);
     }
     public Stat GetStatByName(string statName)
     {

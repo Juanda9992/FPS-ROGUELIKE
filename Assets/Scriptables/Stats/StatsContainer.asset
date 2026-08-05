@@ -30,7 +30,7 @@ MonoBehaviour:
       - 15
       - 25
   - statName: HealthRegen
-    displayName: Health Regeneration Per Second
+    displayName: Health Regen. / Second
     BaseValue: 0
     upgradeParameters:
       allowPercentageScaling: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
       - 3
   - statName: InvulnerabilityTime
     displayName: Invencibility Time
-    BaseValue: 5
+    BaseValue: 0.2
     upgradeParameters:
       allowPercentageScaling: 0
       allowFlatScaling: 1

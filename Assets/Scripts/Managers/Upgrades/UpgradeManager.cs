@@ -8,6 +8,8 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private UpgradeData[] selectedUpgradeArray;
 
     [SerializeField] private UpgradeManagerUI upgradeManagerUI;
+
+    public event System.Action<UpgradeData> OnUpgradeSelected;
     [ContextMenu("Generate Upgrades")]
     public void GenerateUpgrades()
     {
@@ -70,6 +72,7 @@ public class UpgradeManager : MonoBehaviour
     {
         upgrade.Select();
         currentUpgrades.Add(upgrade);
+        OnUpgradeSelected?.Invoke(upgrade);
     }
 
     [ContextMenu("Test Upgrade values not being zero")]
