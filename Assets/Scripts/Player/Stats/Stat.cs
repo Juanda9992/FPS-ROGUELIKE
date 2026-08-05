@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 [System.Serializable]
 public class Stat
 {
@@ -6,6 +7,8 @@ public class Stat
     public float BaseValue;
     private List<float> additiveModifiers = new List<float>();
     private List<float> multiplicativeModifiers = new List<float>();
+
+    public StatUpgrade upgradeParameters;
 
     public float Value
     {
@@ -64,4 +67,25 @@ public enum ModifierType
 {
     Additive,
     Multiplicative
+}
+
+[System.Serializable]
+public class StatUpgrade
+{
+    public bool allowPercentageScaling = false;
+    public bool allowFlatScaling = false;
+    public float[] percentageScalingValues;
+    public float[] flatScalingValues;
+
+    public float GetRandomPercentageScalingValue()
+    {
+        if (percentageScalingValues.Length == 0)
+        {
+            
+            return 0f;
+        }
+
+        int randomIndex = Random.Range(0, percentageScalingValues.Length);
+        return percentageScalingValues[randomIndex];
+    }
 }

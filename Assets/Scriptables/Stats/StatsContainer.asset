@@ -1,0 +1,159 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f638d3d814b5af84f8de699c07e6d1cb, type: 3}
+  m_Name: StatsContainer
+  m_EditorClassIdentifier: 
+  stats:
+  - statName: Health
+    BaseValue: 100.3
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      - 10
+      flatScalingValues:
+      - 5
+      - 10
+      - 15
+      - 25
+  - statName: HealthRegen
+    BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 1
+      percentageScalingValues: []
+      flatScalingValues:
+      - 1
+      - 2
+      - 3
+      - 5
+  - statName: WalkSpeed
+    BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 0
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      flatScalingValues: []
+  - statName: JumpHeight
+    BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 0
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      flatScalingValues: []
+  - statName: JumpCount
+    BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      flatScalingValues: []
+  - statName: RunSpeed
+    BaseValue: 9
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues:
+      - 1
+      - 2
+      - 3
+  - statName: CrouchSpeed
+    BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
+  - statName: DamageMultiplier
+    BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 2
+      - 3
+      - 5
+      flatScalingValues:
+      - 0.1
+      - 0.3
+      - 0.5
+  - statName: CooldownMultiplier
+    BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 2
+      - 3
+      - 5
+      flatScalingValues: []
+  - statName: ReloadSpeedMultiplier
+    BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 2
+      - 3
+      - 5
+      flatScalingValues:
+      - 0.1
+      - 0.2
+      - 0.3
+      - 0.5
+  - statName: Shield
+    BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      - 10
+      flatScalingValues: []
+  - statName: FireRateMultiplier
+    BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 0.1
+      - 0.2
+      - 0.3
+      flatScalingValues:
+      - 1
+      - 2
+      - 3
+  - statName: InvulnerabilityTime
+    BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 1
+      percentageScalingValues: []
+      flatScalingValues:
+      - 0.1
+      - 0.2

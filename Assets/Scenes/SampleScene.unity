@@ -263,30 +263,99 @@ MonoBehaviour:
   stats:
   - statName: Health
     BaseValue: 100
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      - 10
+      flatScalingValues: []
   - statName: HealthRegen
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: WalkSpeed
     BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: JumpHeight
     BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: JumpCount
     BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: RunSpeed
     BaseValue: 9
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: CrouchSpeed
     BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: DamageMultiplier
     BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: CooldownMultiplier
     BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: ReloadSpeedMultiplier
     BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: Shield
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: FireRateMultiplier
     BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   - statName: InvulnerabilityTime
     BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
 --- !u!4 &443332108
 Transform:
   m_ObjectHideFlags: 0
@@ -776,18 +845,43 @@ MonoBehaviour:
   walkSpeedStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   runSpeedStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   crouchSpeedStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   jumpForceStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   jumpCountStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   gravity: -9.81
   cameraPivot: {fileID: 963194228}
   mouseSensitivity: 100
@@ -808,12 +902,27 @@ MonoBehaviour:
   maxHealthStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   healthRegenStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   invulnerabilityTimeStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   health: 100
   timeBetweenHits: 0.2
   canBeHit: 1
@@ -832,12 +941,27 @@ MonoBehaviour:
   damageMultiplierStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   reloadSpeedStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   fireRateMultiplierStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   playerCamera: {fileID: 963194227}
   hitMask:
     serializedVersion: 2
@@ -857,6 +981,11 @@ MonoBehaviour:
   skillCooldownMultiplierStat:
     statName: 
     BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   maxSlots: 3
   slots: []
   skillUIManager: {fileID: 1386484574}
@@ -1946,7 +2075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 671077421}
-  reloadFillImage: {fileID: 0}
+  reloadFillImage: {fileID: 1624946643}
   ammoText: {fileID: 660309589}
 --- !u!114 &1386484574
 MonoBehaviour:
