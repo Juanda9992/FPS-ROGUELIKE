@@ -4,11 +4,11 @@ using UnityEngine.UI;
 public class PlayerHealthUI : MonoBehaviour
 {
     [SerializeField] private PlayerHealthController playerHealth;
-    [SerializeField] private Slider healthSlider;
+    [SerializeField] private Image healthFillImage;
 
     void Awake()
     {
-        healthSlider.value = 1f;
+        healthFillImage.fillAmount = 1;
     }
     private void OnEnable()
     {
@@ -22,6 +22,6 @@ public class PlayerHealthUI : MonoBehaviour
 
     private void UpdateHealthUI(int current, int max)
     {
-        healthSlider.value = (float)current / max;
+        healthFillImage.fillAmount = (float)current / max;
     }
 }

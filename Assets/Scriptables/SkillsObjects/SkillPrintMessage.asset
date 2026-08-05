@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: test Skill
   icon: {fileID: 0}
-  cooldown: 1
+  cooldown: 5
   message: you activated ME!

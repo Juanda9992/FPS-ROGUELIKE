@@ -30,7 +30,7 @@ public class WeaponUI : MonoBehaviour
 
     void UpdateAmmo(int ammo)
     {
-        ammoText.text = $"Ammo: {ammo}/{weapon.GetCurrentWeapon().weaponData.ammo}";
+        ammoText.text = $"{ammo}/{weapon.GetCurrentWeapon().weaponData.ammo}";
 
         if(weapon.GetCurrentWeapon().currentAmmo <= 0)
         {
