@@ -4,7 +4,7 @@ using UnityEngine;
 public class FPSWeapon : MonoBehaviour
 {
     [SerializeField] private Stat damageMultiplierStat;
-    [SerializeField] private Stat reloadSpeedStat;
+    public Stat reloadSpeedStat;
     [SerializeField] private Stat fireRateMultiplierStat;
     [Header("References")]
     public Camera playerCamera;

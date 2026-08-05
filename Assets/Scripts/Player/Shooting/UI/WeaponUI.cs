@@ -1,10 +1,18 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using DG.Tweening;
 public class WeaponUI : MonoBehaviour
 {
     [SerializeField] FPSWeapon weapon;
-
+    [SerializeField] private Image reloadFillImage;
     [SerializeField] private TextMeshProUGUI ammoText;
+
+    private void Awake()
+    {
+        reloadFillImage.fillAmount = 0;
+    }
+
     void OnEnable()
     {
         weapon.OnShoot += HandleShoot;
@@ -25,7 +33,8 @@ public class WeaponUI : MonoBehaviour
 
     void HandleReload()
     {
-        ammoText.text = "Reloading...";
+        reloadFillImage.fillAmount = 1;
+        reloadFillImage.DOFillAmount(0, weapon.GetCurrentWeapon().reloadTime / weapon.reloadSpeedStat.Value).SetEase(Ease.Linear);
     }
 
     void UpdateAmmo(int ammo)
