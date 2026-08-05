@@ -25,13 +25,14 @@ public class Stat
             float multiplier = 1f;
             foreach (var mult in multiplicativeModifiers)
             {
-                multiplier += mult;
+                multiplier *= 1f + (mult / 100f);
             }
             finalValue *= multiplier;
 
             return finalValue;
         }
     }
+
 
     public void AddModifier(float value, ModifierType type)
     {
