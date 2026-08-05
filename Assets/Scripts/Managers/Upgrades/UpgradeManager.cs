@@ -67,19 +67,19 @@ public class UpgradeManager : MonoBehaviour
         return false;
     }
     public void SelectUpgrade(UpgradeData upgrade)
-    {   
-        Debug.Log($"Upgrade selected: {upgrade.targetStat.statName} with value {upgrade.upgradeValue} (Flat Scaling: {upgrade.usedFlatScaling})");
-        //upgrade.Select();
+    {
+        upgrade.Select();
+        currentUpgrades.Add(upgrade);
     }
 
     [ContextMenu("Test Upgrade values not being zero")]
     public void TestUpgradeValues()
     {
-        for(int i = 0; i < 1000; i++)
+        for (int i = 0; i < 1000; i++)
         {
             Stat randomStat = PlayerStatsManager.Instance.GetRandomStat();
             bool usedFlatScaling = GenerateRandomUpgradeValue(randomStat, out float upgradeValue);
-            if(upgradeValue == 0f)
+            if (upgradeValue == 0f)
             {
                 Debug.LogError($"Upgrade value is zero for stat {randomStat.statName} with flat scaling: {usedFlatScaling}");
             }
@@ -90,9 +90,6 @@ public class UpgradeManager : MonoBehaviour
 // Base class for all upgrades
 public abstract class Upgrade
 {
-    public Stat targetStat;
-    public float upgradeValue;
-    public bool usedFlatScaling;
     // Method to apply the upgrade
     public virtual void Select()
     {
@@ -101,11 +98,26 @@ public abstract class Upgrade
     }
 }
 [System.Serializable]
-public class UpgradeData
+public class UpgradeData : Upgrade
 {
     public Stat targetStat;
     public float upgradeValue;
     public bool usedFlatScaling;
+
+    public override void Select()
+    {
+
+        if (usedFlatScaling)
+        {
+            targetStat.AddModifier(upgradeValue, ModifierType.Additive);
+        }
+        else
+        {
+            targetStat.AddModifier(upgradeValue, ModifierType.Multiplicative);
+        }
+        Debug.Log($"Applied upgrade: {upgradeValue} to stat: {targetStat.statName} using {(usedFlatScaling ? "flat" : "percentage")} scaling.");
+
+    }
 }
 // Placeholder for future ability upgrades
 public class HabilityUpgrade : Upgrade
@@ -115,4 +127,5 @@ public class HabilityUpgrade : Upgrade
         // Empty for now
         Debug.Log("Hability upgrade selected");
     }
+
 }
