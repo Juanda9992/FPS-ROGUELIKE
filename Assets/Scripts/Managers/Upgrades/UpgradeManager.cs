@@ -6,6 +6,8 @@ public class UpgradeManager : MonoBehaviour
     public List<Upgrade> currentUpgrades = new List<Upgrade>();
     [SerializeField] private int numberOfUpgradesToGenerate = 3;
     [SerializeField] private UpgradeData[] selectedUpgradeArray;
+
+    [SerializeField] private UpgradeManagerUI upgradeManagerUI;
     [ContextMenu("Generate Upgrades")]
     public void GenerateUpgrades()
     {
@@ -18,14 +20,16 @@ public class UpgradeManager : MonoBehaviour
             Stat randomStat = PlayerStatsManager.Instance.GetRandomStat();
 
             bool usedFlatScaling = GenerateRandomUpgradeValue(randomStat, out float upgradeValue);
-            
+
             selectedUpgradeArray[i] = new UpgradeData
             {
                 targetStat = randomStat,
                 upgradeValue = upgradeValue,
                 usedFlatScaling = usedFlatScaling
             };
+
         }
+        upgradeManagerUI.DisplayUpgrades(selectedUpgradeArray);
     }
 
     private bool GenerateRandomUpgradeValue(Stat stat, out float upgradeValue) //Returns true if flat scaling was used, false if percentage scaling was used
