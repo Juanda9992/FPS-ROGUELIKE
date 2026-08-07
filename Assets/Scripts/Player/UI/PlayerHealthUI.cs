@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,10 +27,10 @@ public class PlayerHealthUI : MonoBehaviour
 
     private void UpdateHealthUI(int current, int max)
     {
-        healthFillImage.fillAmount = (float)current / max;
+        healthFillImage.DOFillAmount((float)current / max, 0.3f).SetEase(Ease.InOutQuad);
     }
     private void UpdateShieldUI(int current, int max)
     {
-        shieldFillImage.fillAmount = (float)current / max;
+        shieldFillImage.DOFillAmount((float)current / max, 0.3f).SetEase(Ease.InOutQuad);
     }
 }
