@@ -1372,6 +1372,8 @@ MonoBehaviour:
   throwForce: 15
   upwardForce: 2
   baseCooldown: 3
+  maxAmmo: 3
+  currentAmmo: 0
   damageStatName: GrenadeDamageMultiplier
   radiusStatName: GrenadeRadiusMultiplier
   cooldownStatName: GrenadeCooldownMultiplier
@@ -3287,6 +3289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grenadeController: {fileID: 671077426}
   cooldownFillImage: {fileID: 396504583}
+  ammoText: {fileID: 1034876082}
 --- !u!1 &1407778350
 GameObject:
   m_ObjectHideFlags: 0
@@ -3382,7 +3385,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1428240833
 MonoBehaviour:
   m_ObjectHideFlags: 0
