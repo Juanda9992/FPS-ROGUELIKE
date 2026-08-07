@@ -28,8 +28,8 @@
      inkscape:document-units="mm"
      inkscape:export-bgcolor="#00000000"
      inkscape:zoom="0.71891835"
-     inkscape:cx="771.99309"
-     inkscape:cy="292.80098"
+     inkscape:cx="951.42932"
+     inkscape:cy="284.45511"
      inkscape:window-width="2560"
      inkscape:window-height="1009"
      inkscape:window-x="1912"
@@ -54,5 +54,12 @@
        cx="212.79265"
        cy="71.4375"
        r="69.327087" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.73941"
+       id="rect1"
+       width="33.866665"
+       height="33.866665"
+       x="317.60968"
+       y="0" />
   </g>
 </svg>
