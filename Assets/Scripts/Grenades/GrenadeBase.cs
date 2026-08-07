@@ -36,14 +36,10 @@ public class GrenadeBase : MonoBehaviour
     /// <summary>
     /// Parametrizes grenade stats dynamically upon instantiation or throw by multiplying base stats with provided multipliers.
     /// </summary>
-    public virtual void Initialize(float customDamageMultiplier = 1f, float customRadiusMultiplier = 1f, float customExplosionForceMultiplier = 1f)
+    public virtual void Initialize(float customDamageMultiplier = 1f, float customRadiusMultiplier = 1f)
     {
         damage *= customDamageMultiplier;
         radius *= customRadiusMultiplier;
-        if (customExplosionForceMultiplier > 0)
-        {
-            explosionForce *= customExplosionForceMultiplier;
-        }
     }
 
     protected virtual IEnumerator FuseRoutine()

@@ -11,10 +11,7 @@ public class PlayerGrenadeController : MonoBehaviour
     [SerializeField] private float upwardForce = 2f;
 
     [Header("Base Stats (Parametrizables)")]
-    [SerializeField] private int baseDamage = 75;
-    [SerializeField] private float baseRadius = 6f;
     [SerializeField] private float baseCooldown = 5f;
-    [SerializeField] private float baseFuseTime = 3f;
 
     [Header("PlayerStatsManager Integration")]
     [SerializeField] private string damageStatName = "GrenadeDamageMultiplier";
@@ -32,7 +29,6 @@ public class PlayerGrenadeController : MonoBehaviour
     public float CurrentDamageMultiplier { get; set; }
     public float CurrentRadiusMultiplier { get; set; }
     public float CurrentCooldownMultiplier { get; set; }
-    public float CurrentFuseTimeMultiplier { get; set; }
 
     public float CurrentCooldown => CurrentCooldownMultiplier;
     public bool IsOnCooldown => Time.time < lastThrowTime + CurrentCooldown;
@@ -47,7 +43,6 @@ public class PlayerGrenadeController : MonoBehaviour
         CurrentDamageMultiplier = 1f;
         CurrentRadiusMultiplier = 1f;
         CurrentCooldownMultiplier = baseCooldown;
-        CurrentFuseTimeMultiplier = baseFuseTime;
     }
 
     private void OnEnable()
@@ -122,7 +117,7 @@ public class PlayerGrenadeController : MonoBehaviour
         GrenadeBase grenadeInstance = Instantiate(grenadePrefab, spawnPos, spawnRot);
 
         // Pass parameterized stats to the grenade instance
-        grenadeInstance.Initialize(CurrentDamageMultiplier, CurrentRadiusMultiplier, CurrentFuseTimeMultiplier);
+        grenadeInstance.Initialize(CurrentDamageMultiplier, CurrentRadiusMultiplier);
 
         // Apply impulse force
         Vector3 throwDirection = throwPoint.forward;

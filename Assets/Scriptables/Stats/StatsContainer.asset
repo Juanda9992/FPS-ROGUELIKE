@@ -54,7 +54,7 @@ MonoBehaviour:
       flatScalingValues: []
   - statName: JumpHeight
     displayName: Jump Force
-    BaseValue: 5
+    BaseValue: 3
     upgradeParameters:
       allowPercentageScaling: 1
       allowFlatScaling: 0
