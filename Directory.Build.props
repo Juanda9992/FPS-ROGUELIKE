@@ -2,6 +2,7 @@
   <PropertyGroup>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     <!-- Suppress Unity-specific false positives -->
+    <NoWarn>$(NoWarn);CS0649;CS0169;IDE0051;IDE0044</NoWarn>
     <!-- IDE0051: Remove unused private members (Unity messages like Start, Update) -->
     <!-- IDE0044: Add readonly modifier (serialized fields) -->
   </PropertyGroup>
