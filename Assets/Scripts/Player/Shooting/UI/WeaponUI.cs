@@ -2,46 +2,53 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
+
 public class WeaponUI : MonoBehaviour
 {
-    [SerializeField] FPSWeapon weapon;
+    [SerializeField] private PlayerWeaponManager weaponManager;
     [SerializeField] private Image reloadFillImage;
     [SerializeField] private TextMeshProUGUI ammoText;
 
     private void Awake()
     {
+
         reloadFillImage.fillAmount = 0;
+
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        weapon.OnShoot += HandleShoot;
-        weapon.OnReload += HandleReload;
-        weapon.OnAmmoChanged += UpdateAmmo;
+        weaponManager.OnShoot += HandleShoot;
+        weaponManager.OnReload += HandleReload;
+        weaponManager.OnAmmoChanged += UpdateAmmo;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        weapon.OnShoot -= HandleShoot;
-        weapon.OnReload -= HandleReload;
-        weapon.OnAmmoChanged -= UpdateAmmo;
+        weaponManager.OnShoot -= HandleShoot;
+        weaponManager.OnReload -= HandleReload;
+        weaponManager.OnAmmoChanged -= UpdateAmmo;
+
     }
 
-    void HandleShoot()
+    private void HandleShoot()
     {
     }
 
-    void HandleReload()
+    private void HandleReload()
     {
+        PlayerWeaponInstance currentInstance = weaponManager.GetCurrentWeaponInstance();
+        float reloadStatVal = (weaponManager.reloadSpeedStat != null && weaponManager.reloadSpeedStat.Value != 0) ? weaponManager.reloadSpeedStat.Value : 1f;
+
         reloadFillImage.fillAmount = 1;
-        reloadFillImage.DOFillAmount(0, weapon.GetCurrentWeapon().reloadTime / weapon.reloadSpeedStat.Value).SetEase(Ease.Linear);
+        reloadFillImage.DOFillAmount(0, currentInstance.reloadTime / reloadStatVal).SetEase(Ease.Linear);
     }
 
-    void UpdateAmmo(int ammo)
+    private void UpdateAmmo(int ammo)
     {
-        ammoText.text = $"{ammo}/{weapon.GetCurrentWeapon().weaponData.ammo}";
-
-        if(weapon.GetCurrentWeapon().currentAmmo <= 0)
+        PlayerWeaponInstance currentInstance = weaponManager.GetCurrentWeaponInstance();
+        ammoText.text = $"{ammo}/{currentInstance.weaponData.ammo}";
+        if (currentInstance.currentAmmo <= 0)
         {
             ammoText.color = Color.red;
         }
