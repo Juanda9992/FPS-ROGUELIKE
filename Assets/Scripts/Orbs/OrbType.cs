@@ -4,5 +4,6 @@ public enum OrbType
 {
     Health,
     Shield,
-    Experience
+    Experience,
+    Ammo
 }
