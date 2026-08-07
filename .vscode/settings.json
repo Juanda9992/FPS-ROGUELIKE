@@ -1,4 +1,14 @@
 {
+    "dotnet.defaultSolution": "ROGUELIKE FPS SURVIVAL.sln",
+    "dotnet.dotnetPath": "C:/Program Files/dotnet/dotnet.exe",
+    "dotrush.roslyn.dotnetSdkDirectory": "C:/Program Files/dotnet/sdk/10.0.300",
+    "dotrush.msbuildProperties": {
+        "DefineConstants": "UNITY_EDITOR"
+    },
+    "dotrush.roslyn.projectOrSolutionFiles": [
+        "C:/Users/juand/OneDrive/Documentos/ROGUELIKE FPS SURVIVAL/ROGUELIKE FPS SURVIVAL.sln"
+    ],
+    "dotrush.roslyn.restoreProjectsBeforeLoading": false,
     "files.exclude": {
         "**/.DS_Store": true,
         "**/.git": true,
@@ -50,6 +60,5 @@
         "ProjectSettings/": true,
         "temp/": true,
         "Temp/": true
-    },
-    "dotnet.defaultSolution": "ROGUELIKE FPS SURVIVAL.sln"
+    }
 }
