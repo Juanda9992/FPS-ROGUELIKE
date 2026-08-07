@@ -9,11 +9,10 @@ public class WeaponUI : MonoBehaviour
     [SerializeField] private Image reloadFillImage;
     [SerializeField] private TextMeshProUGUI ammoText;
 
+    private Tween reloadTween;
     private void Awake()
     {
-
         reloadFillImage.fillAmount = 0;
-
     }
 
     private void OnEnable()
@@ -41,7 +40,8 @@ public class WeaponUI : MonoBehaviour
         float reloadStatVal = (weaponManager.reloadSpeedStat != null && weaponManager.reloadSpeedStat.Value != 0) ? weaponManager.reloadSpeedStat.Value : 1f;
 
         reloadFillImage.fillAmount = 1;
-        reloadFillImage.DOFillAmount(0, currentInstance.reloadTime / reloadStatVal).SetEase(Ease.Linear);
+        reloadTween?.Kill();
+        reloadTween = reloadFillImage.DOFillAmount(0, currentInstance.reloadTime / reloadStatVal).SetEase(Ease.Linear);
     }
 
     private void UpdateAmmo(int ammo)
@@ -56,5 +56,7 @@ public class WeaponUI : MonoBehaviour
         {
             ammoText.color = Color.white;
         }
+        reloadTween?.Kill();
+        reloadFillImage.fillAmount = 0;
     }
 }
