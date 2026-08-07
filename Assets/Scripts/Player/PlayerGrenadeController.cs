@@ -11,6 +11,9 @@ public class PlayerGrenadeController : MonoBehaviour
     [SerializeField] private float upwardForce = 2f;
     [SerializeField] private float baseCooldown = 5f;
 
+    [Header("Ammo Settings")]
+    [SerializeField] private int maxAmmo = 3;
+    [SerializeField] private int currentAmmo;
 
     [Header("PlayerStatsManager Integration")]
     [SerializeField] private string damageStatName = "GrenadeDamageMultiplier";
@@ -21,8 +24,7 @@ public class PlayerGrenadeController : MonoBehaviour
     private float lastThrowTime = -999f;
 
     // Events for UI / Systems
-    public event Action OnGrenadeThrown;
-    public event Action<float, float> OnCooldownUpdated; // (remainingTime, totalCooldown)
+    public event Action<int> OnGrenadeThrown;
     public event Action<float, float> OnCooldownChanged; // (remainingTime, totalCooldown)
 
     public float CurrentCooldown => baseCooldown / cooldownMultiplierStat.Value;
@@ -52,6 +54,8 @@ public class PlayerGrenadeController : MonoBehaviour
 
     private void Start()
     {
+        currentAmmo = maxAmmo;
+        OnGrenadeThrown?.Invoke(currentAmmo);
         GetStats();
     }
 
@@ -60,13 +64,11 @@ public class PlayerGrenadeController : MonoBehaviour
         if (IsOnCooldown)
         {
             wasOnCooldown = true;
-            OnCooldownUpdated?.Invoke(RemainingCooldown, CurrentCooldown);
             OnCooldownChanged?.Invoke(RemainingCooldown, CurrentCooldown);
         }
         else if (wasOnCooldown)
         {
             wasOnCooldown = false;
-            OnCooldownUpdated?.Invoke(0f, CurrentCooldown);
             OnCooldownChanged?.Invoke(0f, CurrentCooldown);
         }
     }
@@ -87,6 +89,12 @@ public class PlayerGrenadeController : MonoBehaviour
         if (IsOnCooldown)
         {
             Debug.Log($"[PlayerGrenadeController] Grenade on cooldown! Remaining: {RemainingCooldown:F1}s");
+            return false;
+        }
+
+        if (currentAmmo <= 0)
+        {
+            Debug.Log($"[PlayerGrenadeController] No grenades left!");
             return false;
         }
         ThrowGrenade();
@@ -112,6 +120,7 @@ public class PlayerGrenadeController : MonoBehaviour
             rb.AddForce(finalForce, ForceMode.Impulse);
         }
 
-        OnGrenadeThrown?.Invoke();
+        currentAmmo--;
+        OnGrenadeThrown?.Invoke(currentAmmo);
     }
 }
