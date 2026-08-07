@@ -104,6 +104,10 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
         StartCoroutine(InvulnerabilityCoroutine());
     }
 
+    public int MaxHealth => maxHealthStat != null ? Mathf.RoundToInt(maxHealthStat.Value) : 100;
+    public int CurrentShield => Mathf.RoundToInt(currentShield);
+    public int MaxShield => shieldStat != null ? Mathf.RoundToInt(shieldStat.Value) : 0;
+
     public void OnHealthRestored(int amount)
     {
         health += amount;
@@ -111,6 +115,15 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
 
         OnHealthRestoredEvent?.Invoke(amount);
         OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+    }
+
+    public void RestoreShield(int amount)
+    {
+        currentShield += amount;
+        int maxShield = shieldStat != null ? Mathf.RoundToInt(shieldStat.Value) : Mathf.RoundToInt(currentShield);
+        currentShield = Mathf.Clamp(currentShield, 0, maxShield);
+
+        OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), maxShield);
     }
     private System.Collections.IEnumerator InvulnerabilityCoroutine()
     {
