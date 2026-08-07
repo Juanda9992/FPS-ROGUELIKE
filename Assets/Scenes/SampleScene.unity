@@ -788,7 +788,7 @@ MonoBehaviour:
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
-  m_FillOrigin: 3
+  m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &551417114
@@ -1139,7 +1139,17 @@ MonoBehaviour:
       allowFlatScaling: 0
       percentageScalingValues: []
       flatScalingValues: []
+  shieldStat:
+    statName: 
+    displayName: 
+    BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 0
+      percentageScalingValues: []
+      flatScalingValues: []
   health: 100
+  currentShield: 0
   timeBetweenHits: 0.2
   canBeHit: 1
 --- !u!114 &671077421
@@ -1968,10 +1978,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 44.75
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2829,6 +2839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 671077420}
   healthFillImage: {fileID: 744779546}
+  shieldFillImage: {fileID: 551417113}
 --- !u!114 &1386484573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3525,7 +3536,7 @@ MonoBehaviour:
   upgradeButton: {fileID: 752972510}
   selectUpgradeButton: {fileID: 752972510}
   refreshUpgradesButton: {fileID: 297351758}
-  refreshAmmountText: {fileID: 0}
+  refreshAmmountText: {fileID: 961989631}
   upgradeManager: {fileID: 443332109}
 --- !u!1 &1624946641
 GameObject:

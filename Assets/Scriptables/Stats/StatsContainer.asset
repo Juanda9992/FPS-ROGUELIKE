@@ -140,7 +140,7 @@ MonoBehaviour:
       - 0.5
   - statName: Shield
     displayName: Max Shield
-    BaseValue: 0
+    BaseValue: 50
     upgradeParameters:
       allowPercentageScaling: 1
       allowFlatScaling: 1

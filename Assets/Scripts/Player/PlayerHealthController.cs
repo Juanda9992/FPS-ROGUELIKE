@@ -6,7 +6,9 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     [SerializeField] private Stat maxHealthStat;
     [SerializeField] private Stat healthRegenStat;
     [SerializeField] private Stat invulnerabilityTimeStat;
+    [SerializeField] private Stat shieldStat;
     [SerializeField] private float health = 100;
+    [SerializeField] private float currentShield = 0;
 
     public int Health
     {
@@ -22,15 +24,19 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     public event Action<int> OnTakeDamageEvent;
     public event Action<int> OnHealthRestoredEvent;
     public event Action<int, int> OnHealthChanged; // (current, max)
+    public event Action<int, int> OnShieldChanged; // (current, max)
 
     private void Start()
     {
         maxHealthStat = PlayerStatsManager.Instance.GetStatByName("Health");
         healthRegenStat = PlayerStatsManager.Instance.GetStatByName("HealthRegen");
         invulnerabilityTimeStat = PlayerStatsManager.Instance.GetStatByName("InvulnerabilityTime");
+        shieldStat = PlayerStatsManager.Instance.GetStatByName("Shield");
 
         health = Mathf.RoundToInt(maxHealthStat.Value);
+        currentShield = Mathf.RoundToInt(shieldStat.Value);
         OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+        OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), Mathf.RoundToInt(shieldStat.Value));
     }
 
     private void Update()
@@ -52,6 +58,21 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
         if (!canBeHit)
         {
             return;
+        }
+
+        if (shieldStat.Value > 0)
+        {
+            int shieldDamage = Mathf.Min(damage, Mathf.RoundToInt(currentShield));
+            currentShield -= shieldDamage;
+            OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), Mathf.RoundToInt(shieldStat.Value));
+            damage -= shieldDamage;
+
+            if (damage <= 0)
+            {
+                OnTakeDamageEvent?.Invoke(shieldDamage);
+                OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+                return;
+            }
         }
         health -= damage;
         health = Mathf.Clamp(health, 0, Mathf.RoundToInt(maxHealthStat.Value));
