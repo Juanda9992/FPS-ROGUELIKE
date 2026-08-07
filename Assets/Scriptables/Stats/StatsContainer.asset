@@ -177,3 +177,16 @@ MonoBehaviour:
       flatScalingValues:
       - 0.1
       - 0.2
+  - statName: ShieldRegen
+    displayName: Shield Regen.
+    BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 0
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      flatScalingValues:
+      - 0.1
+      - 0.2

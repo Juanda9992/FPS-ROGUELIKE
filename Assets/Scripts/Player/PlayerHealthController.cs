@@ -3,11 +3,15 @@ using System;
 
 public class PlayerHealthController : MonoBehaviour, IDamageable
 {
+    [Header("Health Stats")]
     [SerializeField] private Stat maxHealthStat;
     [SerializeField] private Stat healthRegenStat;
-    [SerializeField] private Stat invulnerabilityTimeStat;
-    [SerializeField] private Stat shieldStat;
     [SerializeField] private float health = 100;
+
+    [SerializeField] private Stat invulnerabilityTimeStat;
+    [Header("Shield Stats")]
+    [SerializeField] private Stat shieldStat;
+    [SerializeField] private Stat shieldRegenStat;
     [SerializeField] private float currentShield = 0;
 
     public int Health
@@ -32,9 +36,12 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
         healthRegenStat = PlayerStatsManager.Instance.GetStatByName("HealthRegen");
         invulnerabilityTimeStat = PlayerStatsManager.Instance.GetStatByName("InvulnerabilityTime");
         shieldStat = PlayerStatsManager.Instance.GetStatByName("Shield");
+        shieldRegenStat = PlayerStatsManager.Instance.GetStatByName("ShieldRegen");
 
         health = Mathf.RoundToInt(maxHealthStat.Value);
         currentShield = Mathf.RoundToInt(shieldStat.Value);
+
+
         OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
         OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), Mathf.RoundToInt(shieldStat.Value));
     }
@@ -42,6 +49,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     private void Update()
     {
         HandleHealthRegen();
+        HandleShieldRegen();
     }
 
     private void HandleHealthRegen()
@@ -51,6 +59,16 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
             health += healthRegenStat.Value * Time.deltaTime;
             health = Mathf.Clamp(health, 0, Mathf.RoundToInt(maxHealthStat.Value));
             OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+        }
+    }
+
+    private void HandleShieldRegen()
+    {
+        if (currentShield < Mathf.RoundToInt(shieldStat.Value))
+        {
+            currentShield += shieldRegenStat.Value * Time.deltaTime;
+            currentShield = Mathf.Clamp(currentShield, 0, Mathf.RoundToInt(shieldStat.Value));
+            OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), Mathf.RoundToInt(shieldStat.Value));
         }
     }
     public void TakeDamage(int damage)
