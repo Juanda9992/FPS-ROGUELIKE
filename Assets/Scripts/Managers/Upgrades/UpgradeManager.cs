@@ -10,6 +10,16 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private UpgradeManagerUI upgradeManagerUI;
 
     public event System.Action<UpgradeData> OnUpgradeSelected;
+
+    [SerializeField] private int maxRerolls = 3;
+    private int currentRerolls = 0;
+    [ContextMenu("Generate Upgrades and Rerolls")]
+    public void GenerateUpgradesAndRerolls()
+    {
+        currentRerolls = maxRerolls;
+        GenerateUpgrades();
+        upgradeManagerUI.UpdateRefreshAmmountText(currentRerolls, maxRerolls);
+    }
     [ContextMenu("Generate Upgrades")]
     public void GenerateUpgrades()
     {
@@ -87,6 +97,20 @@ public class UpgradeManager : MonoBehaviour
                 Debug.LogError($"Upgrade value is zero for stat {randomStat.statName} with flat scaling: {usedFlatScaling}");
             }
         }
+    }
+
+    public void RefreshUpgrades()
+    {
+        if (currentRerolls > 0)
+        {
+            currentRerolls--;
+            GenerateUpgrades();
+        }
+        else
+        {
+            Debug.Log("No rerolls left.");
+        }
+        upgradeManagerUI.UpdateRefreshAmmountText(currentRerolls, maxRerolls);
     }
 }
 

@@ -124,7 +124,7 @@ MonoBehaviour:
       - 0.1
   - statName: ReloadSpeedMultiplier
     displayName: Reload Speed
-    BaseValue: 5
+    BaseValue: 1
     upgradeParameters:
       allowPercentageScaling: 1
       allowFlatScaling: 1

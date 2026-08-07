@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class UpgradeManagerUI : MonoBehaviour
 {
     public static UpgradeManagerUI Instance { get; private set; }
+    [Header("Upgrade UI Elements")]
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private GameObject upgradeCardPrefab;
     [SerializeField] private RectTransform upgradeCardContainer;
@@ -10,6 +12,9 @@ public class UpgradeManagerUI : MonoBehaviour
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button selectUpgradeButton;
 
+    [Header("Refresh Upgrades Logic")]
+    [SerializeField] private Button refreshUpgradesButton;
+    [SerializeField] private TextMeshProUGUI refreshAmmountText;
     [SerializeField] private UpgradeManager upgradeManager;
     private UpgradeData selectedUpgrade;
     private void Awake()
@@ -27,6 +32,7 @@ public class UpgradeManagerUI : MonoBehaviour
         }
 
         selectUpgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
+        refreshUpgradesButton.onClick.AddListener(OnRefreshUpgradesButtonClicked);
     }
     public void DisplayUpgrades(UpgradeData[] upgrades)
     {
@@ -67,5 +73,16 @@ public class UpgradeManagerUI : MonoBehaviour
             CursorManager.SetCursorVisible(false);
             upgradePanel.SetActive(false);
         }
+    }
+
+    private void OnRefreshUpgradesButtonClicked()
+    {
+        upgradeManager.RefreshUpgrades();
+    }
+
+    public void UpdateRefreshAmmountText(int currentRerolls, int maxRerolls)
+    {
+        refreshAmmountText.text = $"Refreshes: {currentRerolls}/{maxRerolls}";
+        refreshUpgradesButton.interactable = currentRerolls > 0;
     }
 }
