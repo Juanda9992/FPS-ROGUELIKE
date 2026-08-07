@@ -19,9 +19,6 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
         get => Mathf.RoundToInt(health);
         set => health = value;
     }
-
-    [Header("Invulnerability")]
-    [SerializeField] private float timeBetweenHits = 1f;
     [SerializeField] private bool canBeHit = true;
 
     // Eventos

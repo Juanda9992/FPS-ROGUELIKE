@@ -179,9 +179,9 @@ MonoBehaviour:
       - 0.2
   - statName: ShieldRegen
     displayName: Shield Regen.
-    BaseValue: 0
+    BaseValue: 1
     upgradeParameters:
-      allowPercentageScaling: 0
+      allowPercentageScaling: 1
       allowFlatScaling: 1
       percentageScalingValues:
       - 1

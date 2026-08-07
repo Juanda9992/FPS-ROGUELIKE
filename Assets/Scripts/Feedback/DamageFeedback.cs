@@ -7,8 +7,6 @@ public class DamageFeedback : MonoBehaviour
     [Header("Config")]
     [SerializeField] private Color damageColor = Color.red;
     [SerializeField] private float flashDuration = 0.15f;
-    [SerializeField] private int vibrato = 1; // para punch effect (opcional)
-
     private Renderer rend;
     private Material materialInstance;
     private Color originalColor;

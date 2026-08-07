@@ -8,6 +8,7 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] private UpgradeData[] selectedUpgradeArray;
 
     [SerializeField] private UpgradeManagerUI upgradeManagerUI;
+    [SerializeField] private PlayerExpManager playerExpManager;
 
     public event System.Action<UpgradeData> OnUpgradeSelected;
 
@@ -111,6 +112,15 @@ public class UpgradeManager : MonoBehaviour
             Debug.Log("No rerolls left.");
         }
         upgradeManagerUI.UpdateRefreshAmmountText(currentRerolls, maxRerolls);
+    }
+
+    void OnEnable()
+    {
+        playerExpManager.OnLevelUp+=_=> GenerateUpgradesAndRerolls();
+    }
+    void OnDisable()
+    {
+        playerExpManager.OnLevelUp-=_=> GenerateUpgradesAndRerolls();
     }
 }
 
