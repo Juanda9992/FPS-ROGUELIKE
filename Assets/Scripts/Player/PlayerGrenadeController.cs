@@ -9,9 +9,8 @@ public class PlayerGrenadeController : MonoBehaviour
     [SerializeField] private Transform throwPoint;
     [SerializeField] private float throwForce = 15f;
     [SerializeField] private float upwardForce = 2f;
-
-    [Header("Base Stats (Parametrizables)")]
     [SerializeField] private float baseCooldown = 5f;
+
 
     [Header("PlayerStatsManager Integration")]
     [SerializeField] private string damageStatName = "GrenadeDamageMultiplier";
@@ -25,24 +24,18 @@ public class PlayerGrenadeController : MonoBehaviour
     public event Action OnGrenadeThrown;
     public event Action<float, float> OnCooldownUpdated; // (remainingTime, totalCooldown)
 
-    // Current dynamic stats
-    public float CurrentDamageMultiplier { get; set; }
-    public float CurrentRadiusMultiplier { get; set; }
-    public float CurrentCooldownMultiplier { get; set; }
-
-    public float CurrentCooldown => CurrentCooldownMultiplier;
+    public float CurrentCooldown => baseCooldown / cooldownMultiplierStat.Value;
     public bool IsOnCooldown => Time.time < lastThrowTime + CurrentCooldown;
     public float RemainingCooldown => Mathf.Max(0f, (lastThrowTime + CurrentCooldown) - Time.time);
+
+    private Stat damageMultiplierStat;
+    private Stat radiusMultiplierStat;
+    private Stat cooldownMultiplierStat;
 
     private void Awake()
     {
         input = new PlayerInputActions();
         input.Player.Grenade.performed += OnGrenadeInputPerformed;
-
-        // Initialize default property values (multipliers default to 1f)
-        CurrentDamageMultiplier = 1f;
-        CurrentRadiusMultiplier = 1f;
-        CurrentCooldownMultiplier = baseCooldown;
     }
 
     private void OnEnable()
@@ -57,42 +50,23 @@ public class PlayerGrenadeController : MonoBehaviour
 
     private void Start()
     {
-        RefreshStats();
+        GetStats();
     }
 
     private void Update()
     {
         if (IsOnCooldown)
         {
-            OnCooldownUpdated?.Invoke(RemainingCooldown, CurrentCooldownMultiplier);
+            OnCooldownUpdated?.Invoke(RemainingCooldown, CurrentCooldown);
         }
     }
 
-    /// <summary>
-    /// Fetches stats from PlayerStatsManager if present, otherwise keeps default parameterized stats.
-    /// </summary>
-    public void RefreshStats()
+    public void GetStats()
     {
-        Stat damageStat = PlayerStatsManager.Instance.GetStatByName(damageStatName);
-        CurrentDamageMultiplier = damageStat.Value;
-
-        Stat radiusStat = PlayerStatsManager.Instance.GetStatByName(radiusStatName);
-        CurrentRadiusMultiplier = radiusStat.Value;
-
-        Stat cooldownStat = PlayerStatsManager.Instance.GetStatByName(cooldownStatName);
-        CurrentCooldownMultiplier = Mathf.Max(0.1f, cooldownStat.Value);
+        damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName(damageStatName);
+        radiusMultiplierStat = PlayerStatsManager.Instance.GetStatByName(radiusStatName);
+        cooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName(cooldownStatName);
     }
-
-    /// <summary>
-    /// Programmatic API to update custom stats at runtime (e.g. for upgrades or item pickups).
-    /// </summary>
-    public void SetCustomStats(float damageMultiplier, float radiusMultiplier, float cooldown)
-    {
-        CurrentDamageMultiplier = damageMultiplier;
-        CurrentRadiusMultiplier = radiusMultiplier;
-        CurrentCooldownMultiplier = cooldown;
-    }
-
     private void OnGrenadeInputPerformed(InputAction.CallbackContext context)
     {
         TryThrowGrenade();
@@ -117,7 +91,7 @@ public class PlayerGrenadeController : MonoBehaviour
         GrenadeBase grenadeInstance = Instantiate(grenadePrefab, spawnPos, spawnRot);
 
         // Pass parameterized stats to the grenade instance
-        grenadeInstance.Initialize(CurrentDamageMultiplier, CurrentRadiusMultiplier);
+        grenadeInstance.Initialize(damageMultiplierStat.Value, radiusMultiplierStat.Value);
 
         // Apply impulse force
         Vector3 throwDirection = throwPoint.forward;
