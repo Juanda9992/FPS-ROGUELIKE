@@ -9,14 +9,6 @@ public abstract class OrbBase : MonoBehaviour
     [SerializeField] protected string playerTag = "Player";
     [SerializeField] protected bool consumeOnlyIfNeeded = false;
 
-    [Header("Visual Feedback & Animation")]
-    [SerializeField] private bool enableBobbing = true;
-    [SerializeField] private float bobSpeed = 2f;
-    [SerializeField] private float bobHeight = 0.2f;
-
-    [SerializeField] private bool enableRotation = true;
-    [SerializeField] private float rotationSpeed = 90f;
-
     [Header("Magnet / Attraction")]
     [SerializeField] private bool enableMagnet = true;
     [SerializeField] private float magnetRadius = 5f;
@@ -42,22 +34,7 @@ public abstract class OrbBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        //HandleAnimation();
         HandleMagnet();
-    }
-
-    private void HandleAnimation()
-    {
-        if (enableBobbing)
-        {
-            float newY = startPosition.y + Mathf.Sin(Time.time * bobSpeed) * bobHeight;
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-        }
-
-        if (enableRotation)
-        {
-            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
-        }
     }
 
     private void HandleMagnet()

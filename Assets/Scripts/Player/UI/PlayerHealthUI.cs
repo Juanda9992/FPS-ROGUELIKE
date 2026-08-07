@@ -27,10 +27,10 @@ public class PlayerHealthUI : MonoBehaviour
 
     private void UpdateHealthUI(int current, int max)
     {
-        healthFillImage.DOFillAmount((float)current / max, 0.3f).SetEase(Ease.InOutQuad);
+        healthFillImage.DOFillAmount((float)current / max, 0.1f).SetEase(Ease.Linear);
     }
     private void UpdateShieldUI(int current, int max)
     {
-        shieldFillImage.DOFillAmount((float)current / max, 0.3f).SetEase(Ease.InOutQuad);
+        shieldFillImage.DOFillAmount((float)current / max, 0.1f).SetEase(Ease.Linear);
     }
 }

@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 3555721815750176606}
   - component: {fileID: 3439306612756211383}
   - component: {fileID: 1968058130699331068}
+  - component: {fileID: 7958997040790784236}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -224,6 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   damageFeedback: {fileID: 3555721815750176606}
+  orbGenerator: {fileID: 7958997040790784236}
 --- !u!114 &3555721815750176606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +240,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.15
-  vibrato: 1
 --- !u!114 &3439306612756211383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,3 +282,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &7958997040790784236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243679260693873651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1735a5040b38c94c8a207712b17916f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orbPrefabs:
+  - {fileID: 2848376640757604410, guid: b0130ff4c289ab64fa1d2aff90fece2e, type: 3}
+  - {fileID: 5517351509201735646, guid: fd4e68ebf2dbadd4d94dd7f57fa5de1d, type: 3}
+  - {fileID: 6054484102385753702, guid: 6e16ad8e13b26d9449c62dc1c08e6d80, type: 3}
+  minOrbs: 1
+  maxOrbs: 4
+  spawnRadius: 0.8
+  burstForce: 3
