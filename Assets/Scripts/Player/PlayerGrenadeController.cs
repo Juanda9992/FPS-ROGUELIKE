@@ -23,6 +23,7 @@ public class PlayerGrenadeController : MonoBehaviour
     // Events for UI / Systems
     public event Action OnGrenadeThrown;
     public event Action<float, float> OnCooldownUpdated; // (remainingTime, totalCooldown)
+    public event Action<float, float> OnCooldownChanged; // (remainingTime, totalCooldown)
 
     public float CurrentCooldown => baseCooldown / cooldownMultiplierStat.Value;
     public bool IsOnCooldown => Time.time < lastThrowTime + CurrentCooldown;
@@ -31,6 +32,7 @@ public class PlayerGrenadeController : MonoBehaviour
     private Stat damageMultiplierStat;
     private Stat radiusMultiplierStat;
     private Stat cooldownMultiplierStat;
+    private bool wasOnCooldown;
 
     private void Awake()
     {
@@ -57,7 +59,15 @@ public class PlayerGrenadeController : MonoBehaviour
     {
         if (IsOnCooldown)
         {
+            wasOnCooldown = true;
             OnCooldownUpdated?.Invoke(RemainingCooldown, CurrentCooldown);
+            OnCooldownChanged?.Invoke(RemainingCooldown, CurrentCooldown);
+        }
+        else if (wasOnCooldown)
+        {
+            wasOnCooldown = false;
+            OnCooldownUpdated?.Invoke(0f, CurrentCooldown);
+            OnCooldownChanged?.Invoke(0f, CurrentCooldown);
         }
     }
 
