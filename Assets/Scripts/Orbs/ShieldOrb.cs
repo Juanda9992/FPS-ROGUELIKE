@@ -25,7 +25,7 @@ public class ShieldOrb : OrbBase
         PlayerHealthController healthController = player.GetComponent<PlayerHealthController>();
         if (healthController != null)
         {
-            healthController.RestoreShield(valueAmount);
+            healthController.RestoreShield(ValueAmount);
         }
     }
 }

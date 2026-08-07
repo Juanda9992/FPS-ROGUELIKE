@@ -14,7 +14,7 @@ public class AmmoOrb : OrbBase
             PlayerGrenadeController grenadeController = player.GetComponent<PlayerGrenadeController>();
             if (grenadeController != null)
             {
-                grenadeController.AddGrenade(valueAmount);
+                grenadeController.AddGrenade(ValueAmount);
             }
         }
         else

@@ -5,7 +5,8 @@ public abstract class OrbBase : MonoBehaviour
 {
     [Header("Orb Configuration")]
     [SerializeField] protected OrbType orbType;
-    [SerializeField] protected int valueAmount = 20;
+    [SerializeField] private int minValue = 10;
+    [SerializeField] private int maxValue = 100;
     [SerializeField] protected string playerTag = "Player";
     [SerializeField] protected bool consumeOnlyIfNeeded = false;
 
@@ -20,8 +21,7 @@ public abstract class OrbBase : MonoBehaviour
 
     [SerializeField] private Rigidbody rb;
     public OrbType Type => orbType;
-    public int ValueAmount => valueAmount;
-
+    public int ValueAmount => Random.Range(minValue, maxValue + 1);
     private Vector3 startPosition;
     private Transform playerTransform;
 

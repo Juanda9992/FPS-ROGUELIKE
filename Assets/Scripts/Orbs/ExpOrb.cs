@@ -12,7 +12,7 @@ public class ExpOrb : OrbBase
         PlayerExpManager expManager = player.GetComponent<PlayerExpManager>();
         if (expManager != null)
         {
-            expManager.AddExperience(valueAmount);
+            expManager.AddExperience(ValueAmount);
         }
     }
 }

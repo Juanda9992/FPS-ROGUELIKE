@@ -121,14 +121,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbType: 2
-  valueAmount: 20
+  minValue: 10
+  maxValue: 20
   playerTag: Player
   consumeOnlyIfNeeded: 0
-  enableBobbing: 1
-  bobSpeed: 2
-  bobHeight: 0.2
-  enableRotation: 1
-  rotationSpeed: 90
   enableMagnet: 1
   magnetRadius: 5
   magnetSpeed: 8
