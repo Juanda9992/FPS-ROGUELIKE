@@ -190,3 +190,42 @@ MonoBehaviour:
       flatScalingValues:
       - 0.1
       - 0.2
+  - statName: GrenadeDamageMultiplier
+    displayName: Grenade Damage
+    BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      flatScalingValues:
+      - 0.1
+      - 0.2
+  - statName: GrenadeCooldownMultiplier
+    displayName: Grenade Cooldown
+    BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      flatScalingValues:
+      - 0.1
+      - 0.2
+  - statName: GrenadeRadiusMultiplier
+    displayName: Grenade Radius
+    BaseValue: 1
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 3
+      - 5
+      flatScalingValues:
+      - 0.1
+      - 0.2
