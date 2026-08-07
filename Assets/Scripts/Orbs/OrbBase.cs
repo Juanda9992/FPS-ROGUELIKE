@@ -26,6 +26,7 @@ public abstract class OrbBase : MonoBehaviour
     [SerializeField] private GameObject pickupEffectPrefab;
     [SerializeField] private Color orbColor;
 
+    [SerializeField] private Rigidbody rb;
     public OrbType Type => orbType;
     public int ValueAmount => valueAmount;
 
@@ -37,18 +38,11 @@ public abstract class OrbBase : MonoBehaviour
         startPosition = transform.position;
 
         GetComponent<Renderer>().material.color = orbColor;
-
-        // Ensure collider is set as a trigger
-        Collider col = GetComponent<Collider>();
-        if (col != null && !col.isTrigger)
-        {
-            col.isTrigger = true;
-        }
     }
 
     protected virtual void Update()
     {
-        HandleAnimation();
+        //HandleAnimation();
         HandleMagnet();
     }
 
@@ -83,7 +77,7 @@ public abstract class OrbBase : MonoBehaviour
         float distance = Vector3.Distance(transform.position, playerTransform.position);
         if (distance <= magnetRadius)
         {
-            transform.position = Vector3.MoveTowards(transform.position, playerTransform.position - new Vector3(0, 1, 0), magnetSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, playerTransform.position - new Vector3(0, 0.5f, 0), magnetSpeed * Time.deltaTime);
         }
     }
 
@@ -155,5 +149,10 @@ public abstract class OrbBase : MonoBehaviour
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(transform.position, magnetRadius);
         }
+    }
+
+    public Rigidbody GetRb()
+    {
+        return rb;
     }
 }
