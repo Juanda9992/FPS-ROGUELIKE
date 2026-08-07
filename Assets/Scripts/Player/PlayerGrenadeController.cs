@@ -73,6 +73,12 @@ public class PlayerGrenadeController : MonoBehaviour
         }
     }
 
+    public void AddGrenade(int amount)
+    {
+        currentAmmo = Mathf.Min(maxAmmo, currentAmmo + amount);
+        OnGrenadeThrown?.Invoke(currentAmmo);
+    }
+
     public void GetStats()
     {
         damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName(damageStatName);
