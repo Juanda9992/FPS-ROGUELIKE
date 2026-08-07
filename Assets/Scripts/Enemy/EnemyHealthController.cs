@@ -4,6 +4,7 @@ public class EnemyHealthController : MonoBehaviour, IDamageable
 {
     [SerializeField] private int health = 100;
     [SerializeField] private DamageFeedback damageFeedback;
+    [SerializeField] private OrbGenerator orbGenerator;
 
     public int Health
     {
@@ -24,6 +25,8 @@ public class EnemyHealthController : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        orbGenerator.SpawnOrbs();
+
         Destroy(gameObject);
     }
 
