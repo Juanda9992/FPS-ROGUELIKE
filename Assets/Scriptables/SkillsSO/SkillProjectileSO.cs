@@ -17,7 +17,7 @@ public class SkillProjectileSO : ActiveSkillSO
     {
         Vector3 spawnPosition = owner.transform.position + owner.transform.TransformDirection(offset);
         GameObject projectile = Instantiate(projectilePrefab, spawnPosition, owner.transform.rotation);
-        Vector3 spawnDirection = usePlayerForward ? owner.transform.forward : direction;
+        Vector3 spawnDirection = usePlayerForward ? Camera.main.transform.forward : direction;
         projectile.GetComponent<GenericProjectileMovement>().Initialize(spawnDirection, (int)instance?.GetEffectiveDamage(), true, projectileSpeed, lifeTime);
     }
 }

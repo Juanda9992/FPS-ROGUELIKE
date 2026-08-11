@@ -7,7 +7,7 @@ public class GenericProjectileMovement : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private Vector3 direction;
     [SerializeField] private Rigidbody rb;
-    public void Initialize(Vector3 direction, int damage, bool useVelocity = true, float speed = 10f, float lifeTime = 3f)
+    public void Initialize(Vector3 direction, int damage, bool useVelocity, float speed, float lifeTime)
     {
         this.direction = direction;
         this.damage = damage;
