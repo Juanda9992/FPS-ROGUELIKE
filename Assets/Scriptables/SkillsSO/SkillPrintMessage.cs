@@ -3,8 +3,9 @@ using UnityEngine;
 public class SkillPrintMessage : ActiveSkillSO
 {
     [SerializeField] private string message;
-    public override void Activate(GameObject owner)
+    public override void Activate(GameObject owner, SkillInstance instance = null)
     {
-        Debug.Log(message);
+        string levelInfo = instance != null ? $" [Lvl {instance.Level}]" : "";
+        Debug.Log($"{message}{levelInfo}");
     }
 }

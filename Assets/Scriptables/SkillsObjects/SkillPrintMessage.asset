@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bacab06b6e18d84183dcc1633a04867, type: 3}
   m_Name: SkillPrintMessage
   m_EditorClassIdentifier: 
+  skillId: 01
   skillName: test Skill
+  description: 
   icon: {fileID: 0}
   cooldown: 5
+  baseDamage: 10
+  maxLevel: 5
   message: you activated ME!

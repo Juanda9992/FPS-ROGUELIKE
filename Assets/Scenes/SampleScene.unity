@@ -1145,15 +1145,6 @@ MonoBehaviour:
       allowFlatScaling: 0
       percentageScalingValues: []
       flatScalingValues: []
-  crouchSpeedStat:
-    statName: 
-    displayName: 
-    BaseValue: 0
-    upgradeParameters:
-      allowPercentageScaling: 0
-      allowFlatScaling: 0
-      percentageScalingValues: []
-      flatScalingValues: []
   jumpForceStat:
     statName: 
     displayName: 
@@ -1175,8 +1166,6 @@ MonoBehaviour:
   gravity: -9.81
   cameraPivot: {fileID: 963194228}
   mouseSensitivity: 100
-  crouchHeight: 1
-  normalHeight: 2
 --- !u!114 &671077420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3371,7 +3360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1428240833
 MonoBehaviour:
   m_ObjectHideFlags: 0

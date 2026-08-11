@@ -7,8 +7,8 @@ public class PlayerSkillsManager : MonoBehaviour
     [Header("Skill Slots")]
     public SkillSlot[] slots;
 
-
     [SerializeField] private SkillUIManager skillUIManager;
+
     private void Awake()
     {
         slots = new SkillSlot[maxSlots];
@@ -21,7 +21,7 @@ public class PlayerSkillsManager : MonoBehaviour
 
     private void Start()
     {
-        skillCooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("SkillCooldownMultiplierStat");
+        skillCooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("CooldownMultiplier");
     }
 
     public bool CanAddItem()
@@ -33,13 +33,23 @@ public class PlayerSkillsManager : MonoBehaviour
                 return true;
             }
         }
-
         return false;
     }
 
     public bool TryAddSkill(ActiveSkillSO skill)
     {
-        if (!CanAddItem())
+        if (skill == null || !CanAddItem())
+        {
+            return false;
+        }
+
+        SkillInstance instance = skill.CreateInstance();
+        return TryAddSkillInstance(instance);
+    }
+
+    public bool TryAddSkillInstance(SkillInstance instance)
+    {
+        if (instance == null || !CanAddItem())
         {
             return false;
         }
@@ -48,21 +58,24 @@ public class PlayerSkillsManager : MonoBehaviour
         {
             if (!slots[i].HasSkill)
             {
-                Debug.Log($"Adding skill {skill.skillName} to slot {i}");
-                slots[i].SetSkill(skill);
-                skillUIManager.TurnSkillSlotOn(i, skill);
+                Debug.Log($"Adding skill {instance.Data.skillName} to slot {i}");
+                slots[i].SetSkill(instance);
+                if (skillUIManager != null)
+                {
+                    skillUIManager.TurnSkillSlotOn(i, instance);
+                }
                 return true;
             }
         }
         return false;
     }
 
-    void Update()
+    private void Update()
     {
         HandleInput();
     }
 
-    void HandleInput()
+    private void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -78,9 +91,9 @@ public class PlayerSkillsManager : MonoBehaviour
         }
     }
 
-    void TryUseSkill(int index)
+    private void TryUseSkill(int index)
     {
-        if (index < 0 || index >= slots.Length)
+        if (slots == null || index < 0 || index >= slots.Length)
         {
             return;
         }
@@ -91,19 +104,22 @@ public class PlayerSkillsManager : MonoBehaviour
             return;
         }
 
-        skillUIManager.TriggerCooldown(index);
-        slots[index].Use(gameObject);
+        if (slots[index].Use(gameObject))
+        {
+            if (skillUIManager != null)
+            {
+                skillUIManager.TriggerCooldown(index);
+            }
+        }
     }
 }
 
 [System.Serializable]
 public class SkillSlot
 {
-    public ActiveSkillSO skill;
+    public SkillInstance skillInstance;
 
-    private float lastUseTime;
-
-    public bool HasSkill => skill != null;
+    public bool HasSkill => skillInstance != null && skillInstance.Data != null;
 
     public bool CanUse()
     {
@@ -111,41 +127,26 @@ public class SkillSlot
         {
             return false;
         }
-        return Time.time >= lastUseTime + GetEffectiveCooldown();
+        return !skillInstance.IsOnCooldown();
     }
 
-    public void Use(GameObject owner)
+    public bool Use(GameObject owner)
     {
         if (!CanUse())
         {
-            return;
+            return false;
         }
 
-        skill.Activate(owner);
-        lastUseTime = Time.time;
+        return skillInstance.TryActivate(owner);
     }
 
-    public void SetSkill(ActiveSkillSO newSkill)
+    public void SetSkill(SkillInstance newInstance)
     {
-        skill = newSkill;
-        lastUseTime = -999f;
-    }
-
-    private float GetEffectiveCooldown()
-    {
-        if (skill == null)
-        {
-            return 0f;
-        }
-
-        Stat cooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("CooldownMultiplier");
-
-        float calculatedMultiplier = skill.cooldown / cooldownMultiplierStat.Value;
-        return calculatedMultiplier;
+        skillInstance = newInstance;
     }
 
     public void Clear()
     {
-        skill = null;
+        skillInstance = null;
     }
 }

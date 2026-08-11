@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 public class SkillUIManager : MonoBehaviour
 {
     [Header("UI Slots")]
@@ -7,43 +8,61 @@ public class SkillUIManager : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < slots.Length; i++)
+        if (slots != null)
         {
-            slots[i].SetActive(false);
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (slots[i] != null)
+                {
+                    slots[i].SetActive(false);
+                }
+            }
         }
     }
 
     public void Update()
     {
-        foreach (var slot in slots)
+        if (slots != null)
         {
-            slot.UpdateCooldown();
+            foreach (var slot in slots)
+            {
+                if (slot != null)
+                {
+                    slot.UpdateCooldown();
+                }
+            }
         }
     }
-    public void TurnSkillSlotOn(int index, ActiveSkillSO skill)
+
+    public void TurnSkillSlotOn(int index, SkillInstance skillInstance)
     {
-        if (index < 0 || index >= slots.Length)
+        if (slots == null || index < 0 || index >= slots.Length)
         {
             Debug.LogWarning($"Index {index} is out of bounds for skill slots.");
             return;
         }
 
         SkillUISlot slot = slots[index];
-
-        slot.SetActive(true);
-        slot.SetSkill(skill);
+        if (slot != null)
+        {
+            slot.SetActive(true);
+            slot.SetSkill(skillInstance);
+        }
     }
 
     public void TriggerCooldown(int index)
     {
-        if (index < 0 || index >= slots.Length)
+        if (slots == null || index < 0 || index >= slots.Length)
         {
             Debug.LogWarning($"Index {index} is out of bounds for skill slots.");
             return;
         }
 
         SkillUISlot slot = slots[index];
-        slot.TriggerCooldown();
+        if (slot != null)
+        {
+            slot.TriggerCooldown();
+        }
     }
 }
 
@@ -55,74 +74,58 @@ public class SkillUISlot
 
     [Header("Cooldown UI")]
     public Image cooldownFill;
-    private ActiveSkillSO currentSkill;
-    private float lastUseTime;
+    private SkillInstance currentSkillInstance;
 
     public void SetActive(bool value)
     {
-        root.SetActive(value);
+        if (root != null)
+        {
+            root.SetActive(value);
+        }
     }
 
-    public void SetSkill(ActiveSkillSO skill)
+    public void SetSkill(SkillInstance instance)
     {
-        currentSkill = skill;
+        currentSkillInstance = instance;
 
-        cooldownFill.fillAmount = 0;
-        if (skill == null)
+        if (cooldownFill != null)
         {
-            icon.enabled = false;
+            cooldownFill.fillAmount = 0;
+        }
+
+        if (instance == null || instance.Data == null)
+        {
+            if (icon != null)
+            {
+                icon.enabled = false;
+            }
             return;
         }
 
-        icon.sprite = skill.icon;
-        icon.enabled = true;
+        if (icon != null)
+        {
+            icon.sprite = instance.Data.icon;
+            icon.enabled = true;
+        }
     }
 
     public void TriggerCooldown()
     {
-        if (currentSkill == null) 
-        {
-            return;
-        }
+        if (currentSkillInstance == null) return;
 
-        lastUseTime = Time.time;
-        cooldownFill.fillAmount = 1f;
+        if (cooldownFill != null)
+        {
+            cooldownFill.fillAmount = 1f;
+        }
     }
 
     public void UpdateCooldown()
     {
-        if (currentSkill == null) 
+        if (currentSkillInstance == null) return;
+
+        if (cooldownFill != null)
         {
-            return;
+            cooldownFill.fillAmount = currentSkillInstance.GetCooldownProgress();
         }
-
-        float elapsed = Time.time - lastUseTime;
-        float cd = GetEffectiveCooldown(currentSkill);
-
-        if (elapsed >= cd)
-        {
-            cooldownFill.fillAmount = 0;
-            return;
-        }
-
-        float normalized = 1f - (elapsed / cd);
-        cooldownFill.fillAmount = normalized;
-    }
-
-    private float GetEffectiveCooldown(ActiveSkillSO skill)
-    {
-        if (skill == null)
-        {
-            return 0f;
-        }
-
-        var cooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("CooldownMultiplier");
-
-        float multiplier = cooldownMultiplierStat.Value;
-
-        multiplier = Mathf.Max(multiplier, 0.0001f);
-
-        //Debug.Log($"Real Cooldown: {skill.cooldown / multiplier}");
-        return skill.cooldown / multiplier;
     }
 }
