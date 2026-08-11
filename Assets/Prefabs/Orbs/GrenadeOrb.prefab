@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -2789585455050968241}
   - component: {fileID: -5184027925999510117}
   m_Layer: 0
-  m_Name: AmmoOrb
+  m_Name: GrenadeOrb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,4 +179,4 @@ MonoBehaviour:
   pickupEffectPrefab: {fileID: 0}
   orbColor: {r: 0.8867924, g: 0, b: 0, a: 1}
   rb: {fileID: 7932713414726951436}
-  isGrenadeReload: 0
+  isGrenadeReload: 1

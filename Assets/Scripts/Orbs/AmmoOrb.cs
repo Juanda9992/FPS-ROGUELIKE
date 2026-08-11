@@ -19,13 +19,11 @@ public class AmmoOrb : OrbBase
         }
         else
         {
-            /*
             PlayerWeaponManager weaponManager = player.GetComponent<PlayerWeaponManager>();
             if (weaponManager != null)
             {
-                weaponManager.ReloadCurrentWeapon();
+                weaponManager.AddAmmoToCurrentWeapon(ValueAmount);
             }
-            */
         }
     }
 }
