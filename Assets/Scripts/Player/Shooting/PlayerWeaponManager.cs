@@ -141,17 +141,12 @@ public class PlayerWeaponManager : MonoBehaviour
         }
 
         NotifyAmmoChanged();
-        if (currentWeapon != null && currentWeapon.weaponData != null)
-        {
-            Debug.Log($"Equipped weapon: {currentWeapon.weaponData.weaponName}");
-        }
     }
 
     private void Shoot()
     {
         if (currentWeapon.currentAmmo <= 0)
         {
-            Debug.Log("Sin munición");
             return;
         }
 
