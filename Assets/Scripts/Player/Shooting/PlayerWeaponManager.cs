@@ -31,7 +31,7 @@ public class PlayerWeaponManager : MonoBehaviour
     // Events
     public event Action OnShoot;
     public event Action OnReload;
-    public event Action<int> OnAmmoChanged;
+    public event Action<int, int> OnAmmoChanged;
 
     private void Awake()
     {
@@ -101,8 +101,6 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void NextWeapon()
     {
-        if (weapons == null || weapons.Length == 0) return;
-
         currentIndex++;
         if (currentIndex >= weapons.Length)
         {
@@ -114,8 +112,6 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void PreviousWeapon()
     {
-        if (weapons == null || weapons.Length == 0) return;
-
         currentIndex--;
         if (currentIndex < 0)
         {
@@ -127,8 +123,6 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void EquipWeapon(int index)
     {
-        if (weaponInstances == null || index < 0 || index >= weaponInstances.Length) return;
-
         isReloading = false;
         nextFireTime = 0f;
         StopAllCoroutines();
@@ -155,8 +149,6 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void Shoot()
     {
-        if (currentWeapon == null) return;
-
         if (currentWeapon.currentAmmo <= 0)
         {
             Debug.Log("Sin munición");
@@ -167,7 +159,7 @@ public class PlayerWeaponManager : MonoBehaviour
         float fireRate = currentWeapon.fireRate / fireRateMult;
         nextFireTime = Time.time + fireRate;
 
-        currentWeapon.currentAmmo--;
+        currentWeapon.DecreaseAmmo(1);
         NotifyAmmoChanged();
 
         if (playerCamera != null)
@@ -191,7 +183,7 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (currentWeapon == null || isReloading) return;
 
-        if (currentWeapon.currentAmmo < currentWeapon.weaponData.ammo)
+        if (currentWeapon.CanReload())
         {
             StopAllCoroutines();
             StartCoroutine(Reload());
@@ -207,7 +199,7 @@ public class PlayerWeaponManager : MonoBehaviour
         float reloadDuration = currentWeapon.reloadTime / reloadMult;
         yield return new WaitForSeconds(reloadDuration);
 
-        currentWeapon.currentAmmo = currentWeapon.weaponData.ammo;
+        currentWeapon.Reload();
         NotifyAmmoChanged();
 
         isReloading = false;
@@ -217,8 +209,37 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         if (currentWeapon != null)
         {
-            OnAmmoChanged?.Invoke(currentWeapon.currentAmmo);
+            OnAmmoChanged?.Invoke(currentWeapon.currentAmmo, currentWeapon.currentReserveAmmo);
         }
+    }
+
+    public void AddAmmoToCurrentWeapon(int amount)
+    {
+        if (currentWeapon == null) return;
+        currentWeapon.IncreaseAmmo(amount);
+        NotifyAmmoChanged();
+    }
+
+    public void AddAmmoToWeapon(int weaponIndex, int amount)
+    {
+        if (weaponInstances != null && weaponIndex >= 0 && weaponIndex < weaponInstances.Length)
+        {
+            weaponInstances[weaponIndex].IncreaseAmmo(amount);
+            if (weaponInstances[weaponIndex] == currentWeapon)
+            {
+                NotifyAmmoChanged();
+            }
+        }
+    }
+
+    public void AddAmmoToAllWeapons(int amount)
+    {
+        if (weaponInstances == null) return;
+        foreach (var instance in weaponInstances)
+        {
+            instance.IncreaseAmmo(amount);
+        }
+        NotifyAmmoChanged();
     }
 
     public Weapon GetCurrentWeapon()

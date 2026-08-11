@@ -44,11 +44,10 @@ public class WeaponUI : MonoBehaviour
         reloadTween = reloadFillImage.DOFillAmount(0, currentInstance.reloadTime / reloadStatVal).SetEase(Ease.Linear);
     }
 
-    private void UpdateAmmo(int ammo)
+    private void UpdateAmmo(int ammo, int reserveAmmo)
     {
-        PlayerWeaponInstance currentInstance = weaponManager.GetCurrentWeaponInstance();
-        ammoText.text = $"{ammo}/{currentInstance.weaponData.ammo}";
-        if (currentInstance.currentAmmo <= 0)
+        ammoText.text = $"{ammo}/{reserveAmmo}";
+        if (ammo <= 0)
         {
             ammoText.color = Color.red;
         }
