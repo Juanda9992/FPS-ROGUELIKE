@@ -3,16 +3,17 @@ using UnityEngine;
 public class GenericProjectileMovement : MonoBehaviour
 {
     [SerializeField] private int damage;
-    [SerializeField] private bool useVelocity;
-    [SerializeField] private float speed;
-    [SerializeField] private Vector3 direction;
     [SerializeField] private Rigidbody rb;
+
+    [SerializeField] private bool explodeOnImpact;
+    [Header("Area Damage")]
+    [SerializeField] private bool areaDamage;
+    [SerializeField] private float areaRadius;
+    [SerializeField] private LayerMask areaMask;
+
     public void Initialize(Vector3 direction, int damage, bool useVelocity, float speed, float lifeTime)
     {
-        this.direction = direction;
         this.damage = damage;
-        this.useVelocity = useVelocity;
-        this.speed = speed;
         if (useVelocity)
         {
             rb.velocity = direction * speed;
@@ -22,16 +23,49 @@ public class GenericProjectileMovement : MonoBehaviour
         {
             transform.forward = direction;
         }
-
-        Destroy(gameObject, lifeTime);
+        Invoke(nameof(OnBallEndLife), lifeTime);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.TryGetComponent<IDamageable>(out IDamageable damagable))
+        if (explodeOnImpact)
         {
-            damagable.TakeDamage(damage);
+            AreaDamage();
+            Destroy(gameObject);
+            return;
+        }
+        if (collision.collider.TryGetComponent<IDamageable>(out IDamageable damagable))
+        {
+            if (areaDamage)
+            {
+                AreaDamage();
+            }
+            else
+            {
+                damagable.TakeDamage(damage);
+            }
             Destroy(gameObject);
         }
+    }
+
+    private void AreaDamage()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, areaRadius, areaMask);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.TryGetComponent<IDamageable>(out IDamageable damagable))
+            {
+                damagable.TakeDamage(damage);
+            }
+        }
+    }
+
+    private void OnBallEndLife()
+    {
+        if (areaDamage)
+        {
+            AreaDamage();
+        }
+        Destroy(gameObject);
     }
 }

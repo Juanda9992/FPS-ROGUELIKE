@@ -101,7 +101,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -120,10 +120,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 20
-  useVelocity: 1
-  speed: 0
-  direction: {x: 0, y: 0, z: 0}
   rb: {fileID: 2437288395949126489}
+  explodeOnImpact: 1
+  areaDamage: 1
+  areaRadius: 4
+  areaMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!54 &2437288395949126489
 Rigidbody:
   m_ObjectHideFlags: 0
