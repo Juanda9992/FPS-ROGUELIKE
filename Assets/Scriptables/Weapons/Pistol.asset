@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Pistol
   damage: 9
-  ammo: 20
+  chargerAmmo: 12
+  maxAmmo: 60
   reloadTime: 2
   fireRate: 0.4

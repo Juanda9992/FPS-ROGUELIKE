@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Canon
   damage: 30
-  ammo: 10
+  chargerAmmo: 5
+  maxAmmo: 25
   reloadTime: 3
   fireRate: 1

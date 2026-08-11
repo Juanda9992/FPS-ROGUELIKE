@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Assault Rifle
   damage: 7
-  ammo: 50
+  chargerAmmo: 30
+  maxAmmo: 150
   reloadTime: 2
   fireRate: 0.1
