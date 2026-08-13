@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6998a549937d29498cd71111bf5fc8a, type: 3}
-  m_Name: RadialProjectiles
+  m_Name: BurstProjectile
   m_EditorClassIdentifier: 
   skillId: 02
   skillName: Fireball
@@ -18,27 +18,27 @@ MonoBehaviour:
   icon: {fileID: 0}
   cooldown: 1
   projConfig:
-    speed: 6
-    lifeTime: 2
-    baseDamage: 5
+    speed: 12
+    lifeTime: 0.5
+    baseDamage: 3
     useVelocity: 1
-    scale: {x: 0.5, y: 0.5, z: 0.5}
+    scale: {x: 0.2, y: 0.2, z: 0.2}
     radius: 3
     explodeOnImpact: 1
     damageMask:
       serializedVersion: 2
       m_Bits: 192
   projectilePrefab: {fileID: 584254286621437471, guid: bac39f7a41a135f418b54de61fe89089, type: 3}
-  spawnOrigin: 0
+  spawnOrigin: 1
   spawnOffset: {x: 0, y: 0, z: 0}
   raycastMask:
     serializedVersion: 2
     m_Bits: 192
-  aimMode: 3
+  aimMode: 0
   customDirection: {x: 0, y: 0, z: 0}
   maxAimDistance: 100
   randomSpreadAngle: 0
-  pattern: 3
-  projectileCount: 5
+  pattern: 1
+  projectileCount: 8
   sequentialDelay: 0.1
-  coneSpreadAngle: 30
+  coneSpreadAngle: 50

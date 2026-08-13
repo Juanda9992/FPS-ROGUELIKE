@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public enum SpawnOriginMode
 {
@@ -18,6 +19,7 @@ public enum AimMode
 public enum ProjectilePattern
 {
     Single,
+    Sequential,
     ConeSpread,         // Fan / Shotgun spread
     RadialNova          // 360-degree circle around origin
 }
@@ -43,12 +45,11 @@ public class SkillProjectileSO : ActiveSkillSO
     [Header("Multi-Projectile Pattern")]
     [SerializeField] private ProjectilePattern pattern = ProjectilePattern.Single;
     [SerializeField] private int projectileCount = 1;
+    [SerializeField] private float sequentialDelay = 0.1f; // Delay between projectiles in Sequential pattern
     [SerializeField] private float coneSpreadAngle = 30f; // Total arc angle for ConeSpread
 
     public override void Activate(GameObject owner, SkillInstance instance = null)
     {
-        if (projectilePrefab == null || owner == null) return;
-
         Camera mainCam = Camera.main;
         Vector3 spawnPos = CalculateSpawnPosition(owner, mainCam);
         Vector3 baseAimDirection = CalculateBaseAimDirection(owner, mainCam, spawnPos);
@@ -58,6 +59,10 @@ public class SkillProjectileSO : ActiveSkillSO
         {
             case ProjectilePattern.Single:
                 SpawnSingleProjectile(spawnPos, baseAimDirection);
+                break;
+
+            case ProjectilePattern.Sequential:
+                SpawnSequentialPattern(owner, spawnPos, baseAimDirection);
                 break;
 
             case ProjectilePattern.ConeSpread:
@@ -82,7 +87,6 @@ public class SkillProjectileSO : ActiveSkillSO
             case SpawnOriginMode.GroundAtCrosshair:
                 if (mainCam != null && Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out RaycastHit hit, maxAimDistance, raycastMask))
                 {
-                    Debug.Log("hit.point: " + hit.point);
                     return hit.point + spawnOffset;
                 }
                 break;
@@ -131,6 +135,29 @@ public class SkillProjectileSO : ActiveSkillSO
     {
         Vector3 finalDir = ApplyRandomSpread(direction, randomSpreadAngle);
         InstantiateAndInitialize(position, finalDir);
+    }
+    private void SpawnSequentialPattern(GameObject owner, Vector3 position, Vector3 direction)
+    {
+        MonoBehaviour runner = owner.GetComponent<MonoBehaviour>();
+        Vector3 currentCameraPos = CalculateSpawnPosition(owner, Camera.main);
+        Vector3 currentAim = CalculateBaseAimDirection(owner, Camera.main, currentCameraPos);
+        if (runner != null)
+        {
+            runner.StartCoroutine(SpawnSequentialPatternCoroutine(currentCameraPos, currentAim));
+        }
+        else
+        {
+            SpawnSingleProjectile(position, direction);
+        }
+    }
+
+    private IEnumerator SpawnSequentialPatternCoroutine(Vector3 position, Vector3 direction)
+    {
+        for (int i = 0; i < projectileCount; i++)
+        {
+            SpawnSingleProjectile(position, direction);
+            yield return new WaitForSeconds(sequentialDelay);
+        }
     }
 
     private void SpawnConePattern(Vector3 position, Vector3 baseDirection)
@@ -185,9 +212,6 @@ public class SkillProjectileSO : ActiveSkillSO
     {
         Quaternion rotation = direction != Vector3.zero ? Quaternion.LookRotation(direction) : Quaternion.identity;
         GameObject projObj = Instantiate(projectilePrefab, position, rotation);
-
-
-
         if (projObj.TryGetComponent<GenericProjectileMovement>(out var movement))
         {
             movement.Initialize(projConfig, direction);

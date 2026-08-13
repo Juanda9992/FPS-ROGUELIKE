@@ -38,6 +38,7 @@ MonoBehaviour:
   customDirection: {x: 0, y: 0, z: 0}
   maxAimDistance: 100
   randomSpreadAngle: 0
-  pattern: 1
+  pattern: 2
   projectileCount: 8
+  sequentialDelay: 0.1
   coneSpreadAngle: 50

@@ -1265,7 +1265,7 @@ MonoBehaviour:
   testSkillArray:
   - {fileID: 11400000, guid: 93b4a91c71b5d674e930eade0020f699, type: 2}
   - {fileID: 11400000, guid: 82d92b0307c6311478fdc957f6a11194, type: 2}
-  - {fileID: 11400000, guid: 8f62a71af5f2e444ea9d72c22a109098, type: 2}
+  - {fileID: 11400000, guid: c17103f80f3a0a343bdca57e63c5a7f0, type: 2}
 --- !u!114 &671077424
 MonoBehaviour:
   m_ObjectHideFlags: 0
