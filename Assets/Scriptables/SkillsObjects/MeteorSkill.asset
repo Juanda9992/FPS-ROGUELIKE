@@ -17,11 +17,10 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldown: 1
-  baseDamage: 15
   projConfig:
     speed: 3
     lifeTime: 10
-    damage: 20
+    baseDamage: 20
     useVelocity: 1
     scale: {x: 4, y: 4, z: 4}
     radius: 10

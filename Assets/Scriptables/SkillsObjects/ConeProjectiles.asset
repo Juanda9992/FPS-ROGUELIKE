@@ -17,11 +17,10 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldown: 1
-  baseDamage: 20
   projConfig:
     speed: 12
     lifeTime: 0.5
-    damage: 3
+    baseDamage: 4
     useVelocity: 1
     scale: {x: 0.3, y: 0.3, z: 0.3}
     radius: 3
@@ -30,7 +29,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 192
   projectilePrefab: {fileID: 584254286621437471, guid: bac39f7a41a135f418b54de61fe89089, type: 3}
-  spawnOrigin: 0
+  spawnOrigin: 1
   spawnOffset: {x: 0, y: 0, z: 0}
   raycastMask:
     serializedVersion: 2
@@ -41,4 +40,4 @@ MonoBehaviour:
   randomSpreadAngle: 0
   pattern: 1
   projectileCount: 8
-  coneSpreadAngle: 80
+  coneSpreadAngle: 50
