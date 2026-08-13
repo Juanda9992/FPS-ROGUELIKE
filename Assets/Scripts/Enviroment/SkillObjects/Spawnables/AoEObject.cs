@@ -27,7 +27,7 @@ public class AoEObject : MonoBehaviour, ISpawneable
                 foreach (Collider entity in entitiesInRange)
                 {
                     entity.TryGetComponent<IDamageable>(out IDamageable damageable);
-                    if (damageable != null)
+                    if (damageable != null && !entity.CompareTag("Player"))
                     {
                         damageable.TakeDamage(Mathf.RoundToInt(currentSpawnParams.damage));
                     }
@@ -37,7 +37,6 @@ public class AoEObject : MonoBehaviour, ISpawneable
                 foreach (Collider entity in entitiesInRange)
                 {
                     entity.TryGetComponent<PlayerHealthController>(out PlayerHealthController playerHealthController);
-                    Debug.Log("playerHealthController: " + playerHealthController);
                     if (playerHealthController != null)
                     {
                         playerHealthController.OnHealthRestored(Mathf.RoundToInt(currentSpawnParams.healAmount));

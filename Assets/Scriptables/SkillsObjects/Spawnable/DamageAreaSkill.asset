@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30fe3a24d3b7dea46b87ac398e016e90, type: 3}
-  m_Name: HealthAreaSpawn
+  m_Name: DamageAreaSkill
   m_EditorClassIdentifier: 
   skillId: 
   skillName: 
@@ -27,12 +27,12 @@ MonoBehaviour:
   throwForce: 15
   upwardForce: 2
   spawnParams:
-    effectType: 1
+    effectType: 0
     duration: 5
-    objectScale: {x: 7, y: 7, z: 7}
+    objectScale: {x: 8, y: 8, z: 8}
     effectRate: 1
-    damage: 0
-    healAmount: 5
+    damage: 5
+    healAmount: 0
     slowDuration: 0
     stunDuration: 0
     pushForce: 0
