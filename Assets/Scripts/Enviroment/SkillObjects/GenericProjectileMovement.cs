@@ -37,7 +37,7 @@ public class GenericProjectileMovement : MonoBehaviour
             }
             else
             {
-                damagable.TakeDamage(config.damage);
+                damagable.TakeDamage(config.RealDamage);
             }
             Destroy(gameObject);
         }
@@ -50,7 +50,7 @@ public class GenericProjectileMovement : MonoBehaviour
         {
             if (collider.TryGetComponent<IDamageable>(out IDamageable damagable))
             {
-                damagable.TakeDamage(config.damage);
+                damagable.TakeDamage(config.RealDamage);
             }
         }
     }
@@ -70,10 +70,19 @@ public class ProjectileConfig
 {
     public float speed;
     public float lifeTime;
-    public int damage;
+    public int baseDamage;
     public bool useVelocity;
     public Vector3 scale;
     public float radius;
     public bool explodeOnImpact;
     public LayerMask damageMask;
+    public int RealDamage
+    {
+        get
+        {
+            Stat damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName("DamageMultiplier");
+            Debug.Log("Damage Multiplier: " + damageMultiplierStat.Value);
+            return Mathf.RoundToInt(baseDamage * damageMultiplierStat.Value);
+        }
+    }
 }

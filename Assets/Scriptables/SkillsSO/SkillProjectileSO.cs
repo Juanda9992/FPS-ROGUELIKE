@@ -52,7 +52,6 @@ public class SkillProjectileSO : ActiveSkillSO
         Camera mainCam = Camera.main;
         Vector3 spawnPos = CalculateSpawnPosition(owner, mainCam);
         Vector3 baseAimDirection = CalculateBaseAimDirection(owner, mainCam, spawnPos);
-        int damage = instance != null ? Mathf.RoundToInt(instance.GetEffectiveDamage()) : Mathf.RoundToInt(baseDamage);
 
         // Spawn projectiles according to configured pattern
         switch (pattern)

@@ -10,7 +10,6 @@ public abstract class ActiveSkillSO : ScriptableObject
 
     [Header("Settings")]
     public float cooldown = 1f;
-    public float baseDamage = 10f;
 
     public virtual SkillInstance CreateInstance()
     {

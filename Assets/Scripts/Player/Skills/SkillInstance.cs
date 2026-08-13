@@ -20,15 +20,6 @@ public class SkillInstance
         return Data.cooldown / cooldownMultiplierStat.Value;
     }
 
-    public float GetEffectiveDamage()
-    {
-        Stat damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName("DamageMultiplier");
-
-        float mult = damageMultiplierStat.Value;
-
-        return Data.baseDamage * mult;
-    }
-
     public bool IsOnCooldown()
     {
         return Time.time < LastUseTime + GetEffectiveCooldown();
