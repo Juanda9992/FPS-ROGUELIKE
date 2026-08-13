@@ -39,6 +39,6 @@ MonoBehaviour:
   maxAimDistance: 100
   randomSpreadAngle: 0
   pattern: 1
-  projectileCount: 8
+  projectileCount: 4
   sequentialDelay: 0.1
   coneSpreadAngle: 50
