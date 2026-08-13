@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerSkillSetter : MonoBehaviour
 {
-    [SerializeField] private ActiveSkillSO testSkill;
+    [SerializeField] private ActiveSkillSO[] testSkillArray;
     private PlayerSkillsManager skillsManager;
 
     private void Awake()
@@ -35,6 +35,9 @@ public class PlayerSkillSetter : MonoBehaviour
     [ContextMenu("Add Test Skill")]
     private void AddTestSkill()
     {
-        TryAddSkill(testSkill);
+        foreach (var skill in testSkillArray)
+        {
+            TryAddSkill(skill);
+        }
     }
 }
