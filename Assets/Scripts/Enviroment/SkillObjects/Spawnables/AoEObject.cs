@@ -12,6 +12,16 @@ public class AoEObject : MonoBehaviour, ISpawneable
         color.a = 0.5f;
         renderer.material.color = color;
         transform.localScale = spawnParams.objectScale;
+        DestroySelf(spawnParams.duration);
+    }
+
+    private void DestroySelf(float duration)
+    {
+        if (duration <= 0)
+        {
+            return;
+        }
+        Destroy(gameObject, duration);
     }
 
     private Color GetEffectColor()
