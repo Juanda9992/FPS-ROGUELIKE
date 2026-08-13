@@ -2,33 +2,28 @@ using UnityEngine;
 
 public class GenericProjectileMovement : MonoBehaviour
 {
-    [SerializeField] private int damage;
+    private ProjectileConfig config;
     [SerializeField] private Rigidbody rb;
 
-    [SerializeField] private bool explodeOnImpact;
-    [Header("Area Damage")]
-    [SerializeField] private bool areaDamage;
-    [SerializeField] private float areaRadius;
-    [SerializeField] private LayerMask areaMask;
-
-    public void Initialize(Vector3 direction, int damage, bool useVelocity, float speed, float lifeTime)
+    public void Initialize(ProjectileConfig config, Vector3 direction)
     {
-        this.damage = damage;
-        if (useVelocity)
+        this.config = config;
+        transform.localScale = config.scale;
+        if (config.useVelocity)
         {
-            rb.velocity = direction * speed;
+            rb.velocity = direction * config.speed;
             rb.useGravity = false;
         }
         else
         {
             transform.forward = direction;
         }
-        Invoke(nameof(OnBallEndLife), lifeTime);
+        Invoke(nameof(OnBallEndLife), config.lifeTime);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (explodeOnImpact)
+        if (config.explodeOnImpact)
         {
             AreaDamage();
             Destroy(gameObject);
@@ -36,13 +31,13 @@ public class GenericProjectileMovement : MonoBehaviour
         }
         if (collision.collider.TryGetComponent<IDamageable>(out IDamageable damagable))
         {
-            if (areaDamage)
+            if (config.explodeOnImpact)
             {
                 AreaDamage();
             }
             else
             {
-                damagable.TakeDamage(damage);
+                damagable.TakeDamage(config.damage);
             }
             Destroy(gameObject);
         }
@@ -50,22 +45,35 @@ public class GenericProjectileMovement : MonoBehaviour
 
     private void AreaDamage()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, areaRadius, areaMask);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, config.radius, config.damageMask);
         foreach (Collider collider in colliders)
         {
             if (collider.TryGetComponent<IDamageable>(out IDamageable damagable))
             {
-                damagable.TakeDamage(damage);
+                damagable.TakeDamage(config.damage);
             }
         }
     }
 
     private void OnBallEndLife()
     {
-        if (areaDamage)
+        if (config.explodeOnImpact)
         {
             AreaDamage();
         }
         Destroy(gameObject);
     }
+}
+
+[System.Serializable]
+public class ProjectileConfig
+{
+    public float speed;
+    public float lifeTime;
+    public int damage;
+    public bool useVelocity;
+    public Vector3 scale;
+    public float radius;
+    public bool explodeOnImpact;
+    public LayerMask damageMask;
 }

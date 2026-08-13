@@ -10,6 +10,11 @@ public class PlayerSkillSetter : MonoBehaviour
         skillsManager = GetComponent<PlayerSkillsManager>();
     }
 
+    private void Start()
+    {
+        AddTestSkill();
+    }
+
     public bool TryAddSkill(ActiveSkillSO skillSlotSO)
     {
         if (skillSlotSO == null)

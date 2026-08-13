@@ -3374,7 +3374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4243679260693873651, guid: 0fb7fe3fbfaeb44488bf8cff6d1d6e7d, type: 3}
-  spawnInterval: 0.5
+  spawnInterval: 3
 --- !u!23 &1428240834
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3693,7 +3693,7 @@ GameObject:
   - component: {fileID: 1582250281}
   - component: {fileID: 1582250280}
   - component: {fileID: 1582250279}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

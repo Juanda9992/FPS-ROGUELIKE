@@ -10,33 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6998a549937d29498cd71111bf5fc8a, type: 3}
-  m_Name: FireballSkill
+  m_Name: MeteorSkill
   m_EditorClassIdentifier: 
   skillId: 02
   skillName: Fireball
   description: 
   icon: {fileID: 0}
   cooldown: 1
-  baseDamage: 20
+  baseDamage: 15
   projConfig:
-    speed: 7
-    lifeTime: 3
-    damage: 15
+    speed: 3
+    lifeTime: 10
+    damage: 20
     useVelocity: 1
-    scale: {x: 1, y: 1, z: 1}
-    radius: 3
+    scale: {x: 4, y: 4, z: 4}
+    radius: 10
     explodeOnImpact: 1
     damageMask:
       serializedVersion: 2
       m_Bits: 192
   projectilePrefab: {fileID: 584254286621437471, guid: bac39f7a41a135f418b54de61fe89089, type: 3}
-  spawnOrigin: 1
-  spawnOffset: {x: 0, y: 0, z: 2}
+  spawnOrigin: 2
+  spawnOffset: {x: 0, y: 10, z: 0}
   raycastMask:
     serializedVersion: 2
-    m_Bits: 64
-  aimMode: 1
-  customDirection: {x: 0, y: 0, z: 1}
+    m_Bits: 192
+  aimMode: 3
+  customDirection: {x: 0, y: -1, z: 0}
   maxAimDistance: 100
   randomSpreadAngle: 0
   pattern: 0

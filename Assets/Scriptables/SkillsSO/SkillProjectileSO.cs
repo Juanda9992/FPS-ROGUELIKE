@@ -26,10 +26,8 @@ public enum ProjectilePattern
 public class SkillProjectileSO : ActiveSkillSO
 {
     [Header("Projectile Config")]
+    [SerializeField] private ProjectileConfig projConfig;
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float projectileSpeed = 15f;
-    [SerializeField] private float lifeTime = 5f;
-    [SerializeField] private bool useVelocity = true;
 
     [Header("Spawn Position")]
     [SerializeField] private SpawnOriginMode spawnOrigin = SpawnOriginMode.OwnerPosition;
@@ -60,15 +58,15 @@ public class SkillProjectileSO : ActiveSkillSO
         switch (pattern)
         {
             case ProjectilePattern.Single:
-                SpawnSingleProjectile(spawnPos, baseAimDirection, damage);
+                SpawnSingleProjectile(spawnPos, baseAimDirection);
                 break;
 
             case ProjectilePattern.ConeSpread:
-                SpawnConePattern(spawnPos, baseAimDirection, damage);
+                SpawnConePattern(spawnPos, baseAimDirection);
                 break;
 
             case ProjectilePattern.RadialNova:
-                SpawnRadialPattern(spawnPos, damage);
+                SpawnRadialPattern(spawnPos);
                 break;
         }
     }
@@ -84,7 +82,10 @@ public class SkillProjectileSO : ActiveSkillSO
 
             case SpawnOriginMode.GroundAtCrosshair:
                 if (mainCam != null && Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out RaycastHit hit, maxAimDistance, raycastMask))
+                {
+                    Debug.Log("hit.point: " + hit.point);
                     return hit.point + spawnOffset;
+                }
                 break;
 
             case SpawnOriginMode.OwnerPosition:
@@ -127,18 +128,18 @@ public class SkillProjectileSO : ActiveSkillSO
         return owner.transform.forward;
     }
 
-    private void SpawnSingleProjectile(Vector3 position, Vector3 direction, int damage)
+    private void SpawnSingleProjectile(Vector3 position, Vector3 direction)
     {
         Vector3 finalDir = ApplyRandomSpread(direction, randomSpreadAngle);
-        InstantiateAndInitialize(position, finalDir, damage);
+        InstantiateAndInitialize(position, finalDir);
     }
 
-    private void SpawnConePattern(Vector3 position, Vector3 baseDirection, int damage)
+    private void SpawnConePattern(Vector3 position, Vector3 baseDirection)
     {
         int count = Mathf.Max(1, projectileCount);
         if (count == 1)
         {
-            SpawnSingleProjectile(position, baseDirection, damage);
+            SpawnSingleProjectile(position, baseDirection);
             return;
         }
 
@@ -152,11 +153,11 @@ public class SkillProjectileSO : ActiveSkillSO
             Vector3 spreadDir = rotation * baseDirection;
             Vector3 finalDir = ApplyRandomSpread(spreadDir, randomSpreadAngle);
 
-            InstantiateAndInitialize(position, finalDir, damage);
+            InstantiateAndInitialize(position, finalDir);
         }
     }
 
-    private void SpawnRadialPattern(Vector3 position, int damage)
+    private void SpawnRadialPattern(Vector3 position)
     {
         int count = Mathf.Max(1, projectileCount);
         float stepAngle = 360f / count;
@@ -167,7 +168,7 @@ public class SkillProjectileSO : ActiveSkillSO
             Vector3 dir = Quaternion.Euler(0f, angle, 0f) * Vector3.forward;
             Vector3 finalDir = ApplyRandomSpread(dir, randomSpreadAngle);
 
-            InstantiateAndInitialize(position, finalDir, damage);
+            InstantiateAndInitialize(position, finalDir);
         }
     }
 
@@ -181,14 +182,16 @@ public class SkillProjectileSO : ActiveSkillSO
         ) * dir;
     }
 
-    private void InstantiateAndInitialize(Vector3 position, Vector3 direction, int damage)
+    private void InstantiateAndInitialize(Vector3 position, Vector3 direction)
     {
         Quaternion rotation = direction != Vector3.zero ? Quaternion.LookRotation(direction) : Quaternion.identity;
         GameObject projObj = Instantiate(projectilePrefab, position, rotation);
 
+
+
         if (projObj.TryGetComponent<GenericProjectileMovement>(out var movement))
         {
-            movement.Initialize(direction, damage, useVelocity, projectileSpeed, lifeTime);
+            movement.Initialize(projConfig, direction);
         }
     }
 }
