@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6998a549937d29498cd71111bf5fc8a, type: 3}
+  m_Name: ConeProjectiles
+  m_EditorClassIdentifier: 
+  skillId: 02
+  skillName: Fireball
+  description: 
+  icon: {fileID: 0}
+  cooldown: 1
+  baseDamage: 20
+  projConfig:
+    speed: 12
+    lifeTime: 0.5
+    damage: 3
+    useVelocity: 1
+    scale: {x: 0.3, y: 0.3, z: 0.3}
+    radius: 3
+    explodeOnImpact: 1
+    damageMask:
+      serializedVersion: 2
+      m_Bits: 192
+  projectilePrefab: {fileID: 584254286621437471, guid: bac39f7a41a135f418b54de61fe89089, type: 3}
+  spawnOrigin: 0
+  spawnOffset: {x: 0, y: 0, z: 0}
+  raycastMask:
+    serializedVersion: 2
+    m_Bits: 192
+  aimMode: 0
+  customDirection: {x: 0, y: 0, z: 0}
+  maxAimDistance: 100
+  randomSpreadAngle: 0
+  pattern: 1
+  projectileCount: 8
+  coneSpreadAngle: 80
