@@ -14,12 +14,12 @@ public class SpawnParams
     public float effectRate = 1f;
     public float damage;
     public float healAmount;
-    [Header("Slow Settings")]
-    [Range(0f, 1f)]
     public float slowAmount;
     public float slowDuration;
     public float stunDuration;
     public float pushForce;
     public float silenceDuration;
     public float blindDuration;
+    public float vulnerabilityPercentage;
+    public float vulnerabilityDuration;
 }

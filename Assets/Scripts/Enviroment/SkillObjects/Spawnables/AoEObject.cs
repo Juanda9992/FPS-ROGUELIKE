@@ -140,6 +140,20 @@ public class AoEObject : MonoBehaviour, ISpawneable
                     }
                 }
                 break;
+            case AoEEffectType.Vulnerability:
+                foreach (Collider entity in entitiesInRange)
+                {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
+                    entity.TryGetComponent<IVulnerable>(out IVulnerable vulnerable);
+                    if (vulnerable != null)
+                    {
+                        vulnerable.ApplyVulnerability(currentSpawnParams.vulnerabilityPercentage, currentSpawnParams.vulnerabilityDuration);
+                    }
+                }
+                break;
         }
     }
 
@@ -194,6 +208,8 @@ public class AoEObject : MonoBehaviour, ISpawneable
                 return Color.gray;
             case AoEEffectType.Blind:
                 return Color.black;
+            case AoEEffectType.Vulnerability:
+                return Color.yellow;
             default:
                 return Color.white;
         }
@@ -210,5 +226,6 @@ public enum AoEEffectType
     Push = 4,
     Pull = 5,
     Silence = 6,
-    Blind = 7
+    Blind = 7,
+    Vulnerability = 8
 }
