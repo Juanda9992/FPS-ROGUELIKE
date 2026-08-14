@@ -87,6 +87,16 @@ public class AoEObject : MonoBehaviour, ISpawneable
                 }
                 break;
 
+            case AoEEffectType.Blind:
+                foreach (Collider entity in entitiesInRange)
+                {
+                    entity.TryGetComponent<IBlindable>(out IBlindable blindable);
+                    if (blindable != null)
+                    {
+                        blindable.Blind(currentSpawnParams.blindDuration);
+                    }
+                }
+                break;
                 /*
             case AoEEffectType.Taunt:
                 foreach (Collider enemy in enemiesInRange)
@@ -104,12 +114,6 @@ public class AoEObject : MonoBehaviour, ISpawneable
                 foreach (Collider enemy in enemiesInRange)
                 {
                     enemy.GetComponent<EnemyAI>().Root(currentSpawnParams.rootDuration);
-                }
-                break;
-            case AoEEffectType.Blind:
-                foreach (Collider enemy in enemiesInRange)
-                {
-                    enemy.GetComponent<EnemyAI>().Blind(currentSpawnParams.blindDuration);
                 }
                 break;
                 */

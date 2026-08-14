@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30fe3a24d3b7dea46b87ac398e016e90, type: 3}
-  m_Name: PullArea
+  m_Name: BlindArea
   m_EditorClassIdentifier: 
   skillId: 
   skillName: 

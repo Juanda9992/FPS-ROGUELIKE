@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable
+public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBlindable
 {
     private Transform player;
     public float speed = 3f;
@@ -8,6 +8,8 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable
     [SerializeField] private Rigidbody rb;
     private Vector3 pushVelocity;
     [SerializeField] private float pushDecay = 5f;
+
+    [SerializeField] private bool isBlind = false;
 
     private void Start()
     {
@@ -22,7 +24,7 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable
             pushVelocity = Vector3.Lerp(pushVelocity, Vector3.zero, pushDecay * Time.deltaTime);
         }
 
-        if (player == null)
+        if (player == null || isBlind)
         {
             return;
         }
@@ -71,5 +73,17 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable
             pushDirection.Normalize();
         }
         rb.AddForce(pushDirection * strenght, ForceMode.Impulse);
+    }
+
+    public void Blind(float duration)
+    {
+        isBlind = true;
+        CancelInvoke(nameof(UnBlind));
+        Invoke(nameof(UnBlind), duration);
+    }
+
+    public void UnBlind()
+    {
+        isBlind = false;
     }
 }
