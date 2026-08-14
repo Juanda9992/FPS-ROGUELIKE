@@ -48,7 +48,6 @@ public class AoEObject : MonoBehaviour, ISpawneable
                     entity.TryGetComponent<PlayerHealthController>(out PlayerHealthController playerHealthController);
                     if (playerHealthController != null)
                     {
-                        Debug.Log("Player Health Controller: " + playerHealthController);
                         playerHealthController.OnHealthRestored(Mathf.RoundToInt(currentSpawnParams.healAmount));
                     }
                 }
