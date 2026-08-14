@@ -54,13 +54,18 @@ public class AoEObject : MonoBehaviour, ISpawneable
                 }
                 break;
 
-                /*
             case AoEEffectType.Stun:
-                foreach (Collider enemy in enemiesInRange)
+                foreach (Collider entity in entitiesInRange)
                 {
-                    enemy.GetComponent<EnemyAI>().Stun(currentSpawnParams.stunDuration);
+                    entity.TryGetComponent<IStuneable>(out IStuneable stuneable);
+                    if (stuneable != null)
+                    {
+                        stuneable.ApplyStunEffect(currentSpawnParams.stunDuration);
+                    }
                 }
                 break;
+
+                /*
             case AoEEffectType.Push:
                 foreach (Collider enemy in enemiesInRange)
                 {

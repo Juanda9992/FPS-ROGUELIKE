@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyFollow : MonoBehaviour, ISlowable
+public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable
 {
     private Transform player;
     public float speed = 3f;
@@ -33,6 +33,18 @@ public class EnemyFollow : MonoBehaviour, ISlowable
     }
 
     public void RemoveSlowEffect()
+    {
+        speed = 3f;
+    }
+
+    public void ApplyStunEffect(float duration)
+    {
+        speed = 0f;
+        CancelInvoke(nameof(RemoveStunEffect));
+        Invoke(nameof(RemoveStunEffect), duration);
+    }
+
+    public void RemoveStunEffect()
     {
         speed = 3f;
     }
