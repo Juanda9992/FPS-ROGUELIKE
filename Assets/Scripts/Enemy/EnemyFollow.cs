@@ -1,17 +1,27 @@
 using UnityEngine;
 
-public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable
+public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable
 {
     private Transform player;
     public float speed = 3f;
     public float rotationSpeed = 5f;
+    [SerializeField] private Rigidbody rb;
+    private Vector3 pushVelocity;
+    [SerializeField] private float pushDecay = 5f;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
+
     void Update()
     {
+        if (pushVelocity.sqrMagnitude > 0.0001f)
+        {
+            transform.position += pushVelocity * Time.deltaTime;
+            pushVelocity = Vector3.Lerp(pushVelocity, Vector3.zero, pushDecay * Time.deltaTime);
+        }
+
         if (player == null)
         {
             return;
@@ -47,5 +57,19 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable
     public void RemoveStunEffect()
     {
         speed = 3f;
+    }
+
+    public void Push(Vector3 center, float strenght)
+    {
+        Vector3 pushDirection = transform.position - center;
+        if (pushDirection.sqrMagnitude < 0.0001f)
+        {
+            pushDirection = transform.forward;
+        }
+        else
+        {
+            pushDirection.Normalize();
+        }
+        rb.AddForce(pushDirection * strenght, ForceMode.Impulse);
     }
 }

@@ -1263,7 +1263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testSkillArray:
-  - {fileID: 11400000, guid: aefb776622bd65144bea617802c7e002, type: 2}
+  - {fileID: 11400000, guid: d40a3da6fdd90ce45ac89fc932f3aa38, type: 2}
   - {fileID: 11400000, guid: 55e76e0abd654a44f9a5db32fc18faa4, type: 2}
   - {fileID: 11400000, guid: 44db6c008bf0ea84f931df3e95f16ca5, type: 2}
 --- !u!114 &671077424

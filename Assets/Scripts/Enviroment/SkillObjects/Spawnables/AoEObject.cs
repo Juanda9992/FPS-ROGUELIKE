@@ -65,13 +65,18 @@ public class AoEObject : MonoBehaviour, ISpawneable
                 }
                 break;
 
-                /*
             case AoEEffectType.Push:
-                foreach (Collider enemy in enemiesInRange)
+                foreach (Collider entity in entitiesInRange)
                 {
-                    enemy.GetComponent<EnemyAI>().Push(currentSpawnParams.pushForce);
+                    entity.TryGetComponent<IPusheable>(out IPusheable pusheable);
+                    if (pusheable != null)
+                    {
+                        pusheable.Push(transform.position, currentSpawnParams.pushForce);
+                    }
                 }
                 break;
+
+                /*
             case AoEEffectType.Pull:
                 foreach (Collider enemy in enemiesInRange)
                 {
