@@ -14,6 +14,7 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
 - **Unity Inspector**:
   - Use `[SerializeField] private` for fields exposed to the Unity Inspector rather than public fields.
   - Group inspector settings logically using `[Header("Header Title")]` and `[Tooltip("...")]`.
+  - Avoid using Tooltip on fields that are self explanatory (e.g. the name of the field is enough to understand what it does).
 
 - **Null Safety & Component Checks**:
   - Use `TryGetComponent<T>(out var component)` instead of `GetComponent<T>() != null` where possible for better performance and readability.
@@ -48,3 +49,5 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
 ## 3. Custom Project Notes & User Instructions
 - **Review Instructions**:
   - Always generate implementation plan and ask for confirmation before making any changes if the task is big or complex (It involves 3+ files or more than 100 lines of code).
+- **Input System**
+  - All the project should use the New Input System, not the old input manager, there is a class for it called PlayerInputActions, so use it. 
