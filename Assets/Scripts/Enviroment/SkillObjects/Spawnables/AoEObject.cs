@@ -43,56 +43,61 @@ public class AoEObject : MonoBehaviour, ISpawneable
                     }
                 }
                 break;
+            case AoEEffectType.Slow:
+                foreach (Collider entity in entitiesInRange)
+                {
+                    entity.TryGetComponent<ISlowable>(out ISlowable slowable);
+                    if (slowable != null)
+                    {
+                        slowable.ApplySlowEffect(currentSpawnParams.slowDuration, currentSpawnParams.slowAmount);
+                    }
+                }
+                break;
+
                 /*
-                case AoEEffectType.Slow:
-                    foreach (Collider entity in enemiesInRange)
-                    {
-                        enemy.GetComponent<EnemyAI>().Slow(currentSpawnParams.slowDuration);
-                    }
-                    break;
-                case AoEEffectType.Stun:
-                    foreach (Collider enemy in enemiesInRange)
-                    {
-                        enemy.GetComponent<EnemyAI>().Stun(currentSpawnParams.stunDuration);
-                    }
-                    break;
-                case AoEEffectType.Push:
-                    foreach (Collider enemy in enemiesInRange)
-                    {
-                        enemy.GetComponent<EnemyAI>().Push(currentSpawnParams.pushForce);
-                    }
-                    break;
-                case AoEEffectType.Pull:
-                    foreach (Collider enemy in enemiesInRange)
-                    {
-                        enemy.GetComponent<EnemyAI>().Pull(currentSpawnParams.pullForce);
-                    }
-                    break;
-                case AoEEffectType.Taunt:
-                    foreach (Collider enemy in enemiesInRange)
-                    {
-                        enemy.GetComponent<EnemyAI>().Taunt(currentSpawnParams.tauntDuration);
-                    }
-                    break;
-                case AoEEffectType.Silence:
-                    foreach (Collider enemy in enemiesInRange)
-                    {
-                        enemy.GetComponent<EnemyAI>().Silence(currentSpawnParams.silenceDuration);
-                    }
-                    break;
-                case AoEEffectType.Root:
-                    foreach (Collider enemy in enemiesInRange)
-                    {
-                        enemy.GetComponent<EnemyAI>().Root(currentSpawnParams.rootDuration);
-                    }
-                    break;
-                case AoEEffectType.Blind:
-                    foreach (Collider enemy in enemiesInRange)
-                    {
-                        enemy.GetComponent<EnemyAI>().Blind(currentSpawnParams.blindDuration);
-                    }
-                    break;
-                    */
+            case AoEEffectType.Stun:
+                foreach (Collider enemy in enemiesInRange)
+                {
+                    enemy.GetComponent<EnemyAI>().Stun(currentSpawnParams.stunDuration);
+                }
+                break;
+            case AoEEffectType.Push:
+                foreach (Collider enemy in enemiesInRange)
+                {
+                    enemy.GetComponent<EnemyAI>().Push(currentSpawnParams.pushForce);
+                }
+                break;
+            case AoEEffectType.Pull:
+                foreach (Collider enemy in enemiesInRange)
+                {
+                    enemy.GetComponent<EnemyAI>().Pull(currentSpawnParams.pullForce);
+                }
+                break;
+            case AoEEffectType.Taunt:
+                foreach (Collider enemy in enemiesInRange)
+                {
+                    enemy.GetComponent<EnemyAI>().Taunt(currentSpawnParams.tauntDuration);
+                }
+                break;
+            case AoEEffectType.Silence:
+                foreach (Collider enemy in enemiesInRange)
+                {
+                    enemy.GetComponent<EnemyAI>().Silence(currentSpawnParams.silenceDuration);
+                }
+                break;
+            case AoEEffectType.Root:
+                foreach (Collider enemy in enemiesInRange)
+                {
+                    enemy.GetComponent<EnemyAI>().Root(currentSpawnParams.rootDuration);
+                }
+                break;
+            case AoEEffectType.Blind:
+                foreach (Collider enemy in enemiesInRange)
+                {
+                    enemy.GetComponent<EnemyAI>().Blind(currentSpawnParams.blindDuration);
+                }
+                break;
+                */
         }
     }
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyFollow : MonoBehaviour
+public class EnemyFollow : MonoBehaviour, ISlowable
 {
     private Transform player;
     public float speed = 3f;
@@ -12,7 +12,7 @@ public class EnemyFollow : MonoBehaviour
     }
     void Update()
     {
-        if (player == null) 
+        if (player == null)
         {
             return;
         }
@@ -23,5 +23,17 @@ public class EnemyFollow : MonoBehaviour
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    public void ApplySlowEffect(float duration, float strength)
+    {
+        speed *= strength;
+        CancelInvoke(nameof(RemoveSlowEffect));
+        Invoke(nameof(RemoveSlowEffect), duration);
+    }
+
+    public void RemoveSlowEffect()
+    {
+        speed = 3f;
     }
 }
