@@ -48,6 +48,7 @@ public class AoEObject : MonoBehaviour, ISpawneable
                     entity.TryGetComponent<PlayerHealthController>(out PlayerHealthController playerHealthController);
                     if (playerHealthController != null)
                     {
+                        Debug.Log("Player Health Controller: " + playerHealthController);
                         playerHealthController.OnHealthRestored(Mathf.RoundToInt(currentSpawnParams.healAmount));
                     }
                 }
@@ -145,6 +146,7 @@ public class AoEObject : MonoBehaviour, ISpawneable
 
     private System.Collections.IEnumerator ApplyEffectCoroutine()
     {
+        yield return new WaitForSeconds(0.1f);
         while (true)
         {
             CheckEntities();
@@ -156,7 +158,7 @@ public class AoEObject : MonoBehaviour, ISpawneable
 
     private void CheckEntities()
     {
-        Collider[] entities = Physics.OverlapSphere(transform.position, transform.localScale.x);
+        Collider[] entities = Physics.OverlapSphere(transform.position, currentSpawnParams.radius);
         entitiesInRange.Clear();
         foreach (Collider entity in entities)
         {
