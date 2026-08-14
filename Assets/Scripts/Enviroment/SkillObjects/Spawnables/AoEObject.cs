@@ -168,6 +168,7 @@ public class AoEObject : MonoBehaviour, ISpawneable
 
 public enum AoEEffectType
 {
+    None = -1,
     Damage = 0,
     Heal = 1,
     Slow = 2,
