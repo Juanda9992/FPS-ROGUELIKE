@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
-public class FPSController : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class FPSController : MonoBehaviour, IPusheable
 {
     [Header("Movimiento")]
     [SerializeField] public Stat walkSpeedStat;
@@ -14,24 +14,28 @@ public class FPSController : MonoBehaviour
     private int currentJumpCount;
     [SerializeField] private float gravity = -9.81f;
 
+    [Header("Ground Check")]
+    [SerializeField] private float groundCheckDistance = 1.1f;
+    [SerializeField] private LayerMask groundMask = ~0;
+    private bool isGrounded;
+
     [Header("Cámara")]
     [SerializeField] public Transform cameraPivot;
     [SerializeField] public float mouseSensitivity = 100f;
 
-    private CharacterController controller;
+    private Rigidbody rb;
     private PlayerInputActions input;
 
     private Vector2 moveInput;
     private Vector2 lookInput;
 
-    private float yVelocity;
     private float xRotation;
-
     private bool isRunning;
 
     void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
         input = new PlayerInputActions();
 
         // INPUTS
@@ -51,10 +55,12 @@ public class FPSController : MonoBehaviour
     {
         input.Enable();
     }
+
     void OnDisable()
     {
         input.Disable();
     }
+
     void Start()
     {
         CursorManager.SetCursorVisible(false);
@@ -71,13 +77,12 @@ public class FPSController : MonoBehaviour
     void Update()
     {
         Look();
-        Move();
-        ApplyGravity();
+        CheckGrounded();
+    }
 
-        if (controller.isGrounded)
-        {
-            currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
-        }
+    void FixedUpdate()
+    {
+        Move();
     }
 
     void Look()
@@ -92,6 +97,15 @@ public class FPSController : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
     }
 
+    void CheckGrounded()
+    {
+        isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
+        if (isGrounded)
+        {
+            currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
+        }
+    }
+
     void Move()
     {
         float speed = walkSpeedStat.Value;
@@ -101,26 +115,33 @@ public class FPSController : MonoBehaviour
             speed = runSpeedStat.Value;
         }
 
-        Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
-        controller.Move(move * speed * Time.deltaTime);
+        Vector3 moveDir = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized;
+        Vector3 targetVelocity = moveDir * speed;
+
+        rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
     }
 
     void Jump()
     {
-        if (controller.isGrounded || currentJumpCount > 0)
+        if (isGrounded || currentJumpCount > 0)
         {
-            yVelocity = Mathf.Sqrt(jumpForceStat.Value * -2f * gravity);
+            float yVelocity = Mathf.Sqrt(jumpForceStat.Value * -2f * gravity);
+            rb.velocity = new Vector3(rb.velocity.x, yVelocity, rb.velocity.z);
             currentJumpCount--;
         }
     }
 
-    void ApplyGravity()
+    public void Push(Vector3 center, float strenght, bool attract = false)
     {
-        if (controller.isGrounded && yVelocity < 0)
+        Vector3 pushDirection = attract ? (center - transform.position) : (transform.position - center);
+        if (pushDirection.sqrMagnitude < 0.0001f)
         {
-            yVelocity = -2f;
+            pushDirection = attract ? -transform.forward : transform.forward;
         }
-        yVelocity += gravity * Time.deltaTime;
-        controller.Move(Vector3.up * yVelocity * Time.deltaTime);
+        else
+        {
+            pushDirection.Normalize();
+        }
+        rb.AddForce(pushDirection * strenght, ForceMode.Impulse);
     }
 }
