@@ -59,12 +59,12 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable
         speed = 3f;
     }
 
-    public void Push(Vector3 center, float strenght)
+    public void Push(Vector3 center, float strenght, bool attract = false)
     {
-        Vector3 pushDirection = transform.position - center;
+        Vector3 pushDirection = attract ? (center - transform.position) : (transform.position - center);
         if (pushDirection.sqrMagnitude < 0.0001f)
         {
-            pushDirection = transform.forward;
+            pushDirection = attract ? -transform.forward : transform.forward;
         }
         else
         {
