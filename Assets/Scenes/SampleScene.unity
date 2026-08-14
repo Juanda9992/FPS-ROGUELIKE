@@ -1056,7 +1056,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 671077418}
-  - component: {fileID: 671077417}
   - component: {fileID: 671077419}
   - component: {fileID: 671077420}
   - component: {fileID: 671077422}
@@ -1064,6 +1063,7 @@ GameObject:
   - component: {fileID: 671077424}
   - component: {fileID: 671077425}
   - component: {fileID: 671077426}
+  - component: {fileID: 671077427}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -1071,32 +1071,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!143 &671077417
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 671077416}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &671077418
 Transform:
   m_ObjectHideFlags: 0
@@ -1164,6 +1138,10 @@ MonoBehaviour:
       percentageScalingValues: []
       flatScalingValues: []
   gravity: -9.81
+  groundCheckDistance: 1.1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 128
   cameraPivot: {fileID: 963194228}
   mouseSensitivity: 100
 --- !u!114 &671077420
@@ -1355,6 +1333,33 @@ MonoBehaviour:
   damageStatName: GrenadeDamageMultiplier
   radiusStatName: GrenadeRadiusMultiplier
   cooldownStatName: GrenadeCooldownMultiplier
+--- !u!54 &671077427
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671077416}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &673562056
 GameObject:
   m_ObjectHideFlags: 0
@@ -2961,7 +2966,7 @@ GameObject:
   - component: {fileID: 1340725746}
   - component: {fileID: 1340725749}
   - component: {fileID: 1340725748}
-  - component: {fileID: 1340725747}
+  - component: {fileID: 1340725750}
   m_Layer: 9
   m_Name: Capsule
   m_TagString: Untagged
@@ -2984,29 +2989,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 671077418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1340725747
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1340725745}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!23 &1340725748
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3057,6 +3039,29 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1340725745}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!136 &1340725750
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340725745}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1386484567
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,8 +26,13 @@ public class AoEObject : MonoBehaviour, ISpawneable
             case AoEEffectType.Damage:
                 foreach (Collider entity in entitiesInRange)
                 {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
+
                     entity.TryGetComponent<IDamageable>(out IDamageable damageable);
-                    if (damageable != null && !entity.CompareTag("Player"))
+                    if (damageable != null)
                     {
                         damageable.TakeDamage(Mathf.RoundToInt(currentSpawnParams.damage));
                     }
@@ -36,6 +41,10 @@ public class AoEObject : MonoBehaviour, ISpawneable
             case AoEEffectType.Heal:
                 foreach (Collider entity in entitiesInRange)
                 {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
                     entity.TryGetComponent<PlayerHealthController>(out PlayerHealthController playerHealthController);
                     if (playerHealthController != null)
                     {
@@ -46,6 +55,10 @@ public class AoEObject : MonoBehaviour, ISpawneable
             case AoEEffectType.Slow:
                 foreach (Collider entity in entitiesInRange)
                 {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
                     entity.TryGetComponent<ISlowable>(out ISlowable slowable);
                     if (slowable != null)
                     {
@@ -57,6 +70,10 @@ public class AoEObject : MonoBehaviour, ISpawneable
             case AoEEffectType.Stun:
                 foreach (Collider entity in entitiesInRange)
                 {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
                     entity.TryGetComponent<IStuneable>(out IStuneable stuneable);
                     if (stuneable != null)
                     {
@@ -68,6 +85,10 @@ public class AoEObject : MonoBehaviour, ISpawneable
             case AoEEffectType.Push:
                 foreach (Collider entity in entitiesInRange)
                 {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
                     entity.TryGetComponent<IPusheable>(out IPusheable pusheable);
                     if (pusheable != null)
                     {
@@ -79,6 +100,10 @@ public class AoEObject : MonoBehaviour, ISpawneable
             case AoEEffectType.Pull:
                 foreach (Collider entity in entitiesInRange)
                 {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
                     entity.TryGetComponent<IPusheable>(out IPusheable pusheable);
                     if (pusheable != null)
                     {
@@ -90,6 +115,10 @@ public class AoEObject : MonoBehaviour, ISpawneable
             case AoEEffectType.Blind:
                 foreach (Collider entity in entitiesInRange)
                 {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
                     entity.TryGetComponent<IBlindable>(out IBlindable blindable);
                     if (blindable != null)
                     {
@@ -100,6 +129,10 @@ public class AoEObject : MonoBehaviour, ISpawneable
             case AoEEffectType.Silence:
                 foreach (Collider entity in entitiesInRange)
                 {
+                    if (!currentSpawnParams.affectPlayer && entity.CompareTag("Player"))
+                    {
+                        continue;
+                    }
                     entity.TryGetComponent<ISilenceable>(out ISilenceable silenceable);
                     if (silenceable != null)
                     {

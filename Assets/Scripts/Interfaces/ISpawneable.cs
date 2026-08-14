@@ -6,6 +6,7 @@ public interface ISpawneable
 [System.Serializable]
 public class SpawnParams
 {
+    public bool affectPlayer = false;
     public AoEEffectType effectType;
     public float duration = -1;
     public Vector3 objectScale = Vector3.one;
