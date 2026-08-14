@@ -8,6 +8,7 @@ public class EnemyDamageOnContact : MonoBehaviour
 
     private Transform player;
     private PlayerHealthController playerHealth;
+    private IBlindable blindable;
 
     private float attackTimer;
 
@@ -20,11 +21,18 @@ public class EnemyDamageOnContact : MonoBehaviour
             player = playerObj.transform;
             playerHealth = playerObj.GetComponent<PlayerHealthController>();
         }
+
+        blindable = GetComponent<IBlindable>();
     }
 
     private void Update()
     {
         if (player == null || playerHealth == null) 
+        {
+            return;
+        }
+
+        if (blindable != null && blindable.IsBlind)
         {
             return;
         }

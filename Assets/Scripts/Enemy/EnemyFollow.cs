@@ -10,6 +10,7 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBl
     [SerializeField] private float pushDecay = 5f;
 
     [SerializeField] private bool isBlind = false;
+    public bool IsBlind => isBlind;
 
     private void Start()
     {
