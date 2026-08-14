@@ -168,12 +168,12 @@ public class AoEObject : MonoBehaviour, ISpawneable
 
 public enum AoEEffectType
 {
-    Damage,
-    Heal,
-    Slow,
-    Stun,
-    Push,
-    Pull,
-    Silence,
-    Blind
+    Damage = 0,
+    Heal = 1,
+    Slow = 2,
+    Stun = 3,
+    Push = 4,
+    Pull = 5,
+    Silence = 6,
+    Blind = 7
 }
