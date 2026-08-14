@@ -46,7 +46,5 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
 ---
 
 ## 3. Custom Project Notes & User Instructions
-
-*Add any specific instructions, design notes, or workflow preferences below:*
-
-- 
+- **Review Instructions**:
+  - Always generate implementation plan and ask for confirmation before making any changes if the task is big or complex (It involves 3+ files or more than 100 lines of code).
