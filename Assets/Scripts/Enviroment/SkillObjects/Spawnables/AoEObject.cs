@@ -107,21 +107,6 @@ public class AoEObject : MonoBehaviour, ISpawneable
                     }
                 }
                 break;
-
-                /*
-            case AoEEffectType.Taunt:
-                foreach (Collider enemy in enemiesInRange)
-                {
-                    enemy.GetComponent<EnemyAI>().Taunt(currentSpawnParams.tauntDuration);
-                }
-                break;
-            case AoEEffectType.Root:
-                foreach (Collider enemy in enemiesInRange)
-                {
-                    enemy.GetComponent<EnemyAI>().Root(currentSpawnParams.rootDuration);
-                }
-                break;
-                */
         }
     }
 
@@ -171,12 +156,8 @@ public class AoEObject : MonoBehaviour, ISpawneable
                 return Color.cyan;
             case AoEEffectType.Pull:
                 return Color.magenta;
-            case AoEEffectType.Taunt:
-                return Color.white;
             case AoEEffectType.Silence:
                 return Color.gray;
-            case AoEEffectType.Root:
-                return Color.black;
             case AoEEffectType.Blind:
                 return Color.black;
             default:
@@ -193,8 +174,6 @@ public enum AoEEffectType
     Stun,
     Push,
     Pull,
-    Taunt,
     Silence,
-    Root,
     Blind
 }

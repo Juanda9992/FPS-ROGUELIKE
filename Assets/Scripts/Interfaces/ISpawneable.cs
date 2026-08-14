@@ -18,8 +18,6 @@ public class SpawnParams
     public float slowDuration;
     public float stunDuration;
     public float pushForce;
-    public float tauntDuration;
     public float silenceDuration;
-    public float rootDuration;
     public float blindDuration;
 }
