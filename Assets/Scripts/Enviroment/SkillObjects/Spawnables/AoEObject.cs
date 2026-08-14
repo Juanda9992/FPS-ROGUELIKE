@@ -97,17 +97,22 @@ public class AoEObject : MonoBehaviour, ISpawneable
                     }
                 }
                 break;
+            case AoEEffectType.Silence:
+                foreach (Collider entity in entitiesInRange)
+                {
+                    entity.TryGetComponent<ISilenceable>(out ISilenceable silenceable);
+                    if (silenceable != null)
+                    {
+                        silenceable.Silence(currentSpawnParams.silenceDuration);
+                    }
+                }
+                break;
+
                 /*
             case AoEEffectType.Taunt:
                 foreach (Collider enemy in enemiesInRange)
                 {
                     enemy.GetComponent<EnemyAI>().Taunt(currentSpawnParams.tauntDuration);
-                }
-                break;
-            case AoEEffectType.Silence:
-                foreach (Collider enemy in enemiesInRange)
-                {
-                    enemy.GetComponent<EnemyAI>().Silence(currentSpawnParams.silenceDuration);
                 }
                 break;
             case AoEEffectType.Root:

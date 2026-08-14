@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyDamageOnContact : MonoBehaviour
+public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
 {
     [SerializeField] private float damageDistance = 2f;
     [SerializeField] private int damage = 10;
@@ -9,6 +9,9 @@ public class EnemyDamageOnContact : MonoBehaviour
     private Transform player;
     private PlayerHealthController playerHealth;
     private IBlindable blindable;
+
+    [SerializeField] private bool isSilenced = false;
+    public bool IsSilenced => isSilenced;
 
     private float attackTimer;
 
@@ -27,7 +30,7 @@ public class EnemyDamageOnContact : MonoBehaviour
 
     private void Update()
     {
-        if (player == null || playerHealth == null) 
+        if (player == null || playerHealth == null || isSilenced) 
         {
             return;
         }
@@ -49,5 +52,17 @@ public class EnemyDamageOnContact : MonoBehaviour
                 attackTimer = 0f;
             }
         }
+    }
+
+    public void Silence(float duration)
+    {
+        isSilenced = true;
+        CancelInvoke(nameof(UnSilence));
+        Invoke(nameof(UnSilence), duration);
+    }
+
+    public void UnSilence()
+    {
+        isSilenced = false;
     }
 }
