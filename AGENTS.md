@@ -17,12 +17,13 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
 
 - **Null Safety & Component Checks**:
   - Use `TryGetComponent<T>(out var component)` instead of `GetComponent<T>() != null` where possible for better performance and readability.
+  - Avoid using null checks on components that are assigned in the inspector, these will never be null. Use null checks on components that are not assigned in the inspector and should be checked
 
 - **Bracket use in simple ifs**:
   - Always add double brackets on the if states even if they have only one line of code, I want the style to be consistent
 
 - **References on initialize**
-  - Dont use GetComponent when a script is being initialized or in the start/awaking. I want the references to be assigned in the inspector when it is needed. Only use GetComponent if it is necessary and if it is not possible to assign the reference in the inspector, but this should be an exception
+  - Dont use GetComponent when a script is being initialized or in the start/awaking. I want the references to be assigned in the inspector when it is needed. Only use GetComponent if it is necessary and if it is not possible to assign the reference in the inspector, but this should be an exception.
 
 ---
 
