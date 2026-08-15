@@ -97,7 +97,22 @@ public static class CameraHierarchySetup
         }
         serializedFps.ApplyModifiedProperties();
 
-        // 6. Update PlayerWeaponManager camera reference if present
+        // 6. Setup PlayerRecoilController on Main Camera
+        PlayerRecoilController recoil = mainCameraObj.GetComponent<PlayerRecoilController>();
+        if (recoil == null)
+        {
+            recoil = mainCameraObj.AddComponent<PlayerRecoilController>();
+        }
+
+        SerializedObject serializedRecoil = new SerializedObject(recoil);
+        SerializedProperty recoilTransformProp = serializedRecoil.FindProperty("_recoilTransform");
+        if (recoilTransformProp != null)
+        {
+            recoilTransformProp.objectReferenceValue = mainCameraObj.transform;
+        }
+        serializedRecoil.ApplyModifiedProperties();
+
+        // 7. Update PlayerWeaponManager camera and recoil references if present
         PlayerWeaponManager weaponManager = playerObj.GetComponent<PlayerWeaponManager>();
         if (weaponManager != null)
         {
@@ -107,11 +122,18 @@ public static class CameraHierarchySetup
             {
                 camProp.objectReferenceValue = mainCamera;
             }
+
+            SerializedProperty recoilProp = serializedWeaponManager.FindProperty("_recoilController");
+            if (recoilProp != null)
+            {
+                recoilProp.objectReferenceValue = recoil;
+            }
+
             serializedWeaponManager.ApplyModifiedProperties();
         }
 
         EditorSceneManager.MarkSceneDirty(playerObj.scene);
-        Debug.Log("<color=green>Successfully configured Camera Bobbing Hierarchy!</color> Hierarchy: Player -> CameraPitchPivot -> CameraMotionPivot -> Main Camera.");
+        Debug.Log("<color=green>Successfully configured Camera Bobbing & Recoil Hierarchy!</color> Hierarchy: Player -> CameraPitchPivot -> CameraMotionPivot -> Main Camera.");
     }
 }
 #endif

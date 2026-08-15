@@ -13,6 +13,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     [Header("References")]
     public Camera playerCamera;
     public LayerMask hitMask;
+    [SerializeField] private PlayerRecoilController _recoilController;
 
     [Header("Stats")]
     [SerializeField] private Stat damageMultiplierStat;
@@ -156,6 +157,11 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
         currentWeapon = weaponInstances[index];
 
+        if (_recoilController != null && currentWeapon != null)
+        {
+            _recoilController.ResetSpread(currentWeapon.weaponData);
+        }
+
         if (weaponPrefabs != null)
         {
             for (int i = 0; i < weaponPrefabs.Length; i++)
@@ -172,7 +178,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void Shoot()
     {
-        if (currentWeapon.currentAmmo <= 0)
+        if (currentWeapon == null || currentWeapon.currentAmmo <= 0)
         {
             return;
         }
@@ -184,12 +190,26 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
         currentWeapon.DecreaseAmmo(1);
         NotifyAmmoChanged();
 
+
+        _recoilController.ApplyRecoil(currentWeapon.weaponData);
+
+
         if (playerCamera != null)
         {
-            Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            float spreadAngle = (_recoilController != null) ? _recoilController.CurrentSpread : 0f;
+            Vector3 shootDirection = playerCamera.transform.forward;
+
+            if (spreadAngle > 0.001f)
+            {
+                float spreadAngleRad = spreadAngle * Mathf.Deg2Rad;
+                Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * Mathf.Tan(spreadAngleRad);
+                shootDirection = (playerCamera.transform.forward + playerCamera.transform.right * randomCircle.x + playerCamera.transform.up * randomCircle.y).normalized;
+            }
+
+            Ray ray = new Ray(playerCamera.transform.position, shootDirection);
             if (Physics.Raycast(ray, out RaycastHit hit, 50f, hitMask))
             {
-                if (hit.collider.GetComponent<IDamageable>() is IDamageable damageable)
+                if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
                 {
                     float dmgMult = (damageMultiplierStat != null) ? damageMultiplierStat.Value : 1f;
                     damageable.TakeDamage(Mathf.RoundToInt(currentWeapon.damage * dmgMult));
@@ -202,7 +222,10 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void TryReload()
     {
-        if (currentWeapon == null || isReloading) return;
+        if (currentWeapon == null || isReloading)
+        {
+            return;
+        }
 
         if (currentWeapon.CanReload())
         {
@@ -236,7 +259,11 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     public void AddAmmoToCurrentWeapon(int amount)
     {
-        if (currentWeapon == null) return;
+        if (currentWeapon == null)
+        {
+            return;
+        }
+
         currentWeapon.IncreaseAmmo(amount);
         NotifyAmmoChanged();
     }
@@ -255,7 +282,11 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     public void AddAmmoToAllWeapons(int amount)
     {
-        if (weaponInstances == null) return;
+        if (weaponInstances == null)
+        {
+            return;
+        }
+
         foreach (var instance in weaponInstances)
         {
             instance.IncreaseAmmo(amount);
