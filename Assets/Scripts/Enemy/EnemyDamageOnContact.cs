@@ -30,7 +30,7 @@ public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
 
     private void Update()
     {
-        if (player == null || playerHealth == null || isSilenced) 
+        if (player == null || playerHealth == null || isSilenced)
         {
             return;
         }
@@ -40,9 +40,8 @@ public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
             return;
         }
 
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        if (distance <= damageDistance)
+        float damageDistSqr = damageDistance * damageDistance;
+        if ((transform.position - player.position).sqrMagnitude <= damageDistSqr)
         {
             attackTimer += Time.deltaTime;
 

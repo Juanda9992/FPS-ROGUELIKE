@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
 {
+    public event Action OnDeath;
+
     [Header("Health Settings")]
     [SerializeField] private int health = 100;
     [SerializeField] private int maxHealth = 100;
@@ -67,6 +70,8 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
 
     private void Die()
     {
+        OnDeath?.Invoke();
+
         orbGenerator.SpawnOrbs();
 
         Destroy(gameObject);

@@ -150,4 +150,13 @@ public class EnemySpawner : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_playerTransform.position, _maxSpawnRadius);
     }
+
+    [ContextMenu("Spawn 1000 Enemy")]
+    private void SpawnEnemyDebug()
+    {
+        for (int i = 0; i < 1000; i++)
+        {
+            SpawnSingleEnemy();
+        }
+    }
 }
