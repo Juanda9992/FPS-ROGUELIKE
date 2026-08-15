@@ -389,16 +389,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1735a5040b38c94c8a207712b17916f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orbPrefabs:
+  _orbPrefabs:
   - {fileID: 2848376640757604410, guid: b0130ff4c289ab64fa1d2aff90fece2e, type: 3}
   - {fileID: 5517351509201735646, guid: fd4e68ebf2dbadd4d94dd7f57fa5de1d, type: 3}
   - {fileID: 6054484102385753702, guid: 6e16ad8e13b26d9449c62dc1c08e6d80, type: 3}
   - {fileID: -5184027925999510117, guid: b36b40820abbb1346903046a733bf763, type: 3}
   - {fileID: -5184027925999510117, guid: 48549b89e29363b4e8f572249f52e1ac, type: 3}
-  minOrbs: 1
-  maxOrbs: 4
-  spawnRadius: 0.8
-  burstForce: 3
+  _minOrbs: 1
+  _maxOrbs: 4
+  _spawnRadius: 0.8
+  _burstForce: 3
+  _healthSpawnThreshold: 0.6
+  _shieldSpawnThreshold: 0.5
+  _maxSelectionAttempts: 20
 --- !u!114 &264867530691204997
 MonoBehaviour:
   m_ObjectHideFlags: 0

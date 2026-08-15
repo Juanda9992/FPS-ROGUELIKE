@@ -27,6 +27,10 @@ public class PlayerGrenadeController : MonoBehaviour
     public event Action<int> OnGrenadeThrown;
     public event Action<float, float> OnCooldownChanged; // (remainingTime, totalCooldown)
 
+    public int CurrentAmmo => currentAmmo;
+    public int MaxAmmo => maxAmmo;
+    public bool IsAmmoFull => currentAmmo >= maxAmmo;
+
     public float CurrentCooldown => baseCooldown / cooldownMultiplierStat.Value;
     public bool IsOnCooldown => Time.time < lastThrowTime + CurrentCooldown;
     public float RemainingCooldown => Mathf.Max(0f, (lastThrowTime + CurrentCooldown) - Time.time);
