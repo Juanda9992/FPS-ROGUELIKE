@@ -32,6 +32,12 @@ public class FPSController : MonoBehaviour, IPusheable
     private float xRotation;
     private bool isRunning;
 
+    public bool IsGrounded => isGrounded;
+    public bool IsRunning => isRunning;
+    public bool IsMoving => moveInput.sqrMagnitude > 0.01f;
+    public Vector2 MoveInput => moveInput;
+    public Vector3 Velocity => rb != null ? rb.velocity : Vector3.zero;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
