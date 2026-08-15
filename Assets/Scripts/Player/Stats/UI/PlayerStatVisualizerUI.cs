@@ -36,13 +36,6 @@ public class PlayerStatVisualizerUI : MonoBehaviour
             statVisualizer.SetStat(stat);
         }
     }
-
-    private System.Collections.IEnumerator Start()
-    {
-        yield return new WaitForSeconds(0.1f);
-        CursorManager.SetCursorVisible(true);
-    }
-
     public void UpdateStatDisplay(UpgradeData stat)
     {
         foreach (StatDisplaydataUI statVisualizer in statVisualizersList)
