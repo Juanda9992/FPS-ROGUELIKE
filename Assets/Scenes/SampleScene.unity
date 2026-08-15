@@ -1166,6 +1166,7 @@ MonoBehaviour:
       flatScalingValues: []
   gravity: -9.81
   groundCheckDistance: 1.1
+  groundCheckRadius: 0.3
   groundMask:
     serializedVersion: 2
     m_Bits: 128
@@ -1841,7 +1842,7 @@ MonoBehaviour:
   _runProfile:
     _frequency: 10.5
     _posAmplitude: {x: 0.04, y: 0.06, z: 0.02}
-    _rotAmplitude: {x: 0.8, y: 0.6, z: 12}
+    _rotAmplitude: {x: 0.8, y: 0.6, z: 1}
   _smoothSpeed: 10
   _resetSpeed: 6
 --- !u!1 &790067038
@@ -3024,7 +3025,6 @@ GameObject:
   - component: {fileID: 1250073389}
   - component: {fileID: 1250073392}
   - component: {fileID: 1250073391}
-  - component: {fileID: 1250073390}
   m_Layer: 9
   m_Name: Pistol
   m_TagString: Untagged
@@ -3047,27 +3047,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 43046449}
   m_LocalEulerAnglesHint: {x: 77.03, y: 0, z: 0}
---- !u!65 &1250073390
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250073388}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1250073391
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3669,7 +3648,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1428240833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3682,8 +3661,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9aa6c79b4dc3524b920005ac3f08345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 4243679260693873651, guid: 0fb7fe3fbfaeb44488bf8cff6d1d6e7d, type: 3}
-  spawnInterval: 3
+  _playerTransform: {fileID: 671077418}
+  _minSpawnRadius: 15
+  _maxSpawnRadius: 25
+  _baseSpawnInterval: 4
+  _minSpawnInterval: 0.5
+  _spawnRateProgression:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 600
+      value: 0.25
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _packSizeRange: {x: 1, y: 3}
+  _enemySpawnDataList:
+  - {fileID: 11400000, guid: 8203ec2e924b54b4399cb3b5cb20a1fc, type: 2}
+  _maxActiveEnemies: 50
 --- !u!23 &1428240834
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3760,7 +3770,6 @@ GameObject:
   - component: {fileID: 1433161962}
   - component: {fileID: 1433161965}
   - component: {fileID: 1433161964}
-  - component: {fileID: 1433161963}
   m_Layer: 9
   m_Name: Canon
   m_TagString: Untagged
@@ -3783,29 +3792,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 43046449}
   m_LocalEulerAnglesHint: {x: 77.03, y: 0, z: 0}
---- !u!136 &1433161963
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1433161961}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &1433161964
 MeshRenderer:
   m_ObjectHideFlags: 0
