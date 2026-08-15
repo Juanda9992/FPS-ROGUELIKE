@@ -1385,7 +1385,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -3683,7 +3683,7 @@ MonoBehaviour:
   _minSpawnRadius: 15
   _maxSpawnRadius: 25
   _baseSpawnInterval: 4
-  _minSpawnInterval: 0.5
+  _minSpawnInterval: 0.4
   _spawnRateProgression:
     serializedVersion: 2
     m_Curve:
@@ -3711,7 +3711,7 @@ MonoBehaviour:
   _packSizeRange: {x: 1, y: 3}
   _enemySpawnDataList:
   - {fileID: 11400000, guid: 8203ec2e924b54b4399cb3b5cb20a1fc, type: 2}
-  _maxActiveEnemies: 50
+  _maxActiveEnemies: 500
 --- !u!4 &1428240836
 Transform:
   m_ObjectHideFlags: 0

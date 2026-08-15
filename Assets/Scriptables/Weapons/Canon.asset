@@ -18,3 +18,13 @@ MonoBehaviour:
   maxAmmo: 25
   reloadTime: 3
   fireRate: 1
+  recoilPitchKick: 10
+  recoilYawKick: 2
+  recoilRollKick: 1
+  recoilSnappiness: 22
+  recoilReturnSpeed: 10
+  cameraShakeStrength: 0.15
+  baseSpread: 0.4
+  maxSpread: 3.5
+  spreadIncreasePerShot: 0.5
+  spreadRecoverySpeed: 5
