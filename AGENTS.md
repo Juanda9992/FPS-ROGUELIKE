@@ -19,6 +19,7 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
 - **Null Safety & Component Checks**:
   - Use `TryGetComponent<T>(out var component)` instead of `GetComponent<T>() != null` where possible for better performance and readability.
   - Avoid using null checks on components that are assigned in the inspector, these will never be null. Use null checks on components that are not assigned in the inspector and should be checked
+  - Avoid using ternary operators on components that are serialized in the inspector, it makes it harder to read.
 
 - **Bracket use in simple ifs**:
   - Always add double brackets on the if states even if they have only one line of code, I want the style to be consistent
@@ -51,3 +52,7 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
   - Always generate implementation plan and ask for confirmation before making any changes if the task is big or complex (It involves 3+ files or more than 100 lines of code).
 - **Input System**
   - All the project should use the New Input System, not the old input manager, there is a class for it called PlayerInputActions, so use it. 
+
+## 4. Agent Rules
+- **Explain the code with examples**
+  - When you are given a instruction to explain a certian piece of code, always explain it with examples, using mock data to track the values of the variables on the examples.
