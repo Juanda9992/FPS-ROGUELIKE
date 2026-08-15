@@ -31,6 +31,12 @@ public class PlayerHealthUI : MonoBehaviour
     }
     private void UpdateShieldUI(int current, int max)
     {
+        if (current <= 0)
+        {
+            shieldFillImage.gameObject.SetActive(false);
+            return;
+        }
+        shieldFillImage.gameObject.SetActive(true);
         shieldFillImage.DOFillAmount((float)current / max, 0.1f).SetEase(Ease.Linear);
     }
 }
