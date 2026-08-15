@@ -15,7 +15,8 @@ public class FPSController : MonoBehaviour, IPusheable
     [SerializeField] private float gravity = -9.81f;
 
     [Header("Ground Check")]
-    [SerializeField] private float groundCheckDistance = 1.1f;
+    [SerializeField] private float groundCheckDistance = 1.25f;
+    [SerializeField] private float groundCheckRadius = 0.3f;
     [SerializeField] private LayerMask groundMask = ~0;
     private bool isGrounded;
 
@@ -105,11 +106,31 @@ public class FPSController : MonoBehaviour, IPusheable
 
     void CheckGrounded()
     {
-        isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        RaycastHit[] hits = Physics.SphereCastAll(origin, groundCheckRadius, Vector3.down, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
+        
+        bool foundGround = false;
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i].collider != null && hits[i].collider.transform.root != transform.root)
+            {
+                foundGround = true;
+                break;
+            }
+        }
+
+        isGrounded = foundGround;
         if (isGrounded)
         {
             currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        Gizmos.DrawWireSphere(origin + Vector3.down * groundCheckDistance, groundCheckRadius);
     }
 
     void Move()

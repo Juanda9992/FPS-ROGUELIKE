@@ -108,71 +108,74 @@ public class CameraBobbingController : MonoBehaviour
             _initialized = true;
         }
 
+        bool isGrounded = _fpsController.IsGrounded;
         bool isMoving = _fpsController.IsMoving;
         bool isRunning = _fpsController.IsRunning;
-        bool isGrounded = _fpsController.IsGrounded;
 
-        // Select the active profile
-        MotionProfile targetProfile = _idleProfile;
+        Vector3 targetPosOffset = Vector3.zero;
+        Vector3 targetRotOffset = Vector3.zero;
 
-        if (isMoving)
+        // Only calculate bobbing/sway offsets when the player is on the ground
+        if (isGrounded)
         {
-            if (isRunning)
+            MotionProfile targetProfile = _idleProfile;
+
+            if (isMoving)
             {
-                targetProfile = _runProfile;
+                if (isRunning)
+                {
+                    targetProfile = _runProfile;
+                }
+                else
+                {
+                    targetProfile = _walkProfile;
+                }
+            }
+
+            // Advance bobbing timer only while grounded
+            _timer += deltaTime * targetProfile.Frequency;
+
+            float sinTimer = Mathf.Sin(_timer);
+            float cosTimer = Mathf.Cos(_timer);
+            float sinDoubleTimer = Mathf.Sin(_timer * 2f);
+
+            if (isMoving)
+            {
+                // Walk / Run Lissajous stride motion
+                targetPosOffset = new Vector3(
+                    cosTimer * targetProfile.PosAmplitude.x,
+                    Mathf.Abs(sinTimer) * targetProfile.PosAmplitude.y,
+                    sinDoubleTimer * targetProfile.PosAmplitude.z
+                );
+
+                targetRotOffset = new Vector3(
+                    sinDoubleTimer * targetProfile.RotAmplitude.x,
+                    cosTimer * targetProfile.RotAmplitude.y,
+                    -cosTimer * targetProfile.RotAmplitude.z
+                );
             }
             else
             {
-                targetProfile = _walkProfile;
+                // Idle breathing sway
+                targetPosOffset = new Vector3(
+                    cosTimer * targetProfile.PosAmplitude.x,
+                    sinTimer * targetProfile.PosAmplitude.y,
+                    0f
+                );
+
+                targetRotOffset = new Vector3(
+                    sinTimer * targetProfile.RotAmplitude.x,
+                    cosTimer * targetProfile.RotAmplitude.y,
+                    0f
+                );
             }
         }
 
-        // Advance bobbing timer
-        _timer += deltaTime * targetProfile.Frequency;
-
-        float sinTimer = Mathf.Sin(_timer);
-        float cosTimer = Mathf.Cos(_timer);
-        float sinDoubleTimer = Mathf.Sin(_timer * 2f);
-
-        Vector3 targetPosOffset;
-        Vector3 targetRotOffset;
-
-        if (isMoving)
-        {
-            // Walk / Run Lissajous stride motion
-            targetPosOffset = new Vector3(
-                cosTimer * targetProfile.PosAmplitude.x,
-                Mathf.Abs(sinTimer) * targetProfile.PosAmplitude.y,
-                sinDoubleTimer * targetProfile.PosAmplitude.z
-            );
-
-            targetRotOffset = new Vector3(
-                sinDoubleTimer * targetProfile.RotAmplitude.x,
-                cosTimer * targetProfile.RotAmplitude.y,
-                -cosTimer * targetProfile.RotAmplitude.z
-            );
-        }
-        else
-        {
-            // Idle breathing sway
-            targetPosOffset = new Vector3(
-                cosTimer * targetProfile.PosAmplitude.x,
-                sinTimer * targetProfile.PosAmplitude.y,
-                0f
-            );
-
-            targetRotOffset = new Vector3(
-                sinTimer * targetProfile.RotAmplitude.x,
-                cosTimer * targetProfile.RotAmplitude.y,
-                0f
-            );
-        }
-
-        // Blend smoothly to target offset
+        // Blend smoothly to target offset (smoothly returns to initial local transform when in air)
         Vector3 targetLocalPos = _initialLocalPos + targetPosOffset;
         Quaternion targetLocalRot = _initialLocalRot * Quaternion.Euler(targetRotOffset);
 
-        float lerpRate = isMoving ? _smoothSpeed : _resetSpeed;
+        float lerpRate = (isGrounded && isMoving) ? _smoothSpeed : _resetSpeed;
         _motionTransform.localPosition = Vector3.Lerp(_motionTransform.localPosition, targetLocalPos, deltaTime * lerpRate);
         _motionTransform.localRotation = Quaternion.Slerp(_motionTransform.localRotation, targetLocalRot, deltaTime * lerpRate);
     }
