@@ -4,12 +4,28 @@ using UnityEngine;
 public class PlayerStatVisualizerUI : MonoBehaviour
 {
     [SerializeField] private GameObject statVisualizerPrefab;
+    [SerializeField] private GameObject panelContainer;
     [SerializeField] private RectTransform statVisualizerParent;
 
     [SerializeField] private List<StatDisplaydataUI> statVisualizersList = new List<StatDisplaydataUI>();
 
     [SerializeField] private UpgradeManager upgradeManager;
-    
+
+    private void OnEnable()
+    {
+        upgradeManager.OnUpgradeSelected += UpdateStatDisplay;
+        PauseManager.Instance.OnPauseChanged += OnPauseChanged;
+    }
+    private void OnDisable()
+    {
+        upgradeManager.OnUpgradeSelected -= UpdateStatDisplay;
+        PauseManager.Instance.OnPauseChanged -= OnPauseChanged;
+    }
+    private void OnPauseChanged(bool isPaused)
+    {
+        panelContainer.SetActive(isPaused);
+    }
+
     public void CreateStatsOnPanel(List<Stat> stats)
     {
         foreach (var stat in stats)
@@ -37,14 +53,5 @@ public class PlayerStatVisualizerUI : MonoBehaviour
                 break;
             }
         }
-    }
-    void OnEnable()
-    {
-        upgradeManager.OnUpgradeSelected += UpdateStatDisplay;
-    }
-
-    void OnDisable()
-    {
-        upgradeManager.OnUpgradeSelected -= UpdateStatDisplay;
     }
 }

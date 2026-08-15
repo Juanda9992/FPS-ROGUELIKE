@@ -601,6 +601,7 @@ GameObject:
   - component: {fileID: 443332108}
   - component: {fileID: 443332107}
   - component: {fileID: 443332109}
+  - component: {fileID: 443332110}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -655,6 +656,18 @@ MonoBehaviour:
   upgradeManagerUI: {fileID: 1587257086}
   playerExpManager: {fileID: 671077425}
   maxRerolls: 3
+--- !u!114 &443332110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443332106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97106d0d78c0bd447a60ee658555cbc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &473931586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,7 +1254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testSkillArray:
-  - {fileID: 11400000, guid: 96728244d99e0c04590848af9ec2c301, type: 2}
+  - {fileID: 11400000, guid: 3a690d7d9c8640f4294da21f8a2277ae, type: 2}
   - {fileID: 11400000, guid: aefb776622bd65144bea617802c7e002, type: 2}
   - {fileID: 11400000, guid: 29aa165d0845aef40925466182ad8857, type: 2}
 --- !u!114 &671077424
@@ -2852,7 +2865,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1303504793
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2930,7 +2943,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 25
   m_Viewport: {fileID: 1303504793}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -4228,10 +4241,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 10
+    m_Right: 10
+    m_Top: 5
+    m_Bottom: 5
   m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
@@ -4414,7 +4427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2031008496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4511,6 +4524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statVisualizerPrefab: {fileID: 6302914286668792737, guid: 7769d531e0f560a4daa0208f8a156887, type: 3}
+  panelContainer: {fileID: 1303504792}
   statVisualizerParent: {fileID: 1864874947}
   statVisualizersList: []
   upgradeManager: {fileID: 443332109}
