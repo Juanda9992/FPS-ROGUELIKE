@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerWeaponManager : MonoBehaviour
+public class PlayerWeaponManager : MonoBehaviour, IPausable
 {
     [Header("Weapons")]
     public Weapon[] weapons;
@@ -47,13 +47,40 @@ public class PlayerWeaponManager : MonoBehaviour
 
     private void OnEnable()
     {
+        PauseManager.Instance.OnPauseChanged += OnPauseChanged;
         input.Enable();
     }
 
     private void OnDisable()
     {
+        PauseManager.Instance.OnPauseChanged -= OnPauseChanged;
         input.Disable();
     }
+    #region Pause And Resume Methods
+    private void OnPauseChanged(bool isPaused)
+    {
+        if (isPaused)
+        {
+            OnPause();
+        }
+        else
+        {
+            OnResume();
+        }
+    }
+
+    public void OnPause()
+    {
+        isShooting = false;
+        isReloading = false;
+        input.Player.Disable();
+    }
+
+    public void OnResume()
+    {
+        input.Player.Enable();
+    }
+    #endregion
 
     private void Start()
     {
@@ -166,7 +193,6 @@ public class PlayerWeaponManager : MonoBehaviour
                 {
                     float dmgMult = (damageMultiplierStat != null) ? damageMultiplierStat.Value : 1f;
                     damageable.TakeDamage(Mathf.RoundToInt(currentWeapon.damage * dmgMult));
-                    Debug.Log(hit.collider.name);
                 }
             }
         }
