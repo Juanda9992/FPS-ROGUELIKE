@@ -2,64 +2,82 @@ using UnityEngine;
 
 public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBlindable
 {
-    private Transform player;
-    public float speed = 3f;
-    public float rotationSpeed = 5f;
-    [SerializeField] private Rigidbody rb;
-    private Vector3 pushVelocity;
-    [SerializeField] private float pushDecay = 5f;
+    [Header("Movement Settings")]
+    [SerializeField] private float _speed = 3f;
+    [SerializeField] private float _rotationSpeed = 5f;
 
-    [SerializeField] private bool isBlind = false;
-    public bool IsBlind => isBlind;
+    [Header("Physics & Push Settings")]
+    [SerializeField] private Rigidbody _rb;
+    [SerializeField] private float _pushDecay = 5f;
 
-    private void Start()
+    [Header("Status")]
+    [SerializeField] private bool _isBlind = false;
+
+    private Vector3 _pushVelocity;
+
+    public float Speed
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        get => _speed;
+        set => _speed = value;
     }
 
-    void Update()
+    public float RotationSpeed
     {
-        if (pushVelocity.sqrMagnitude > 0.0001f)
+        get => _rotationSpeed;
+        set => _rotationSpeed = value;
+    }
+
+    public bool IsBlind
+    {
+        get => _isBlind;
+    }
+
+    public void TickMovement(float deltaTime, Vector3 playerPosition)
+    {
+        if (_pushVelocity.sqrMagnitude > 0.0001f)
         {
-            transform.position += pushVelocity * Time.deltaTime;
-            pushVelocity = Vector3.Lerp(pushVelocity, Vector3.zero, pushDecay * Time.deltaTime);
+            transform.position += _pushVelocity * deltaTime;
+            _pushVelocity = Vector3.Lerp(_pushVelocity, Vector3.zero, _pushDecay * deltaTime);
         }
 
-        if (player == null || isBlind)
+        if (_isBlind)
         {
             return;
         }
 
-        Vector3 direction = (player.position - transform.position).normalized;
+        Vector3 direction = (playerPosition - transform.position).normalized;
 
-        transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * _speed * deltaTime;
 
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+        if (direction.sqrMagnitude > 0.0001f)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, _rotationSpeed * deltaTime);
+        }
     }
 
     public void ApplySlowEffect(float duration, float strength)
     {
-        speed *= strength;
+        _speed *= strength;
         CancelInvoke(nameof(RemoveSlowEffect));
         Invoke(nameof(RemoveSlowEffect), duration);
     }
 
     public void RemoveSlowEffect()
     {
-        speed = 3f;
+        _speed = 3f;
     }
 
     public void ApplyStunEffect(float duration)
     {
-        speed = 0f;
+        _speed = 0f;
         CancelInvoke(nameof(RemoveStunEffect));
         Invoke(nameof(RemoveStunEffect), duration);
     }
 
     public void RemoveStunEffect()
     {
-        speed = 3f;
+        _speed = 3f;
     }
 
     public void Push(Vector3 center, float strenght, bool attract = false)
@@ -73,18 +91,22 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBl
         {
             pushDirection.Normalize();
         }
-        rb.AddForce(pushDirection * strenght, ForceMode.Impulse);
+
+        if (_rb != null)
+        {
+            _rb.AddForce(pushDirection * strenght, ForceMode.Impulse);
+        }
     }
 
     public void Blind(float duration)
     {
-        isBlind = true;
+        _isBlind = true;
         CancelInvoke(nameof(UnBlind));
         Invoke(nameof(UnBlind), duration);
     }
 
     public void UnBlind()
     {
-        isBlind = false;
+        _isBlind = false;
     }
 }

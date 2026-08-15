@@ -2,66 +2,68 @@ using UnityEngine;
 
 public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
 {
-    [SerializeField] private float damageDistance = 2f;
-    [SerializeField] private int damage = 10;
-    [SerializeField] private float attackRate = 1f;
+    [Header("Damage Settings")]
+    [SerializeField] private float _damageDistance = 2f;
+    [SerializeField] private int _damage = 10;
+    [SerializeField] private float _attackRate = 1f;
 
-    private Transform player;
-    private PlayerHealthController playerHealth;
-    private IBlindable blindable;
+    [Header("References")]
+    [SerializeField] private EnemyFollow _enemyFollow;
 
-    [SerializeField] private bool isSilenced = false;
-    public bool IsSilenced => isSilenced;
+    [Header("Status")]
+    [SerializeField] private bool _isSilenced = false;
 
-    private float attackTimer;
+    private float _attackTimer;
 
-    private void Start()
+    public bool IsSilenced
     {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-
-        if (playerObj != null)
-        {
-            player = playerObj.transform;
-            playerHealth = playerObj.GetComponent<PlayerHealthController>();
-        }
-
-        blindable = GetComponent<IBlindable>();
+        get => _isSilenced;
     }
 
-    private void Update()
+    public int Damage
     {
-        if (player == null || playerHealth == null || isSilenced)
+        get => _damage;
+    }
+
+    public float DamageDistance
+    {
+        get => _damageDistance;
+    }
+
+    public void TickDamage(float deltaTime, Vector3 playerPosition, PlayerHealthController playerHealth)
+    {
+        if (playerHealth == null || _isSilenced)
         {
             return;
         }
 
-        if (blindable != null && blindable.IsBlind)
+        if (_enemyFollow != null && _enemyFollow.IsBlind)
         {
             return;
         }
 
-        float damageDistSqr = damageDistance * damageDistance;
-        if ((transform.position - player.position).sqrMagnitude <= damageDistSqr)
+        float damageDistSqr = _damageDistance * _damageDistance;
+        if ((transform.position - playerPosition).sqrMagnitude <= damageDistSqr)
         {
-            attackTimer += Time.deltaTime;
+            _attackTimer += deltaTime;
 
-            if (attackTimer >= attackRate)
+            if (_attackTimer >= _attackRate)
             {
-                playerHealth.TakeDamage(damage);
-                attackTimer = 0f;
+                playerHealth.TakeDamage(_damage);
+                _attackTimer = 0f;
             }
         }
     }
 
     public void Silence(float duration)
     {
-        isSilenced = true;
+        _isSilenced = true;
         CancelInvoke(nameof(UnSilence));
         Invoke(nameof(UnSilence), duration);
     }
 
     public void UnSilence()
     {
-        isSilenced = false;
+        _isSilenced = false;
     }
 }

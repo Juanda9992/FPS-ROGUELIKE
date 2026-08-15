@@ -80,6 +80,14 @@ public class EnemySpawner : MonoBehaviour
         GameObject enemyObj = Instantiate(prefab, spawnPosition, Quaternion.identity);
         _currentActiveEnemies++;
 
+        if (enemyObj.TryGetComponent<EnemyBrain>(out var enemyBrain))
+        {
+            if (EnemyManager.Instance != null)
+            {
+                EnemyManager.Instance.RegisterEnemy(enemyBrain);
+            }
+        }
+
         if (enemyObj.TryGetComponent<EnemyHealthController>(out var healthController))
         {
             healthController.OnDeath += HandleEnemyDeath;
@@ -151,10 +159,10 @@ public class EnemySpawner : MonoBehaviour
         Gizmos.DrawWireSphere(_playerTransform.position, _maxSpawnRadius);
     }
 
-    [ContextMenu("Spawn 1000 Enemy")]
+    [ContextMenu("Spawn 500 Enemy")]
     private void SpawnEnemyDebug()
     {
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 500; i++)
         {
             SpawnSingleEnemy();
         }

@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 1968058130699331068}
   - component: {fileID: 7958997040790784236}
   - component: {fileID: 264867530691204997}
+  - component: {fileID: 7705683638852801513}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -295,11 +296,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af0d4b54faca55840b974e69f7e7cd13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  rotationSpeed: 5
-  rb: {fileID: 1968058130699331068}
-  pushDecay: 5
-  isBlind: 0
+  _speed: 3
+  _rotationSpeed: 5
+  _rb: {fileID: 0}
+  _pushDecay: 5
+  _isBlind: 0
 --- !u!114 &7469619403595506559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,10 +345,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c389f68832afa548aebcfc7c1dae559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageDistance: 2
-  damage: 10
-  attackRate: 0.5
-  isSilenced: 0
+  _damageDistance: 2
+  _damage: 10
+  _attackRate: 1
+  _enemyFollow: {fileID: 3436559161361006786}
+  _isSilenced: 0
 --- !u!54 &1968058130699331068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -373,7 +375,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &7958997040790784236
 MonoBehaviour:
@@ -411,6 +413,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fillRenderer: {fileID: 7363517065681288753}
   _backgroundRenderer: {fileID: 6338259331482307659}
+--- !u!114 &7705683638852801513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243679260693873651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a3fb2bf04b194469103fdc58e1b608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyFollow: {fileID: 3436559161361006786}
+  _enemyDamageOnContact: {fileID: 3439306612756211383}
 --- !u!1 &7936636760464814300
 GameObject:
   m_ObjectHideFlags: 0
