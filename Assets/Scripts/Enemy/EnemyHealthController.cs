@@ -2,10 +2,25 @@ using UnityEngine;
 
 public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
 {
+    [Header("Health Settings")]
     [SerializeField] private int health = 100;
+    [SerializeField] private int maxHealth = 100;
+
+    [Header("References")]
     [SerializeField] private DamageFeedback damageFeedback;
     [SerializeField] private OrbGenerator orbGenerator;
+    [SerializeField] private EnemyHealthControllerUI _healthUI;
+
+    [Header("Vulnerability")]
     [SerializeField] private float _vulnerabilityPercentage = 1f;
+
+    private void Start()
+    {
+        if (_healthUI != null)
+        {
+            _healthUI.UpdateHealth(health, maxHealth);
+        }
+    }
 
     public int Health
     {
@@ -40,6 +55,8 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
     {
         int finalDamage = Mathf.RoundToInt(damage * _vulnerabilityPercentage);
         health -= finalDamage;
+
+        _healthUI.UpdateHealth(health, maxHealth);
 
         damageFeedback.PlayDamageFlash();
         if (health <= 0)
