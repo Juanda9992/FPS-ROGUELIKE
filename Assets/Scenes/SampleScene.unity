@@ -1268,10 +1268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 785b98915c8ab73419e6a498104d9620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testSkillArray:
-  - {fileID: 11400000, guid: 3a690d7d9c8640f4294da21f8a2277ae, type: 2}
-  - {fileID: 11400000, guid: aefb776622bd65144bea617802c7e002, type: 2}
-  - {fileID: 11400000, guid: 29aa165d0845aef40925466182ad8857, type: 2}
+  testSkillArray: []
 --- !u!114 &671077424
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,8 +13,18 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   weaponName: Pistol
-  damage: 9
+  damage: 10
   chargerAmmo: 12
   maxAmmo: 60
   reloadTime: 2
   fireRate: 0.4
+  recoilPitchKick: 1.8
+  recoilYawKick: 0.9
+  recoilRollKick: 0.4
+  recoilSnappiness: 22
+  recoilReturnSpeed: 10
+  cameraShakeStrength: 0.15
+  baseSpread: 0.4
+  maxSpread: 3.5
+  spreadIncreasePerShot: 0.5
+  spreadRecoverySpeed: 5
