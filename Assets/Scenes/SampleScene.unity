@@ -1527,8 +1527,8 @@ MonoBehaviour:
       percentageScalingValues: []
       flatScalingValues: []
   gravity: -9.81
-  groundCheckDistance: 1.1
-  groundCheckRadius: 0.3
+  groundCheckDistance: 1
+  groundCheckRadius: 0.1
   groundMask:
     serializedVersion: 2
     m_Bits: 128
