@@ -27,24 +27,62 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     public event Action<int, int> OnHealthChanged; // (current, max)
     public event Action<int, int> OnShieldChanged; // (current, max)
 
+    private bool _isGameStarted;
+
     private void Start()
     {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+            if (GameEventsManager.Instance.IsGameStarted)
+            {
+                HandleGameStarted();
+            }
+        }
+        else
+        {
+            HandleGameStarted();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        }
+    }
+
+    private void HandleGameStarted()
+    {
+        _isGameStarted = true;
+
         maxHealthStat = PlayerStatsManager.Instance.GetStatByName("Health");
         healthRegenStat = PlayerStatsManager.Instance.GetStatByName("HealthRegen");
         invulnerabilityTimeStat = PlayerStatsManager.Instance.GetStatByName("InvulnerabilityTime");
         shieldStat = PlayerStatsManager.Instance.GetStatByName("Shield");
         shieldRegenStat = PlayerStatsManager.Instance.GetStatByName("ShieldRegen");
 
-        health = Mathf.RoundToInt(maxHealthStat.Value);
-        currentShield = Mathf.RoundToInt(shieldStat.Value);
+        if (maxHealthStat != null)
+        {
+            health = Mathf.RoundToInt(maxHealthStat.Value);
+            OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+        }
 
-
-        OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
-        OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), Mathf.RoundToInt(shieldStat.Value));
+        if (shieldStat != null)
+        {
+            currentShield = Mathf.RoundToInt(shieldStat.Value);
+            OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), Mathf.RoundToInt(shieldStat.Value));
+        }
     }
 
     private void Update()
     {
+        if (!_isGameStarted)
+        {
+            return;
+        }
+
         HandleHealthRegen();
         HandleShieldRegen();
     }

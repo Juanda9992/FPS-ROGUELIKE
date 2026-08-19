@@ -32,6 +32,7 @@ public class FPSController : MonoBehaviour, IPusheable
 
     private float xRotation;
     private bool isRunning;
+    private bool _isGameStarted;
 
     public bool IsGrounded => isGrounded;
     public bool IsRunning => isRunning;
@@ -39,7 +40,7 @@ public class FPSController : MonoBehaviour, IPusheable
     public Vector2 MoveInput => moveInput;
     public Vector3 Velocity => rb != null ? rb.velocity : Vector3.zero;
 
-    void Awake()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -58,18 +59,47 @@ public class FPSController : MonoBehaviour, IPusheable
         input.Player.Jump.performed += _ => Jump();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         input.Enable();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         input.Disable();
     }
 
-    void Start()
+    private void Start()
     {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+            if (GameEventsManager.Instance.IsGameStarted)
+            {
+                HandleGameStarted();
+            }
+            else
+            {
+                CursorManager.SetCursorVisible(true);
+            }
+        }
+        else
+        {
+            HandleGameStarted();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        }
+    }
+
+    private void HandleGameStarted()
+    {
+        _isGameStarted = true;
         CursorManager.SetCursorVisible(false);
 
         walkSpeedStat = PlayerStatsManager.Instance.GetStatByName("WalkSpeed");
@@ -78,21 +108,34 @@ public class FPSController : MonoBehaviour, IPusheable
         jumpForceStat = PlayerStatsManager.Instance.GetStatByName("JumpHeight");
         jumpCountStat = PlayerStatsManager.Instance.GetStatByName("JumpCount");
 
-        currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
+        if (jumpCountStat != null)
+        {
+            currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
+        }
     }
 
-    void Update()
+    private void Update()
     {
+        if (!_isGameStarted)
+        {
+            return;
+        }
+
         Look();
         CheckGrounded();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
+        if (!_isGameStarted)
+        {
+            return;
+        }
+
         Move();
     }
 
-    void Look()
+    private void Look()
     {
         float mouseX = lookInput.x * mouseSensitivity * Time.deltaTime;
         float mouseY = lookInput.y * mouseSensitivity * Time.deltaTime;
@@ -104,7 +147,7 @@ public class FPSController : MonoBehaviour, IPusheable
         transform.Rotate(Vector3.up * mouseX);
     }
 
-    void CheckGrounded()
+    private void CheckGrounded()
     {
         Vector3 origin = transform.position + Vector3.up * 0.1f;
         RaycastHit[] hits = Physics.SphereCastAll(origin, groundCheckRadius, Vector3.down, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
@@ -120,7 +163,7 @@ public class FPSController : MonoBehaviour, IPusheable
         }
 
         isGrounded = foundGround;
-        if (isGrounded)
+        if (isGrounded && jumpCountStat != null)
         {
             currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
         }
@@ -133,8 +176,13 @@ public class FPSController : MonoBehaviour, IPusheable
         Gizmos.DrawWireSphere(origin + Vector3.down * groundCheckDistance, groundCheckRadius);
     }
 
-    void Move()
+    private void Move()
     {
+        if (walkSpeedStat == null || runSpeedStat == null)
+        {
+            return;
+        }
+
         float speed = walkSpeedStat.Value;
 
         if (isRunning)
@@ -148,8 +196,13 @@ public class FPSController : MonoBehaviour, IPusheable
         rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
     }
 
-    void Jump()
+    private void Jump()
     {
+        if (!_isGameStarted || jumpForceStat == null)
+        {
+            return;
+        }
+
         if (isGrounded || currentJumpCount > 0)
         {
             float yVelocity = Mathf.Sqrt(jumpForceStat.Value * -2f * gravity);

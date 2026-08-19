@@ -84,8 +84,35 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     }
     #endregion
 
+    private bool _isGameStarted;
+
     private void Start()
     {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+            if (GameEventsManager.Instance.IsGameStarted)
+            {
+                HandleGameStarted();
+            }
+        }
+        else
+        {
+            HandleGameStarted();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        }
+    }
+
+    private void HandleGameStarted()
+    {
+        _isGameStarted = true;
 
         damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName("DamageMultiplier");
         reloadSpeedStat = PlayerStatsManager.Instance.GetStatByName("ReloadSpeedMultiplier");
@@ -105,7 +132,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void Update()
     {
-        if (isReloading)
+        if (!_isGameStarted || isReloading)
         {
             return;
         }
@@ -118,6 +145,11 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void HandleScrollInput(float scroll)
     {
+        if (!_isGameStarted)
+        {
+            return;
+        }
+
         if (scroll > 0.01f)
         {
             NextWeapon();
@@ -224,7 +256,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void TryReload()
     {
-        if (currentWeapon == null || isReloading)
+        if (!_isGameStarted || currentWeapon == null || isReloading)
         {
             return;
         }

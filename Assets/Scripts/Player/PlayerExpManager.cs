@@ -11,6 +11,30 @@ public class PlayerExpManager : MonoBehaviour
 
     private void Start()
     {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+            if (GameEventsManager.Instance.IsGameStarted)
+            {
+                HandleGameStarted();
+            }
+        }
+        else
+        {
+            HandleGameStarted();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        }
+    }
+
+    private void HandleGameStarted()
+    {
         OnExpChanged?.Invoke(currentExp);
     }
     public void AddExperience(int amount)

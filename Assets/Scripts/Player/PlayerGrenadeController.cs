@@ -56,8 +56,35 @@ public class PlayerGrenadeController : MonoBehaviour
         input.Disable();
     }
 
+    private bool _isGameStarted;
+
     private void Start()
     {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+            if (GameEventsManager.Instance.IsGameStarted)
+            {
+                HandleGameStarted();
+            }
+        }
+        else
+        {
+            HandleGameStarted();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        }
+    }
+
+    private void HandleGameStarted()
+    {
+        _isGameStarted = true;
         currentAmmo = maxAmmo;
         OnGrenadeThrown?.Invoke(currentAmmo);
         GetStats();
@@ -65,6 +92,11 @@ public class PlayerGrenadeController : MonoBehaviour
 
     private void Update()
     {
+        if (!_isGameStarted)
+        {
+            return;
+        }
+
         if (IsOnCooldown)
         {
             wasOnCooldown = true;
@@ -96,6 +128,10 @@ public class PlayerGrenadeController : MonoBehaviour
 
     public bool TryThrowGrenade()
     {
+        if (!_isGameStarted)
+        {
+            return false;
+        }
         if (IsOnCooldown)
         {
             Debug.Log($"[PlayerGrenadeController] Grenade on cooldown! Remaining: {RemainingCooldown:F1}s");

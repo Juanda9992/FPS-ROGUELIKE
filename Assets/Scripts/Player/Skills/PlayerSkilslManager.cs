@@ -19,8 +19,35 @@ public class PlayerSkillsManager : MonoBehaviour
         }
     }
 
+    private bool _isGameStarted;
+
     private void Start()
     {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+            if (GameEventsManager.Instance.IsGameStarted)
+            {
+                HandleGameStarted();
+            }
+        }
+        else
+        {
+            HandleGameStarted();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        }
+    }
+
+    private void HandleGameStarted()
+    {
+        _isGameStarted = true;
         skillCooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("CooldownMultiplier");
     }
 
@@ -77,6 +104,10 @@ public class PlayerSkillsManager : MonoBehaviour
 
     private void HandleInput()
     {
+        if (!_isGameStarted)
+        {
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             TryUseSkill(0);

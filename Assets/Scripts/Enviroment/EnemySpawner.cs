@@ -21,14 +21,42 @@ public class EnemySpawner : MonoBehaviour
     private float _spawnTimer;
     private float _currentInterval;
     private int _currentActiveEnemies;
+    private bool _isGameStarted;
 
     private void Start()
     {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+            if (GameEventsManager.Instance.IsGameStarted)
+            {
+                HandleGameStarted();
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        }
+    }
+
+    private void HandleGameStarted()
+    {
+        _isGameStarted = true;
+        _spawnTimer = 0f;
         SetNextSpawnInterval();
     }
 
     private void Update()
     {
+        if (!_isGameStarted)
+        {
+            return;
+        }
+
         _spawnTimer += Time.deltaTime;
 
         if (_spawnTimer >= _currentInterval)

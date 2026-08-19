@@ -30,6 +30,11 @@ public class PauseManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameEventsManager.Instance != null && !GameEventsManager.Instance.IsGameStarted)
+        {
+            return;
+        }
+
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             TogglePause();
