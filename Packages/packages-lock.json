@@ -24,6 +24,13 @@
       },
       "hash": "4ce7dd3cc54e37e2ed6dc59cb5a047f3dccb3f50"
     },
+    "com.juanda.coreutils": {
+      "version": "https://github.com/Juanda9992/CoreUtils.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f3a60c19831b6430070896767d992b78637ce233"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
