@@ -3,10 +3,11 @@ using System;
 public class PlayerExpManager : MonoBehaviour
 {
     [SerializeField] private int currentExp = 0;
-    public int expToNextLevel = 100;
     [SerializeField] private int currentLevel = 1;
+    public float expToNextLevel = 100f;
+    [SerializeField] private float expToNextLevelMultiplier = 1.5f;
 
-    public event Action<int> OnExpChanged; 
+    public event Action<int> OnExpChanged;
     public event Action<int> OnLevelUp;
 
     private void Start()
@@ -48,7 +49,7 @@ public class PlayerExpManager : MonoBehaviour
     {
         if (currentExp >= expToNextLevel)
         {
-            currentExp -= expToNextLevel;
+            currentExp -= Mathf.RoundToInt(expToNextLevel);
             LevelUp();
         }
     }
@@ -57,7 +58,7 @@ public class PlayerExpManager : MonoBehaviour
     {
         currentLevel++;
         OnLevelUp?.Invoke(currentLevel);
-        expToNextLevel = Mathf.RoundToInt(expToNextLevel * 1.5f);
+        expToNextLevel = Mathf.RoundToInt(expToNextLevel * expToNextLevelMultiplier);
         CheckLevelUp();
         OnExpChanged?.Invoke(currentExp);
     }
