@@ -32,6 +32,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     // Events
     public event Action OnShoot;
     public event Action OnReload;
+    public event Action OnWeaponChanged;
     public event Action<int, int> OnAmmoChanged;
 
     private void Awake()
@@ -173,6 +174,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
             }
         }
 
+        OnWeaponChanged?.Invoke();
         NotifyAmmoChanged();
     }
 
@@ -238,9 +240,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     {
         isReloading = true;
         OnReload?.Invoke();
-
-        float reloadMult = (reloadSpeedStat != null && reloadSpeedStat.Value != 0) ? reloadSpeedStat.Value : 1f;
-        float reloadDuration = currentWeapon.reloadTime / reloadMult;
+        float reloadDuration = currentWeapon.reloadTime / reloadSpeedStat.Value;
         yield return new WaitForSeconds(reloadDuration);
 
         currentWeapon.Reload();

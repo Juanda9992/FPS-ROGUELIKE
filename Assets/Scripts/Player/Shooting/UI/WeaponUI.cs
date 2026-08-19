@@ -20,6 +20,7 @@ public class WeaponUI : MonoBehaviour
         weaponManager.OnShoot += HandleShoot;
         weaponManager.OnReload += HandleReload;
         weaponManager.OnAmmoChanged += UpdateAmmo;
+        weaponManager.OnWeaponChanged += HandleWeaponChanged;
     }
 
     private void OnDisable()
@@ -27,7 +28,9 @@ public class WeaponUI : MonoBehaviour
         weaponManager.OnShoot -= HandleShoot;
         weaponManager.OnReload -= HandleReload;
         weaponManager.OnAmmoChanged -= UpdateAmmo;
+        weaponManager.OnWeaponChanged -= HandleWeaponChanged;
 
+        reloadTween?.Kill();
     }
 
     private void HandleShoot()
@@ -44,6 +47,12 @@ public class WeaponUI : MonoBehaviour
         reloadTween = reloadFillImage.DOFillAmount(0, currentInstance.reloadTime / reloadStatVal).SetEase(Ease.Linear);
     }
 
+    private void HandleWeaponChanged()
+    {
+        reloadTween?.Kill();
+        reloadFillImage.fillAmount = 0;
+    }
+
     private void UpdateAmmo(int ammo, int reserveAmmo)
     {
         ammoText.text = $"{ammo}/{reserveAmmo}";
@@ -55,7 +64,5 @@ public class WeaponUI : MonoBehaviour
         {
             ammoText.color = Color.white;
         }
-        reloadTween?.Kill();
-        reloadFillImage.fillAmount = 0;
     }
 }
