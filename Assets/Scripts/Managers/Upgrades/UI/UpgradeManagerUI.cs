@@ -40,6 +40,7 @@ public class UpgradeManagerUI : MonoBehaviour
 
         upgradePanel.SetActive(true);
         CursorManager.SetCursorVisible(true);
+        Time.timeScale = 0f;
 
         foreach (var upgrade in upgrades)
         {
@@ -72,6 +73,7 @@ public class UpgradeManagerUI : MonoBehaviour
             upgradeButton.gameObject.SetActive(false);
             CursorManager.SetCursorVisible(false);
             upgradePanel.SetActive(false);
+            Time.timeScale = 1f;
         }
     }
 
