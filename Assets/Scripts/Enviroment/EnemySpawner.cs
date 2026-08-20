@@ -98,18 +98,23 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnSingleEnemy()
     {
-        GameObject prefab = SelectEnemyPrefab();
-        if (prefab == null)
+        EnemySpawnDataSO spawnData = SelectEnemySpawnData();
+        if (spawnData == null || spawnData.EnemyPrefab == null)
         {
             return;
         }
 
         Vector3 spawnPosition = GetRandomSpawnPosition();
-        GameObject enemyObj = Instantiate(prefab, spawnPosition, Quaternion.identity);
+        GameObject enemyObj = Instantiate(spawnData.EnemyPrefab, spawnPosition, Quaternion.identity);
         _currentActiveEnemies++;
 
         if (enemyObj.TryGetComponent<EnemyBrain>(out var enemyBrain))
         {
+            if (spawnData.EnemyStatsData != null)
+            {
+                enemyBrain.InitializeStats(spawnData.EnemyStatsData);
+            }
+
             if (EnemyManager.Instance != null)
             {
                 EnemyManager.Instance.RegisterEnemy(enemyBrain);
@@ -127,11 +132,11 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private GameObject SelectEnemyPrefab()
+    private EnemySpawnDataSO SelectEnemySpawnData()
     {
         float totalWeight = 0f;
 
-        List<KeyValuePair<GameObject, float>> availableEnemies = new List<KeyValuePair<GameObject, float>>();
+        List<KeyValuePair<EnemySpawnDataSO, float>> availableEnemies = new List<KeyValuePair<EnemySpawnDataSO, float>>();
 
         for (int i = 0; i < _enemySpawnDataList.Count; i++)
         {
@@ -145,7 +150,7 @@ public class EnemySpawner : MonoBehaviour
             if (weight > 0f)
             {
                 totalWeight += weight;
-                availableEnemies.Add(new KeyValuePair<GameObject, float>(spawnData.EnemyPrefab, weight));
+                availableEnemies.Add(new KeyValuePair<EnemySpawnDataSO, float>(spawnData, weight));
             }
         }
 

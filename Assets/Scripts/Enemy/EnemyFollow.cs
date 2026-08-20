@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBlindable
 {
     [Header("Movement Settings")]
+    [SerializeField] private float _baseSpeed = 3f;
     [SerializeField] private float _speed = 3f;
     [SerializeField] private float _rotationSpeed = 5f;
 
@@ -14,6 +15,11 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBl
     [SerializeField] private bool _isBlind = false;
 
     private Vector3 _pushVelocity;
+
+    public float BaseSpeed
+    {
+        get => _baseSpeed;
+    }
 
     public float Speed
     {
@@ -30,6 +36,12 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBl
     public bool IsBlind
     {
         get => _isBlind;
+    }
+
+    public void InitializeSpeed(float speed)
+    {
+        _baseSpeed = speed;
+        _speed = speed;
     }
 
     public void TickMovement(float deltaTime, Vector3 playerPosition)
@@ -65,7 +77,7 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBl
 
     public void RemoveSlowEffect()
     {
-        _speed = 3f;
+        _speed = _baseSpeed;
     }
 
     public void ApplyStunEffect(float duration)
@@ -77,7 +89,7 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBl
 
     public void RemoveStunEffect()
     {
-        _speed = 3f;
+        _speed = _baseSpeed;
     }
 
     public void Push(Vector3 center, float strenght, bool attract = false)

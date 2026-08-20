@@ -23,11 +23,17 @@ public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
     public int Damage
     {
         get => _damage;
+        set => _damage = value;
     }
 
     public float DamageDistance
     {
         get => _damageDistance;
+    }
+
+    public void InitializeDamage(int damage)
+    {
+        _damage = damage;
     }
 
     public void TickDamage(float deltaTime, Vector3 playerPosition, PlayerHealthController playerHealth)

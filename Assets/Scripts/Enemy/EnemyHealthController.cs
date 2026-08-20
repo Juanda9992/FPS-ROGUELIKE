@@ -6,12 +6,12 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
     public event Action OnDeath;
 
     [Header("Health Settings")]
-    [SerializeField] private int health = 100;
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int _health = 100;
+    [SerializeField] private int _maxHealth = 100;
 
     [Header("References")]
-    [SerializeField] private DamageFeedback damageFeedback;
-    [SerializeField] private OrbGenerator orbGenerator;
+    [SerializeField] private DamageFeedback _damageFeedback;
+    [SerializeField] private OrbGenerator _orbGenerator;
     [SerializeField] private EnemyHealthControllerUI _healthUI;
 
     [Header("Vulnerability")]
@@ -21,20 +21,37 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
     {
         if (_healthUI != null)
         {
-            _healthUI.UpdateHealth(health, maxHealth);
+            _healthUI.UpdateHealth(_health, _maxHealth);
         }
     }
 
     public int Health
     {
-        get => health;
-        set => health = value;
+        get => _health;
+        set => _health = value;
+    }
+
+    public int MaxHealth
+    {
+        get => _maxHealth;
+        set => _maxHealth = value;
     }
 
     public float Percentage
     {
         get => _vulnerabilityPercentage;
         set => _vulnerabilityPercentage = value;
+    }
+
+    public void InitializeHealth(int maxHealth)
+    {
+        _maxHealth = maxHealth;
+        _health = maxHealth;
+
+        if (_healthUI != null)
+        {
+            _healthUI.UpdateHealth(_health, _maxHealth);
+        }
     }
 
     public void ApplyVulnerability(float percentage, float duration)
@@ -57,18 +74,24 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
     public void TakeDamage(int damage)
     {
         int finalDamage = Mathf.RoundToInt(damage * _vulnerabilityPercentage);
-        health -= finalDamage;
+        _health -= finalDamage;
 
-        _healthUI.UpdateHealth(health, maxHealth);
+        if (_healthUI != null)
+        {
+            _healthUI.UpdateHealth(_health, _maxHealth);
+        }
 
-        damageFeedback.PlayDamageFlash();
+        if (_damageFeedback != null)
+        {
+            _damageFeedback.PlayDamageFlash();
+        }
 
         if (GameEventsManager.Instance != null)
         {
             GameEventsManager.Instance.TriggerEnemyTakeDamage(finalDamage);
         }
 
-        if (health <= 0)
+        if (_health <= 0)
         {
             Die();
         }
@@ -82,7 +105,10 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
             GameEventsManager.Instance.TriggerEnemyKilled(gameObject);
         }
 
-        orbGenerator.SpawnOrbs();
+        if (_orbGenerator != null)
+        {
+            _orbGenerator.SpawnOrbs();
+        }
 
         Destroy(gameObject);
     }
