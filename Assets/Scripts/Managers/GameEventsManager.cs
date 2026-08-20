@@ -6,6 +6,12 @@ public class GameEventsManager : MonoBehaviour
     public static GameEventsManager Instance { get; private set; }
 
     public event Action OnGameStarted;
+    public event Action OnPlayerShot;
+    public event Action OnPlayerReload;
+    public event Action OnPlayerJump;
+    public event Action<int> OnPlayerTakeDamage;
+    public event Action<GameObject> OnEnemyKilled;
+    public event Action<GameObject> OnEnemySpawned;
 
     [Header("Debug / State")]
     [SerializeField] private bool _isGameStarted;
@@ -44,5 +50,35 @@ public class GameEventsManager : MonoBehaviour
 
         _isGameStarted = true;
         OnGameStarted?.Invoke();
+    }
+
+    public void TriggerPlayerShot()
+    {
+        OnPlayerShot?.Invoke();
+    }
+
+    public void TriggerPlayerReload()
+    {
+        OnPlayerReload?.Invoke();
+    }
+
+    public void TriggerPlayerJump()
+    {
+        OnPlayerJump?.Invoke();
+    }
+
+    public void TriggerPlayerTakeDamage(int damage)
+    {
+        OnPlayerTakeDamage?.Invoke(damage);
+    }
+
+    public void TriggerEnemyKilled(GameObject enemy)
+    {
+        OnEnemyKilled?.Invoke(enemy);
+    }
+
+    public void TriggerEnemySpawned(GameObject enemy)
+    {
+        OnEnemySpawned?.Invoke(enemy);
     }
 }

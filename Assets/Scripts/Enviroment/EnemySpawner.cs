@@ -120,6 +120,11 @@ public class EnemySpawner : MonoBehaviour
         {
             healthController.OnDeath += HandleEnemyDeath;
         }
+
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.TriggerEnemySpawned(enemyObj);
+        }
     }
 
     private GameObject SelectEnemyPrefab()

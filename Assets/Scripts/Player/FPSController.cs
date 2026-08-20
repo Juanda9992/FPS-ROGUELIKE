@@ -208,6 +208,11 @@ public class FPSController : MonoBehaviour, IPusheable
             float yVelocity = Mathf.Sqrt(jumpForceStat.Value * -2f * gravity);
             rb.velocity = new Vector3(rb.velocity.x, yVelocity, rb.velocity.z);
             currentJumpCount--;
+
+            if (GameEventsManager.Instance != null)
+            {
+                GameEventsManager.Instance.TriggerPlayerJump();
+            }
         }
     }
 

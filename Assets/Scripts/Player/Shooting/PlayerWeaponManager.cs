@@ -252,6 +252,10 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
         }
 
         OnShoot?.Invoke();
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.TriggerPlayerShot();
+        }
     }
 
     private void TryReload()
@@ -272,6 +276,10 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     {
         isReloading = true;
         OnReload?.Invoke();
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.TriggerPlayerReload();
+        }
         float reloadDuration = currentWeapon.reloadTime / reloadSpeedStat.Value;
         yield return new WaitForSeconds(reloadDuration);
 

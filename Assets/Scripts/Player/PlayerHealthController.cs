@@ -124,6 +124,10 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
             {
                 OnTakeDamageEvent?.Invoke(shieldDamage);
                 OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+                if (GameEventsManager.Instance != null)
+                {
+                    GameEventsManager.Instance.TriggerPlayerTakeDamage(shieldDamage);
+                }
                 return;
             }
         }
@@ -132,6 +136,10 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
 
         OnTakeDamageEvent?.Invoke(damage);
         OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.TriggerPlayerTakeDamage(damage);
+        }
 
         if (health <= 0)
         {

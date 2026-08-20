@@ -71,6 +71,10 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
     private void Die()
     {
         OnDeath?.Invoke();
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.TriggerEnemyKilled(gameObject);
+        }
 
         orbGenerator.SpawnOrbs();
 
