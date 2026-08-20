@@ -62,6 +62,12 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
         _healthUI.UpdateHealth(health, maxHealth);
 
         damageFeedback.PlayDamageFlash();
+
+        if (GameEventsManager.Instance != null)
+        {
+            GameEventsManager.Instance.TriggerEnemyTakeDamage(finalDamage);
+        }
+
         if (health <= 0)
         {
             Die();

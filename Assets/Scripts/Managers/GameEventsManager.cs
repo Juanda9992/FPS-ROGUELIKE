@@ -12,6 +12,8 @@ public class GameEventsManager : MonoBehaviour
     public event Action<int> OnPlayerTakeDamage;
     public event Action<GameObject> OnEnemyKilled;
     public event Action<GameObject> OnEnemySpawned;
+    public event Action<int> OnEnemyTakeDamage;
+    public event Action OnPlayerDied;
 
     [Header("Debug / State")]
     [SerializeField] private bool _isGameStarted;
@@ -80,5 +82,15 @@ public class GameEventsManager : MonoBehaviour
     public void TriggerEnemySpawned(GameObject enemy)
     {
         OnEnemySpawned?.Invoke(enemy);
+    }
+
+    public void TriggerEnemyTakeDamage(int damage)
+    {
+        OnEnemyTakeDamage?.Invoke(damage);
+    }
+
+    public void TriggerPlayerDeath()
+    {
+        OnPlayerDied?.Invoke();
     }
 }

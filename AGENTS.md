@@ -18,8 +18,9 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
 
 - **Null Safety & Component Checks**:
   - Use `TryGetComponent<T>(out var component)` instead of `GetComponent<T>() != null` where possible for better performance and readability.
-  - Avoid using null checks on components that are assigned in the inspector, these will never be null. Use null checks on components that are not assigned in the inspector and should be checked
+  - Avoid using null checks on components that are assigned in the inspector, these will never be null.
   - Avoid using ternary operators on components that are serialized in the inspector, it makes it harder to read.
+  - Avoid using null check on Singleton pattern components, these will never be null.
 
 - **Bracket use in simple ifs**:
   - Always add double brackets on the if states even if they have only one line of code, I want the style to be consistent
@@ -55,4 +56,4 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
 
 ## 4. Agent Rules
 - **Explain the code with examples**
-  - When you are given a instruction to explain a certian piece of code, always explain it with examples, using mock data to track the values of the variables on the examples.
+  - When you are given a instruction to explain a certian piece of code, always explain it with examples, using mock data to track the values of the variables on the examples, only add explanation if i EXPLICITLY ASKED for it, other wise just provide the code.

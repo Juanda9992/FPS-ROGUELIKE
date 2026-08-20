@@ -181,6 +181,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     private void Die()
     {
         Debug.Log("Jugador ha muerto");
+        GameEventsManager.Instance.TriggerPlayerDeath();
     }
 
     [ContextMenu("Take 20 Damage")]
