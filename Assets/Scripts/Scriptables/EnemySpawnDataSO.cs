@@ -6,6 +6,9 @@ public class EnemySpawnDataSO : ScriptableObject
     [Header("Enemy Prefab")]
     [SerializeField] private GameObject _enemyPrefab;
 
+    [Header("Enemy Stats")]
+    [SerializeField] private EnemyStatsData _enemyStatsData;
+
     [Header("Spawn Settings")]
     [SerializeField] private int _baseWeight = 10;
     [SerializeField] private int _minTimeSecondsToSpawn = 0;
@@ -14,6 +17,11 @@ public class EnemySpawnDataSO : ScriptableObject
     public GameObject EnemyPrefab
     {
         get => _enemyPrefab;
+    }
+
+    public EnemyStatsData EnemyStatsData
+    {
+        get => _enemyStatsData;
     }
 
     public int BaseWeight
