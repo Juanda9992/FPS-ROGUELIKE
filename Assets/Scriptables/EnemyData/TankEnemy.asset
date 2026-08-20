@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 293e228a1b4aea04d8cbe2eb05301808, type: 3}
-  m_Name: BasicEnemyData
+  m_Name: TankEnemy
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 4243679260693873651, guid: 0fb7fe3fbfaeb44488bf8cff6d1d6e7d, type: 3}
+  _enemyPrefab: {fileID: 4243679260693873651, guid: 9ce594f8ecf51d344bcdc84c55f9a04d, type: 3}
   _enemyStatsData:
-    _health: 100
-    _speed: 4
-    _damage: 10
-  _baseWeight: 30
-  _minTimeSecondsToSpawn: 0
+    _health: 150
+    _speed: 2
+    _damage: 8
+  _baseWeight: 10
+  _minTimeSecondsToSpawn: 60
   _weightMultiplierOverTime:
     serializedVersion: 2
     m_Curve:
@@ -26,16 +26,16 @@ MonoBehaviour:
       time: 0
       value: 1
       inSlope: 0
-      outSlope: 0.0016666667
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 600
-      value: 2
+      value: 4
       inSlope: 0.0016666667
-      outSlope: 0
+      outSlope: 0.0016666667
       tangentMode: 0
       weightedMode: 0
       inWeight: 0

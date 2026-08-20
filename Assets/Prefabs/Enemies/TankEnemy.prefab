@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 264867530691204997}
   - component: {fileID: 7705683638852801513}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: TankEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -204,7 +204,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.9471039, y: 1, z: -0.20986626}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9037162103019830217}
@@ -239,7 +239,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b0d0d4a4ee8e8c149a24c99bd96a9952, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -296,6 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af0d4b54faca55840b974e69f7e7cd13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseSpeed: 3
   _speed: 3
   _rotationSpeed: 5
   _rb: {fileID: 0}
@@ -313,10 +314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79858255594d58648a31a3a9b6a2953c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  maxHealth: 100
-  damageFeedback: {fileID: 3555721815750176606}
-  orbGenerator: {fileID: 7958997040790784236}
+  _health: 100
+  _maxHealth: 100
+  _damageFeedback: {fileID: 3555721815750176606}
+  _orbGenerator: {fileID: 7958997040790784236}
   _healthUI: {fileID: 264867530691204997}
   _vulnerabilityPercentage: 1
 --- !u!114 &3555721815750176606
@@ -395,10 +396,10 @@ MonoBehaviour:
   - {fileID: 6054484102385753702, guid: 6e16ad8e13b26d9449c62dc1c08e6d80, type: 3}
   - {fileID: -5184027925999510117, guid: b36b40820abbb1346903046a733bf763, type: 3}
   - {fileID: -5184027925999510117, guid: 48549b89e29363b4e8f572249f52e1ac, type: 3}
-  _minOrbs: 1
-  _maxOrbs: 4
+  _minOrbs: 3
+  _maxOrbs: 8
   _spawnRadius: 0.8
-  _burstForce: 3
+  _burstForce: 5
   _healthSpawnThreshold: 0.6
   _shieldSpawnThreshold: 0.5
   _maxSelectionAttempts: 20
@@ -428,6 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a3fb2bf04b194469103fdc58e1b608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyHealthController: {fileID: 7469619403595506559}
   _enemyFollow: {fileID: 3436559161361006786}
   _enemyDamageOnContact: {fileID: 3439306612756211383}
 --- !u!1 &7936636760464814300

@@ -15,6 +15,7 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
   - Use `[SerializeField] private` for fields exposed to the Unity Inspector rather than public fields.
   - Group inspector settings logically using `[Header("Header Title")]` and `[Tooltip("...")]`.
   - Avoid using Tooltip on fields that are self explanatory (e.g. the name of the field is enough to understand what it does).
+  - Avoid using [FormerlySerializedAs("variableName")] on fields, it is not necessary and makes the code harder to read.
 
 - **Null Safety & Component Checks**:
   - Use `TryGetComponent<T>(out var component)` instead of `GetComponent<T>() != null` where possible for better performance and readability.
