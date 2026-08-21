@@ -91,6 +91,11 @@ public class OrbGenerator : MonoBehaviour
             return;
         }
 
+        if (PlayerHealthController.Instance != null)
+        {
+            _playerHealth = PlayerHealthController.Instance;
+        }
+
         GameObject playerObj = null;
         if (EnemyManager.Instance != null && EnemyManager.Instance.PlayerTransform != null)
         {
@@ -185,10 +190,24 @@ public class OrbGenerator : MonoBehaviour
             }
         }
 
+        bool isShieldUnlocked = _playerHealth != null && _playerHealth.MaxShield > 0;
+
+        for (int i = 0; i < _orbPrefabs.Length; i++)
+        {
+            if (_orbPrefabs[i] != null && _orbPrefabs[i].Type == OrbType.Experience)
+            {
+                return _orbPrefabs[i];
+            }
+        }
+
         for (int i = 0; i < _orbPrefabs.Length; i++)
         {
             if (_orbPrefabs[i] != null)
             {
+                if (_orbPrefabs[i].Type == OrbType.Shield && !isShieldUnlocked)
+                {
+                    continue;
+                }
                 return _orbPrefabs[i];
             }
         }
