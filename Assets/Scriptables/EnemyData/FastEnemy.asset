@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 293e228a1b4aea04d8cbe2eb05301808, type: 3}
   m_Name: FastEnemy
   m_EditorClassIdentifier: 
-  _enemyPrefab: {fileID: 4243679260693873651, guid: 9ce594f8ecf51d344bcdc84c55f9a04d, type: 3}
+  _enemyPrefab: {fileID: 4243679260693873651, guid: 49093f1706658d041b8eb840d0b926a7, type: 3}
   _enemyStatsData:
     _health: 80
     _speed: 6

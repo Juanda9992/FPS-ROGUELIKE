@@ -26,7 +26,7 @@ public class PlayerStatsManager : MonoBehaviour
     }
     public Stat GetStatByName(string statName)
     {
-        return stats.Find(s => s.statName == statName);
+        return stats.Find(s => string.Equals(s.statName, statName, System.StringComparison.OrdinalIgnoreCase));
     }
 
     private void CopyStatsFromContainer()

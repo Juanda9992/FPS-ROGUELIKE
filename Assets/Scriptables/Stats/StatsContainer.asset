@@ -229,3 +229,16 @@ MonoBehaviour:
       flatScalingValues:
       - 0.1
       - 0.2
+  - statName: LIfeSteal
+    displayName: Life Steal
+    BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 2
+      - 3
+      flatScalingValues:
+      - 1
+      - 2

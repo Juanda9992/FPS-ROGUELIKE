@@ -6,6 +6,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     [Header("Health Stats")]
     [SerializeField] private Stat maxHealthStat;
     [SerializeField] private Stat healthRegenStat;
+    [SerializeField] private Stat lifeStealStat;
     [SerializeField] private float health = 100;
 
     [SerializeField] private Stat invulnerabilityTimeStat;
@@ -34,6 +35,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
         if (GameEventsManager.Instance != null)
         {
             GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+            GameEventsManager.Instance.OnEnemyTakeDamage += HandleEnemyTakeDamage;
             if (GameEventsManager.Instance.IsGameStarted)
             {
                 HandleGameStarted();
@@ -50,6 +52,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
         if (GameEventsManager.Instance != null)
         {
             GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+            GameEventsManager.Instance.OnEnemyTakeDamage -= HandleEnemyTakeDamage;
         }
     }
 
@@ -59,6 +62,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
 
         maxHealthStat = PlayerStatsManager.Instance.GetStatByName("Health");
         healthRegenStat = PlayerStatsManager.Instance.GetStatByName("HealthRegen");
+        lifeStealStat = PlayerStatsManager.Instance.GetStatByName("LifeSteal");
         invulnerabilityTimeStat = PlayerStatsManager.Instance.GetStatByName("InvulnerabilityTime");
         shieldStat = PlayerStatsManager.Instance.GetStatByName("Shield");
         shieldRegenStat = PlayerStatsManager.Instance.GetStatByName("ShieldRegen");
@@ -154,13 +158,34 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     public int CurrentShield => Mathf.RoundToInt(currentShield);
     public int MaxShield => shieldStat != null ? Mathf.RoundToInt(shieldStat.Value) : 0;
 
-    public void OnHealthRestored(int amount)
+    private void HandleEnemyTakeDamage(int damage)
     {
+        if (lifeStealStat == null || lifeStealStat.Value <= 0f || damage <= 0 || health <= 0)
+        {
+            return;
+        }
+
+        float healAmount = damage * (lifeStealStat.Value / 100f);
+        RestoreHealth(healAmount);
+    }
+
+    public void RestoreHealth(float amount)
+    {
+        if (amount <= 0f || health <= 0)
+        {
+            return;
+        }
+
         health += amount;
         health = Mathf.Clamp(health, 0, Mathf.RoundToInt(maxHealthStat.Value));
 
-        OnHealthRestoredEvent?.Invoke(amount);
+        OnHealthRestoredEvent?.Invoke(Mathf.RoundToInt(amount));
         OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
+    }
+
+    public void OnHealthRestored(int amount)
+    {
+        RestoreHealth(amount);
     }
 
     public void RestoreShield(int amount)

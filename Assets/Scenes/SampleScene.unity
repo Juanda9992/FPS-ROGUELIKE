@@ -5717,6 +5717,7 @@ MonoBehaviour:
   _enemySpawnDataList:
   - {fileID: 11400000, guid: 8203ec2e924b54b4399cb3b5cb20a1fc, type: 2}
   - {fileID: 11400000, guid: 40bea5517019aa24f92a3326f9ef3efa, type: 2}
+  - {fileID: 11400000, guid: 812975e3ebf73dc4d95e7d722e5b9c80, type: 2}
   _maxActiveEnemies: 500
 --- !u!4 &1428240836
 Transform:
