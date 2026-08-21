@@ -49,7 +49,10 @@ public class UpgradeManager : MonoBehaviour
     {
         upgradeValue = 0f;
 
-        if (stat.upgradeParameters.allowFlatScaling && stat.upgradeParameters.allowPercentageScaling)
+        bool canUsePercentage = stat.upgradeParameters.allowPercentageScaling && stat.Value > 0f;
+        bool canUseFlat = stat.upgradeParameters.allowFlatScaling;
+
+        if (canUseFlat && canUsePercentage)
         {
             // Randomly choose between flat and percentage scaling
             bool useFlatScaling = Random.value > 0.5f;
@@ -65,13 +68,13 @@ public class UpgradeManager : MonoBehaviour
             }
         }
 
-        if (stat.upgradeParameters.allowFlatScaling)
+        if (canUseFlat)
         {
             upgradeValue = stat.upgradeParameters.GetRandomFlatScalingValue();
             return true;
         }
 
-        if (stat.upgradeParameters.allowPercentageScaling)
+        if (canUsePercentage)
         {
             upgradeValue = stat.upgradeParameters.GetRandomPercentageScalingValue();
             return false;
