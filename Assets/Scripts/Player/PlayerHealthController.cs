@@ -7,6 +7,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     [SerializeField] private Stat maxHealthStat;
     [SerializeField] private Stat healthRegenStat;
     [SerializeField] private Stat lifeStealStat;
+    [SerializeField] private Stat armorStat;
     [SerializeField] private float health = 100;
 
     [SerializeField] private Stat invulnerabilityTimeStat;
@@ -63,6 +64,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
         maxHealthStat = PlayerStatsManager.Instance.GetStatByName("Health");
         healthRegenStat = PlayerStatsManager.Instance.GetStatByName("HealthRegen");
         lifeStealStat = PlayerStatsManager.Instance.GetStatByName("LifeSteal");
+        armorStat = PlayerStatsManager.Instance.GetStatByName("Armor");
         invulnerabilityTimeStat = PlayerStatsManager.Instance.GetStatByName("InvulnerabilityTime");
         shieldStat = PlayerStatsManager.Instance.GetStatByName("Shield");
         shieldRegenStat = PlayerStatsManager.Instance.GetStatByName("ShieldRegen");
@@ -117,14 +119,21 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
             return;
         }
 
+        int finalDamage = damage;
+        if (armorStat.Value > 0f)
+        {
+            float reductionMultiplier = Mathf.Clamp01(1f - (armorStat.Value / 100f));
+            finalDamage = Mathf.RoundToInt(damage * reductionMultiplier);
+        }
+
         if (shieldStat.Value > 0)
         {
-            int shieldDamage = Mathf.Min(damage, Mathf.RoundToInt(currentShield));
+            int shieldDamage = Mathf.Min(finalDamage, Mathf.RoundToInt(currentShield));
             currentShield -= shieldDamage;
             OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), Mathf.RoundToInt(shieldStat.Value));
-            damage -= shieldDamage;
+            finalDamage -= shieldDamage;
 
-            if (damage <= 0)
+            if (finalDamage <= 0)
             {
                 OnTakeDamageEvent?.Invoke(shieldDamage);
                 OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
@@ -135,14 +144,14 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
                 return;
             }
         }
-        health -= damage;
+        health -= finalDamage;
         health = Mathf.Clamp(health, 0, Mathf.RoundToInt(maxHealthStat.Value));
 
-        OnTakeDamageEvent?.Invoke(damage);
+        OnTakeDamageEvent?.Invoke(finalDamage);
         OnHealthChanged?.Invoke(Mathf.RoundToInt(health), Mathf.RoundToInt(maxHealthStat.Value));
         if (GameEventsManager.Instance != null)
         {
-            GameEventsManager.Instance.TriggerPlayerTakeDamage(damage);
+            GameEventsManager.Instance.TriggerPlayerTakeDamage(finalDamage);
         }
 
         if (health <= 0)

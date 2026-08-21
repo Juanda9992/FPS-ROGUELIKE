@@ -242,3 +242,16 @@ MonoBehaviour:
       flatScalingValues:
       - 1
       - 2
+  - statName: Armor
+    displayName: Armor
+    BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 2
+      - 3
+      flatScalingValues:
+      - 1
+      - 2
