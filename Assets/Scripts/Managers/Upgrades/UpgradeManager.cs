@@ -119,11 +119,11 @@ public class UpgradeManager : MonoBehaviour
 
     void OnEnable()
     {
-        playerExpManager.OnLevelUp+=_=> GenerateUpgradesAndRerolls();
+        playerExpManager.OnLevelUp += _ => GenerateUpgradesAndRerolls();
     }
     void OnDisable()
     {
-        playerExpManager.OnLevelUp-=_=> GenerateUpgradesAndRerolls();
+        playerExpManager.OnLevelUp -= _ => GenerateUpgradesAndRerolls();
     }
 }
 
@@ -146,6 +146,7 @@ public class UpgradeData : Upgrade
 
     public override void Select()
     {
+        float prevValue = targetStat.Value;
 
         if (usedFlatScaling)
         {
@@ -155,8 +156,17 @@ public class UpgradeData : Upgrade
         {
             targetStat.AddModifier(upgradeValue, ModifierType.Multiplicative);
         }
-        Debug.Log($"Applied upgrade: {upgradeValue} to stat: {targetStat.statName} using {(usedFlatScaling ? "flat" : "percentage")} scaling.");
 
+        if (string.Equals(targetStat.statName, "Shield", System.StringComparison.OrdinalIgnoreCase))
+        {
+            float addedShield = targetStat.Value - prevValue;
+            if (addedShield > 0f && PlayerHealthController.Instance != null)
+            {
+                PlayerHealthController.Instance.RestoreShield(Mathf.RoundToInt(addedShield));
+            }
+        }
+
+        Debug.Log($"Applied upgrade: {upgradeValue} to stat: {targetStat.statName} using {(usedFlatScaling ? "flat" : "percentage")} scaling.");
     }
 }
 // Placeholder for future ability upgrades

@@ -29,7 +29,21 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     public event Action<int, int> OnHealthChanged; // (current, max)
     public event Action<int, int> OnShieldChanged; // (current, max)
 
+    public static PlayerHealthController Instance { get; private set; }
+
     private bool _isGameStarted;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     private void Start()
     {
