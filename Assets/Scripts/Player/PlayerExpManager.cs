@@ -10,6 +10,8 @@ public class PlayerExpManager : MonoBehaviour
     public event Action<int> OnExpChanged;
     public event Action<int> OnLevelUp;
 
+    [SerializeField] private Stat _experienceMultiplierStat;
+
     private void Start()
     {
         if (GameEventsManager.Instance != null)
@@ -36,11 +38,19 @@ public class PlayerExpManager : MonoBehaviour
 
     private void HandleGameStarted()
     {
+        _experienceMultiplierStat = PlayerStatsManager.Instance.GetStatByName("ExperienceMultiplier");
         OnExpChanged?.Invoke(currentExp);
     }
     public void AddExperience(int amount)
     {
-        currentExp += amount;
+        float multiplier = 1f;
+        if (_experienceMultiplierStat != null)
+        {
+            multiplier = _experienceMultiplierStat.Value;
+        }
+
+        int finalExp = Mathf.RoundToInt(amount * multiplier);
+        currentExp += finalExp;
         OnExpChanged?.Invoke(currentExp);
         CheckLevelUp();
     }
