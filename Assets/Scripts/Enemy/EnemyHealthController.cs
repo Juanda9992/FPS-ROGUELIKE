@@ -91,6 +91,12 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
             GameEventsManager.Instance.TriggerEnemyTakeDamage(finalDamage);
         }
 
+        if (DamageNumberManager.Instance != null)
+        {
+            Vector3 spawnPos = transform.position + Vector3.up * 1f;
+            DamageNumberManager.Instance.SpawnDamageNumber(finalDamage, spawnPos);
+        }
+
         if (_health <= 0)
         {
             Die();
