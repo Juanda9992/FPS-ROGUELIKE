@@ -58,3 +58,7 @@ This file contains instructions and guidelines for AI agents (like Antigravity) 
 ## 4. Agent Rules
 - **Explain the code with examples**
   - When you are given a instruction to explain a certian piece of code, always explain it with examples, using mock data to track the values of the variables on the examples, only add explanation if i EXPLICITLY ASKED for it, other wise just provide the code.
+
+## 5. Testing the code
+  **ContextMenu**
+  - Always add a context menu to the managers and systems, that let you tets the functionality of the script. The tests should be very simple and just call the public methods of the script, no need to overcomplicate things, just call the methods and see if they work as expected. The context menu should always test the most important functionality of the script.
