@@ -2145,7 +2145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bdef3d9081a92a4f9f41d21a9018478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeedStat:
+  _movementSpeedStat:
     statName: 
     displayName: 
     BaseValue: 0
@@ -2154,15 +2154,7 @@ MonoBehaviour:
       allowFlatScaling: 0
       percentageScalingValues: []
       flatScalingValues: []
-  runSpeedStat:
-    statName: 
-    displayName: 
-    BaseValue: 0
-    upgradeParameters:
-      allowPercentageScaling: 0
-      allowFlatScaling: 0
-      percentageScalingValues: []
-      flatScalingValues: []
+  _sprintMultiplier: 1.5
   jumpForceStat:
     statName: 
     displayName: 

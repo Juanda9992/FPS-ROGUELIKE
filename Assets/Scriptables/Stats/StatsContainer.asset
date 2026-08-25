@@ -41,8 +41,8 @@ MonoBehaviour:
       - 2
       - 3
       - 5
-  - statName: WalkSpeed
-    displayName: Walk Speed
+  - statName: MovementSpeed
+    displayName: Movement Speed
     BaseValue: 5
     upgradeParameters:
       allowPercentageScaling: 1
@@ -72,17 +72,6 @@ MonoBehaviour:
       percentageScalingValues: []
       flatScalingValues:
       - 1
-  - statName: RunSpeed
-    displayName: Run Speed
-    BaseValue: 9
-    upgradeParameters:
-      allowPercentageScaling: 1
-      allowFlatScaling: 0
-      percentageScalingValues:
-      - 1
-      - 2
-      - 3
-      flatScalingValues: []
   - statName: DamageMultiplier
     displayName: Damage Multiplier
     BaseValue: 1

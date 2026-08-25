@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class FPSController : MonoBehaviour, IPusheable
 {
     [Header("Movimiento")]
-    [SerializeField] public Stat walkSpeedStat;
-    [SerializeField] public Stat runSpeedStat;
+    [SerializeField] private Stat _movementSpeedStat;
+    [SerializeField] private float _sprintMultiplier = 1.5f;
 
     [Header("Salto")]
     [SerializeField] private Stat jumpForceStat;
@@ -102,8 +102,7 @@ public class FPSController : MonoBehaviour, IPusheable
         _isGameStarted = true;
         CursorManager.SetCursorVisible(false);
 
-        walkSpeedStat = PlayerStatsManager.Instance.GetStatByName("WalkSpeed");
-        runSpeedStat = PlayerStatsManager.Instance.GetStatByName("RunSpeed");
+        _movementSpeedStat = PlayerStatsManager.Instance.GetStatByName("MovementSpeed");
 
         jumpForceStat = PlayerStatsManager.Instance.GetStatByName("JumpHeight");
         jumpCountStat = PlayerStatsManager.Instance.GetStatByName("JumpCount");
@@ -178,16 +177,16 @@ public class FPSController : MonoBehaviour, IPusheable
 
     private void Move()
     {
-        if (walkSpeedStat == null || runSpeedStat == null)
+        if (_movementSpeedStat == null)
         {
             return;
         }
 
-        float speed = walkSpeedStat.Value;
+        float speed = _movementSpeedStat.Value;
 
         if (isRunning)
         {
-            speed = runSpeedStat.Value;
+            speed *= _sprintMultiplier;
         }
 
         Vector3 moveDir = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized;
