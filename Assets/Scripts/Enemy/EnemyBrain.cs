@@ -22,6 +22,24 @@ public class EnemyBrain : MonoBehaviour
         get => _enemyDamageOnContact;
     }
 
+    public void InitializeStats(int health, float speed, int damage)
+    {
+        if (_enemyHealthController != null)
+        {
+            _enemyHealthController.InitializeHealth(health);
+        }
+
+        if (_enemyFollow != null)
+        {
+            _enemyFollow.InitializeSpeed(speed);
+        }
+
+        if (_enemyDamageOnContact != null)
+        {
+            _enemyDamageOnContact.InitializeDamage(damage);
+        }
+    }
+
     public void InitializeStats(EnemyStatsData statsData)
     {
         if (statsData == null)
@@ -29,20 +47,7 @@ public class EnemyBrain : MonoBehaviour
             return;
         }
 
-        if (_enemyHealthController != null)
-        {
-            _enemyHealthController.InitializeHealth(statsData.Health);
-        }
-
-        if (_enemyFollow != null)
-        {
-            _enemyFollow.InitializeSpeed(statsData.Speed);
-        }
-
-        if (_enemyDamageOnContact != null)
-        {
-            _enemyDamageOnContact.InitializeDamage(statsData.Damage);
-        }
+        InitializeStats(statsData.Health, statsData.Speed, statsData.Damage);
     }
 
     private void OnDisable()

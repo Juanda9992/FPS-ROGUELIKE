@@ -12,6 +12,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float _baseSpawnInterval = 4f;
     [SerializeField] private float _minSpawnInterval = 0.5f;
     [SerializeField] private AnimationCurve _spawnRateProgression = AnimationCurve.EaseInOut(0f, 1f, 600f, 0.25f);
+    [SerializeField] private AnimationCurve _enemyHealthOverTime = AnimationCurve.Linear(0f, 1f, 600f, 2f);
+    [SerializeField] private AnimationCurve _enemyDamageOverTime = AnimationCurve.Linear(0f, 1f, 600f, 2f);
     [SerializeField] private Vector2Int _packSizeRange = new Vector2Int(1, 3);
 
     [Header("Enemy Pool & Limits")]
@@ -112,7 +114,14 @@ public class EnemySpawner : MonoBehaviour
         {
             if (spawnData.EnemyStatsData != null)
             {
-                enemyBrain.InitializeStats(spawnData.EnemyStatsData);
+                float totalSeconds = TimeManager.Instance.TotalSeconds;
+                float healthMultiplier = _enemyHealthOverTime.Evaluate(totalSeconds);
+                float damageMultiplier = _enemyDamageOverTime.Evaluate(totalSeconds);
+
+                int scaledHealth = Mathf.RoundToInt(spawnData.EnemyStatsData.Health * healthMultiplier);
+                int scaledDamage = Mathf.RoundToInt(spawnData.EnemyStatsData.Damage * damageMultiplier);
+
+                enemyBrain.InitializeStats(scaledHealth, spawnData.EnemyStatsData.Speed, scaledDamage);
             }
 
             if (EnemyManager.Instance != null)
@@ -186,23 +195,5 @@ public class EnemySpawner : MonoBehaviour
     private void HandleEnemyDeath()
     {
         _currentActiveEnemies = Mathf.Max(0, _currentActiveEnemies - 1);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(_playerTransform.position, _minSpawnRadius);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(_playerTransform.position, _maxSpawnRadius);
-    }
-
-    [ContextMenu("Spawn 500 Enemy")]
-    private void SpawnEnemyDebug()
-    {
-        for (int i = 0; i < 500; i++)
-        {
-            SpawnSingleEnemy();
-        }
     }
 }
