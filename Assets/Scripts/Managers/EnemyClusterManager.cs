@@ -39,6 +39,7 @@ public class EnemyClusterManager : MonoBehaviour
     private void HandleMinuteElapsed(int minute)
     {
         SpawnCluster();
+        GameScreenAdviceManager.Instance.SetMessage($"A horde of enemies is coming!", Color.red);
     }
 
     public void SpawnCluster()

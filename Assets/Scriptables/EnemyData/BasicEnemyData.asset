@@ -17,7 +17,7 @@ MonoBehaviour:
     _health: 100
     _speed: 4
     _damage: 10
-  _baseWeight: 30
+  _baseWeight: 40
   _minTimeSecondsToSpawn: 0
   _weightMultiplierOverTime:
     serializedVersion: 2
