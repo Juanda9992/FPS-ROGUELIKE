@@ -5702,6 +5702,7 @@ GameObject:
   - component: {fileID: 1428240836}
   - component: {fileID: 1428240833}
   - component: {fileID: 1428240837}
+  - component: {fileID: 1428240838}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -5724,7 +5725,7 @@ MonoBehaviour:
   _playerTransform: {fileID: 671077418}
   _minSpawnRadius: 15
   _maxSpawnRadius: 25
-  _baseSpawnInterval: 4
+  _baseSpawnInterval: 3.5
   _minSpawnInterval: 0.4
   _spawnRateProgression:
     serializedVersion: 2
@@ -5750,12 +5751,60 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _enemyHealthOverTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 900
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _enemyDamageOverTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 900
+      value: 2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _packSizeRange: {x: 1, y: 3}
   _enemySpawnDataList:
   - {fileID: 11400000, guid: 8203ec2e924b54b4399cb3b5cb20a1fc, type: 2}
   - {fileID: 11400000, guid: 40bea5517019aa24f92a3326f9ef3efa, type: 2}
   - {fileID: 11400000, guid: 812975e3ebf73dc4d95e7d722e5b9c80, type: 2}
-  _maxActiveEnemies: 500
+  _maxActiveEnemies: 700
 --- !u!4 &1428240836
 Transform:
   m_ObjectHideFlags: 0
@@ -5785,6 +5834,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTransform: {fileID: 671077418}
   _playerHealth: {fileID: 671077420}
+--- !u!114 &1428240838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428240832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51d1156c56eecea49bc30fef03357b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemySpawner: {fileID: 1428240833}
+  _minClusterSize: 25
+  _maxClusterSize: 50
+  _clusterSizeMultiplier:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0.0025
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 600
+      value: 2.5
+      inSlope: 0.0025
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _ignoreMaxActiveEnemies: 1
 --- !u!1 &1433161961
 GameObject:
   m_ObjectHideFlags: 0

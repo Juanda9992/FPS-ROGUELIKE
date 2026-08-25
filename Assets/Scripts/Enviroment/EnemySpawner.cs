@@ -20,10 +20,34 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private List<EnemySpawnDataSO> _enemySpawnDataList = new List<EnemySpawnDataSO>();
     [SerializeField] private int _maxActiveEnemies = 50;
 
+    public static EnemySpawner Instance { get; private set; }
+
     private float _spawnTimer;
     private float _currentInterval;
     private int _currentActiveEnemies;
     private bool _isGameStarted;
+
+    public int CurrentActiveEnemies
+    {
+        get => _currentActiveEnemies;
+    }
+
+    public int MaxActiveEnemies
+    {
+        get => _maxActiveEnemies;
+    }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -86,10 +110,14 @@ public class EnemySpawner : MonoBehaviour
         }
 
         int clusterSize = Random.Range(_packSizeRange.x, _packSizeRange.y + 1);
+        SpawnCluster(clusterSize, false);
+    }
 
-        for (int i = 0; i < clusterSize; i++)
+    public void SpawnCluster(int count, bool ignoreMaxLimit = false)
+    {
+        for (int i = 0; i < count; i++)
         {
-            if (_currentActiveEnemies >= _maxActiveEnemies)
+            if (!ignoreMaxLimit && _currentActiveEnemies >= _maxActiveEnemies)
             {
                 break;
             }
@@ -98,7 +126,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private void SpawnSingleEnemy()
+    public void SpawnSingleEnemy()
     {
         EnemySpawnDataSO spawnData = SelectEnemySpawnData();
         if (spawnData == null || spawnData.EnemyPrefab == null)
