@@ -34,6 +34,7 @@ public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
     public void InitializeDamage(int damage)
     {
         _damage = damage;
+        _attackTimer = _attackRate;
     }
 
     public void TickDamage(float deltaTime, Vector3 playerPosition, PlayerHealthController playerHealth)
