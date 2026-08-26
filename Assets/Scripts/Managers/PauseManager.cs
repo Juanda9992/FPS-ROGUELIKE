@@ -1,19 +1,18 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
 
 public class PauseManager : MonoBehaviour
 {
     public static PauseManager Instance { get; private set; }
     public event Action<bool> OnPauseChanged;
+    
     private List<IPausable> _pausables;
     private bool _isPaused;
+    private PlayerInputActions _input;
 
-    public bool IsPaused
-    {
-        get => _isPaused;
-    }
+    public bool IsPaused => _isPaused;
 
     private void Awake()
     {
@@ -21,6 +20,9 @@ public class PauseManager : MonoBehaviour
         {
             Instance = this;
             _pausables = new List<IPausable>();
+            
+            _input = new PlayerInputActions();
+            _input.Player.Pause.performed += OnPauseInputPerformed;
         }
         else
         {
@@ -28,17 +30,39 @@ public class PauseManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void OnEnable()
+    {
+        if (_input != null)
+        {
+            _input.Enable();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_input != null)
+        {
+            _input.Disable();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (_input != null)
+        {
+            _input.Player.Pause.performed -= OnPauseInputPerformed;
+            _input.Dispose();
+        }
+    }
+
+    private void OnPauseInputPerformed(InputAction.CallbackContext context)
     {
         if (GameEventsManager.Instance != null && !GameEventsManager.Instance.IsGameStarted)
         {
             return;
         }
 
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            TogglePause();
-        }
+        TogglePause();
     }
 
     public void Register(IPausable pausable)
@@ -85,5 +109,11 @@ public class PauseManager : MonoBehaviour
         }
 
         OnPauseChanged?.Invoke(_isPaused);
+    }
+
+    [ContextMenu("Test Toggle Pause")]
+    private void TestTogglePause()
+    {
+        TogglePause();
     }
 }

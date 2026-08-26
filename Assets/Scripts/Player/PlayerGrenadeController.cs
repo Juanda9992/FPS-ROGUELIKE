@@ -2,73 +2,68 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerGrenadeController : MonoBehaviour
+public class PlayerGrenadeController : MonoBehaviour, IPausable
 {
     [Header("Grenade Settings")]
-    [SerializeField] private GrenadeBase grenadePrefab;
-    [SerializeField] private Transform throwPoint;
-    [SerializeField] private float throwForce = 15f;
-    [SerializeField] private float upwardForce = 2f;
-    [SerializeField] private float baseCooldown = 5f;
+    [SerializeField] private GrenadeBase _grenadePrefab;
+    [SerializeField] private Transform _throwPoint;
+    [SerializeField] private float _throwForce = 15f;
+    [SerializeField] private float _upwardForce = 2f;
+    [SerializeField] private float _baseCooldown = 5f;
 
     [Header("Ammo Settings")]
-    [SerializeField] private int maxAmmo = 3;
-    [SerializeField] private int currentAmmo;
+    [SerializeField] private int _maxAmmo = 3;
+    [SerializeField] private int _currentAmmo;
 
     [Header("PlayerStatsManager Integration")]
-    [SerializeField] private string damageStatName = "GrenadeDamageMultiplier";
-    [SerializeField] private string radiusStatName = "GrenadeRadiusMultiplier";
-    [SerializeField] private string cooldownStatName = "GrenadeCooldownMultiplier";
+    [SerializeField] private string _damageStatName = "GrenadeDamageMultiplier";
+    [SerializeField] private string _radiusStatName = "GrenadeRadiusMultiplier";
+    [SerializeField] private string _cooldownStatName = "GrenadeCooldownMultiplier";
 
-    private PlayerInputActions input;
-    private float lastThrowTime = -999f;
+    private PlayerInputActions _input;
+    private float _lastThrowTime = -999f;
 
     // Events for UI / Systems
     public event Action<int> OnGrenadeThrown;
     public event Action<float, float> OnCooldownChanged; // (remainingTime, totalCooldown)
 
-    public int CurrentAmmo => currentAmmo;
-    public int MaxAmmo => maxAmmo;
-    public bool IsAmmoFull => currentAmmo >= maxAmmo;
+    public int CurrentAmmo => _currentAmmo;
+    public int MaxAmmo => _maxAmmo;
+    public bool IsAmmoFull => _currentAmmo >= _maxAmmo;
 
-    public float CurrentCooldown => baseCooldown / cooldownMultiplierStat.Value;
-    public bool IsOnCooldown => Time.time < lastThrowTime + CurrentCooldown;
-    public float RemainingCooldown => Mathf.Max(0f, (lastThrowTime + CurrentCooldown) - Time.time);
+    public float CurrentCooldown => _baseCooldown / (_cooldownMultiplierStat != null ? _cooldownMultiplierStat.Value : 1f);
+    public bool IsOnCooldown => Time.time < _lastThrowTime + CurrentCooldown;
+    public float RemainingCooldown => Mathf.Max(0f, (_lastThrowTime + CurrentCooldown) - Time.time);
 
-    private Stat damageMultiplierStat;
-    private Stat radiusMultiplierStat;
-    private Stat cooldownMultiplierStat;
-    private bool wasOnCooldown;
+    private Stat _damageMultiplierStat;
+    private Stat _radiusMultiplierStat;
+    private Stat _cooldownMultiplierStat;
+    private bool _wasOnCooldown;
+    private bool _isGameStarted;
 
     private void Awake()
     {
-        input = new PlayerInputActions();
-        input.Player.Grenade.performed += OnGrenadeInputPerformed;
+        _input = new PlayerInputActions();
+        _input.Player.Grenade.performed += OnGrenadeInputPerformed;
     }
 
     private void OnEnable()
     {
-        input.Enable();
+        PauseManager.Instance.OnPauseChanged += OnPauseChanged;
+
+        _input.Enable();
     }
 
     private void OnDisable()
     {
-        input.Disable();
+        PauseManager.Instance.OnPauseChanged -= OnPauseChanged;
+        _input.Disable();
     }
-
-    private bool _isGameStarted;
 
     private void Start()
     {
-        if (GameEventsManager.Instance != null)
-        {
-            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
-            if (GameEventsManager.Instance.IsGameStarted)
-            {
-                HandleGameStarted();
-            }
-        }
-        else
+        GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+        if (GameEventsManager.Instance.IsGameStarted)
         {
             HandleGameStarted();
         }
@@ -76,17 +71,39 @@ public class PlayerGrenadeController : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (GameEventsManager.Instance != null)
+        GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        _input.Dispose();
+    }
+
+    #region Pause And Resume Methods
+    private void OnPauseChanged(bool isPaused)
+    {
+        if (isPaused)
         {
-            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+            OnPause();
+        }
+        else
+        {
+            OnResume();
         }
     }
+
+    public void OnPause()
+    {
+        _input.Player.Disable();
+    }
+
+    public void OnResume()
+    {
+        _input.Player.Enable();
+    }
+    #endregion
 
     private void HandleGameStarted()
     {
         _isGameStarted = true;
-        currentAmmo = maxAmmo;
-        OnGrenadeThrown?.Invoke(currentAmmo);
+        _currentAmmo = _maxAmmo;
+        OnGrenadeThrown?.Invoke(_currentAmmo);
         GetStats();
     }
 
@@ -99,28 +116,29 @@ public class PlayerGrenadeController : MonoBehaviour
 
         if (IsOnCooldown)
         {
-            wasOnCooldown = true;
+            _wasOnCooldown = true;
             OnCooldownChanged?.Invoke(RemainingCooldown, CurrentCooldown);
         }
-        else if (wasOnCooldown)
+        else if (_wasOnCooldown)
         {
-            wasOnCooldown = false;
+            _wasOnCooldown = false;
             OnCooldownChanged?.Invoke(0f, CurrentCooldown);
         }
     }
 
     public void AddGrenade(int amount)
     {
-        currentAmmo = Mathf.Min(maxAmmo, currentAmmo + amount);
-        OnGrenadeThrown?.Invoke(currentAmmo);
+        _currentAmmo = Mathf.Min(_maxAmmo, _currentAmmo + amount);
+        OnGrenadeThrown?.Invoke(_currentAmmo);
     }
 
     public void GetStats()
     {
-        damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName(damageStatName);
-        radiusMultiplierStat = PlayerStatsManager.Instance.GetStatByName(radiusStatName);
-        cooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName(cooldownStatName);
+        _damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName(_damageStatName);
+        _radiusMultiplierStat = PlayerStatsManager.Instance.GetStatByName(_radiusStatName);
+        _cooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName(_cooldownStatName);
     }
+
     private void OnGrenadeInputPerformed(InputAction.CallbackContext context)
     {
         TryThrowGrenade();
@@ -132,41 +150,51 @@ public class PlayerGrenadeController : MonoBehaviour
         {
             return false;
         }
+
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused)
+        {
+            return false;
+        }
+
         if (IsOnCooldown)
         {
             Debug.Log($"[PlayerGrenadeController] Grenade on cooldown! Remaining: {RemainingCooldown:F1}s");
             return false;
         }
 
-        if (currentAmmo <= 0)
+        if (_currentAmmo <= 0)
         {
             Debug.Log($"[PlayerGrenadeController] No grenades left!");
             return false;
         }
+
         ThrowGrenade();
         return true;
     }
 
     private void ThrowGrenade()
     {
-        lastThrowTime = Time.time;
-        Vector3 spawnPos = throwPoint.position;
-        Quaternion spawnRot = throwPoint.rotation;
-        GrenadeBase grenadeInstance = Instantiate(grenadePrefab, spawnPos, spawnRot);
+        _lastThrowTime = Time.time;
+        Vector3 spawnPos = _throwPoint.position;
+        Quaternion spawnRot = _throwPoint.rotation;
+        GrenadeBase grenadeInstance = Instantiate(_grenadePrefab, spawnPos, spawnRot);
+
+        float dmgMult = _damageMultiplierStat != null ? _damageMultiplierStat.Value : 1f;
+        float radMult = _radiusMultiplierStat != null ? _radiusMultiplierStat.Value : 1f;
 
         // Pass parameterized stats to the grenade instance
-        grenadeInstance.Initialize(damageMultiplierStat.Value, radiusMultiplierStat.Value);
+        grenadeInstance.Initialize(dmgMult, radMult);
 
         // Apply impulse force
-        Vector3 throwDirection = throwPoint.forward;
-        Vector3 finalForce = (throwDirection * throwForce) + (Vector3.up * upwardForce);
+        Vector3 throwDirection = _throwPoint.forward;
+        Vector3 finalForce = (throwDirection * _throwForce) + (Vector3.up * _upwardForce);
 
         if (grenadeInstance.TryGetComponent<Rigidbody>(out var rb))
         {
             rb.AddForce(finalForce, ForceMode.Impulse);
         }
 
-        currentAmmo--;
-        OnGrenadeThrown?.Invoke(currentAmmo);
+        _currentAmmo--;
+        OnGrenadeThrown?.Invoke(_currentAmmo);
     }
 }

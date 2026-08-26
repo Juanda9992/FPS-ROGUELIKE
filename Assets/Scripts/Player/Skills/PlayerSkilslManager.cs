@@ -1,37 +1,52 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlayerSkillsManager : MonoBehaviour
+public class PlayerSkillsManager : MonoBehaviour, IPausable
 {
-    [SerializeField] private Stat skillCooldownMultiplierStat;
-    [SerializeField] private int maxSlots = 3;
-    [Header("Skill Slots")]
-    public SkillSlot[] slots;
+    [Header("Settings")]
+    [SerializeField] private Stat _skillCooldownMultiplierStat;
+    [SerializeField] private int _maxSlots = 3;
 
-    [SerializeField] private SkillUIManager skillUIManager;
+    [Header("Skill Slots")]
+    [SerializeField] private SkillSlot[] _slots;
+    [SerializeField] private SkillUIManager _skillUIManager;
+
+    private PlayerInputActions _input;
+    private bool _isGameStarted;
+
+    public SkillSlot[] Slots => _slots;
 
     private void Awake()
     {
-        slots = new SkillSlot[maxSlots];
+        _slots = new SkillSlot[_maxSlots];
 
-        for (int i = 0; i < maxSlots; i++)
+        for (int i = 0; i < _maxSlots; i++)
         {
-            slots[i] = new SkillSlot();
+            _slots[i] = new SkillSlot();
         }
+
+        _input = new PlayerInputActions();
+        _input.Player.Skill1.performed += _ => TryUseSkill(0);
+        _input.Player.Skill2.performed += _ => TryUseSkill(1);
+        _input.Player.Skill3.performed += _ => TryUseSkill(2);
     }
 
-    private bool _isGameStarted;
+    private void OnEnable()
+    {
+        PauseManager.Instance.OnPauseChanged += OnPauseChanged;
+        _input.Enable();
+    }
+
+    private void OnDisable()
+    {
+        PauseManager.Instance.OnPauseChanged -= OnPauseChanged;
+        _input.Disable();
+    }
 
     private void Start()
     {
-        if (GameEventsManager.Instance != null)
-        {
-            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
-            if (GameEventsManager.Instance.IsGameStarted)
-            {
-                HandleGameStarted();
-            }
-        }
-        else
+        GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+        if (GameEventsManager.Instance.IsGameStarted)
         {
             HandleGameStarted();
         }
@@ -39,21 +54,54 @@ public class PlayerSkillsManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (GameEventsManager.Instance != null)
+        GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        _input.Dispose();
+    }
+
+    #region Pause And Resume Methods
+    private void OnPauseChanged(bool isPaused)
+    {
+        if (isPaused)
         {
-            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+            OnPause();
+        }
+        else
+        {
+            OnResume();
         }
     }
+
+    public void OnPause()
+    {
+        if (_input != null)
+        {
+            _input.Player.Disable();
+        }
+    }
+
+    public void OnResume()
+    {
+        if (_input != null)
+        {
+            _input.Player.Enable();
+        }
+    }
+    #endregion
 
     private void HandleGameStarted()
     {
         _isGameStarted = true;
-        skillCooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("CooldownMultiplier");
+        _skillCooldownMultiplierStat = PlayerStatsManager.Instance.GetStatByName("CooldownMultiplier");
     }
 
     public bool CanAddItem()
     {
-        foreach (var slot in slots)
+        if (_slots == null)
+        {
+            return false;
+        }
+
+        foreach (var slot in _slots)
         {
             if (!slot.HasSkill)
             {
@@ -81,15 +129,15 @@ public class PlayerSkillsManager : MonoBehaviour
             return false;
         }
 
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < _slots.Length; i++)
         {
-            if (!slots[i].HasSkill)
+            if (!_slots[i].HasSkill)
             {
                 Debug.Log($"Adding skill {instance.Data.skillName} to slot {i}");
-                slots[i].SetSkill(instance);
-                if (skillUIManager != null)
+                _slots[i].SetSkill(instance);
+                if (_skillUIManager != null)
                 {
-                    skillUIManager.TurnSkillSlotOn(i, instance);
+                    _skillUIManager.TurnSkillSlotOn(i, instance);
                 }
                 return true;
             }
@@ -97,49 +145,34 @@ public class PlayerSkillsManager : MonoBehaviour
         return false;
     }
 
-    private void Update()
-    {
-        HandleInput();
-    }
-
-    private void HandleInput()
+    public void TryUseSkill(int index)
     {
         if (!_isGameStarted)
         {
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            TryUseSkill(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            TryUseSkill(1);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            TryUseSkill(2);
-        }
-    }
 
-    private void TryUseSkill(int index)
-    {
-        if (slots == null || index < 0 || index >= slots.Length)
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused)
         {
             return;
         }
 
-        if (!slots[index].CanUse())
+        if (_slots == null || index < 0 || index >= _slots.Length)
+        {
+            return;
+        }
+
+        if (!_slots[index].CanUse())
         {
             Debug.Log($"Skill in slot {index} is on cooldown or not assigned.");
             return;
         }
 
-        if (slots[index].Use(gameObject))
+        if (_slots[index].Use(gameObject))
         {
-            if (skillUIManager != null)
+            if (_skillUIManager != null)
             {
-                skillUIManager.TriggerCooldown(index);
+                _skillUIManager.TriggerCooldown(index);
             }
         }
     }
@@ -148,9 +181,10 @@ public class PlayerSkillsManager : MonoBehaviour
 [System.Serializable]
 public class SkillSlot
 {
-    public SkillInstance skillInstance;
+    [SerializeField] private SkillInstance _skillInstance;
 
-    public bool HasSkill => skillInstance != null && skillInstance.Data != null;
+    public SkillInstance SkillInstance => _skillInstance;
+    public bool HasSkill => _skillInstance != null && _skillInstance.Data != null;
 
     public bool CanUse()
     {
@@ -158,7 +192,7 @@ public class SkillSlot
         {
             return false;
         }
-        return !skillInstance.IsOnCooldown();
+        return !_skillInstance.IsOnCooldown();
     }
 
     public bool Use(GameObject owner)
@@ -168,16 +202,16 @@ public class SkillSlot
             return false;
         }
 
-        return skillInstance.TryActivate(owner);
+        return _skillInstance.TryActivate(owner);
     }
 
     public void SetSkill(SkillInstance newInstance)
     {
-        skillInstance = newInstance;
+        _skillInstance = newInstance;
     }
 
     public void Clear()
     {
-        skillInstance = null;
+        _skillInstance = null;
     }
 }

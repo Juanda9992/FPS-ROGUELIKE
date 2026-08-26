@@ -27,7 +27,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     private bool isReloading = false;
     private bool isShooting = false;
 
-    private PlayerInputActions input;
+    private PlayerInputActions _input;
 
     // Events
     public event Action OnShoot;
@@ -37,27 +37,31 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void Awake()
     {
-        input = new PlayerInputActions();
+        _input = new PlayerInputActions();
 
-        input.Player.Shoot.performed += _ => isShooting = true;
-        input.Player.Shoot.canceled += _ => isShooting = false;
+        _input.Player.Shoot.performed += _ => isShooting = true;
+        _input.Player.Shoot.canceled += _ => isShooting = false;
 
-        input.Player.Reload.performed += _ => TryReload();
+        _input.Player.Reload.performed += _ => TryReload();
 
-        input.Player.ChangeWeapon.performed += ctx => HandleScrollInput(ctx.ReadValue<float>());
+        _input.Player.ChangeWeapon.performed += ctx => HandleScrollInput(ctx.ReadValue<float>());
     }
 
     private void OnEnable()
     {
         PauseManager.Instance.OnPauseChanged += OnPauseChanged;
-        input.Enable();
+
+        _input.Enable();
     }
 
     private void OnDisable()
     {
         PauseManager.Instance.OnPauseChanged -= OnPauseChanged;
-        input.Disable();
+
+        _input.Disable();
     }
+
+
     #region Pause And Resume Methods
     private void OnPauseChanged(bool isPaused)
     {
@@ -75,12 +79,18 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     {
         isShooting = false;
         isReloading = false;
-        input.Player.Disable();
+        if (_input != null)
+        {
+            _input.Player.Disable();
+        }
     }
 
     public void OnResume()
     {
-        input.Player.Enable();
+        if (_input != null)
+        {
+            _input.Player.Enable();
+        }
     }
     #endregion
 
@@ -88,15 +98,9 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void Start()
     {
-        if (GameEventsManager.Instance != null)
-        {
-            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
-            if (GameEventsManager.Instance.IsGameStarted)
-            {
-                HandleGameStarted();
-            }
-        }
-        else
+
+        GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+        if (GameEventsManager.Instance.IsGameStarted)
         {
             HandleGameStarted();
         }
@@ -104,10 +108,8 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void OnDestroy()
     {
-        if (GameEventsManager.Instance != null)
-        {
-            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
-        }
+        GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        _input.Dispose();
     }
 
     private void HandleGameStarted()
@@ -224,9 +226,10 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
         currentWeapon.DecreaseAmmo(1);
         NotifyAmmoChanged();
 
-
-        _recoilController.ApplyRecoil(currentWeapon.weaponData);
-
+        if (_recoilController != null)
+        {
+            _recoilController.ApplyRecoil(currentWeapon.weaponData);
+        }
 
         if (playerCamera != null)
         {
@@ -252,10 +255,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
         }
 
         OnShoot?.Invoke();
-        if (GameEventsManager.Instance != null)
-        {
-            GameEventsManager.Instance.TriggerPlayerShot();
-        }
+        GameEventsManager.Instance.TriggerPlayerShot();
     }
 
     private void TryReload()
@@ -276,10 +276,7 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     {
         isReloading = true;
         OnReload?.Invoke();
-        if (GameEventsManager.Instance != null)
-        {
-            GameEventsManager.Instance.TriggerPlayerReload();
-        }
+        GameEventsManager.Instance.TriggerPlayerReload();
         float reloadDuration = currentWeapon.reloadTime / reloadSpeedStat.Value;
         yield return new WaitForSeconds(reloadDuration);
 

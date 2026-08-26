@@ -9,92 +9,81 @@ public class FPSController : MonoBehaviour, IPusheable
     [SerializeField] private float _sprintMultiplier = 1.5f;
 
     [Header("Salto")]
-    [SerializeField] private Stat jumpForceStat;
-    [SerializeField] private Stat jumpCountStat;
-    private int currentJumpCount;
-    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private Stat _jumpForceStat;
+    [SerializeField] private Stat _jumpCountStat;
+    private int _currentJumpCount;
+    [SerializeField] private float _gravity = -9.81f;
 
     [Header("Ground Check")]
-    [SerializeField] private float groundCheckDistance = 1.25f;
-    [SerializeField] private float groundCheckRadius = 0.3f;
-    [SerializeField] private LayerMask groundMask = ~0;
-    private bool isGrounded;
+    [SerializeField] private float _groundCheckDistance = 1.25f;
+    [SerializeField] private float _groundCheckRadius = 0.3f;
+    [SerializeField] private LayerMask _groundMask = ~0;
+    private bool _isGrounded;
 
     [Header("Cámara")]
     [SerializeField] public Transform cameraPivot;
     [SerializeField] public float mouseSensitivity = 100f;
 
-    private Rigidbody rb;
-    private PlayerInputActions input;
+    private Rigidbody _rb;
+    private PlayerInputActions _input;
 
-    private Vector2 moveInput;
-    private Vector2 lookInput;
+    private Vector2 _moveInput;
+    private Vector2 _lookInput;
 
-    private float xRotation;
-    private bool isRunning;
+    private float _xRotation;
+    private bool _isRunning;
     private bool _isGameStarted;
 
-    public bool IsGrounded => isGrounded;
-    public bool IsRunning => isRunning;
-    public bool IsMoving => moveInput.sqrMagnitude > 0.01f;
-    public Vector2 MoveInput => moveInput;
-    public Vector3 Velocity => rb != null ? rb.velocity : Vector3.zero;
+    public bool IsGrounded => _isGrounded;
+    public bool IsRunning => _isRunning;
+    public bool IsMoving => _moveInput.sqrMagnitude > 0.01f;
+    public Vector2 MoveInput => _moveInput;
+    public Vector3 Velocity => _rb != null ? _rb.velocity : Vector3.zero;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
-        input = new PlayerInputActions();
+        _rb = GetComponent<Rigidbody>();
+        _rb.freezeRotation = true;
+        _input = new PlayerInputActions();
 
         // INPUTS
-        input.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        input.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+        _input.Player.Move.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
+        _input.Player.Move.canceled += ctx => _moveInput = Vector2.zero;
 
-        input.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
-        input.Player.Look.canceled += ctx => lookInput = Vector2.zero;
+        _input.Player.Look.performed += ctx => _lookInput = ctx.ReadValue<Vector2>();
+        _input.Player.Look.canceled += ctx => _lookInput = Vector2.zero;
 
-        input.Player.Run.performed += _ => isRunning = true;
-        input.Player.Run.canceled += _ => isRunning = false;
+        _input.Player.Run.performed += _ => _isRunning = true;
+        _input.Player.Run.canceled += _ => _isRunning = false;
 
-        input.Player.Jump.performed += _ => Jump();
+        _input.Player.Jump.performed += _ => Jump();
     }
 
     private void OnEnable()
     {
-        input.Enable();
+        _input.Enable();
     }
 
     private void OnDisable()
     {
-        input.Disable();
+        _input.Disable();
     }
 
     private void Start()
     {
-        if (GameEventsManager.Instance != null)
-        {
-            GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
-            if (GameEventsManager.Instance.IsGameStarted)
-            {
-                HandleGameStarted();
-            }
-            else
-            {
-                CursorManager.SetCursorVisible(true);
-            }
-        }
-        else
+        GameEventsManager.Instance.OnGameStarted += HandleGameStarted;
+        if (GameEventsManager.Instance.IsGameStarted)
         {
             HandleGameStarted();
         }
+
+        CursorManager.SetCursorVisible(true);
     }
 
     private void OnDestroy()
     {
-        if (GameEventsManager.Instance != null)
-        {
-            GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
-        }
+        GameEventsManager.Instance.OnGameStarted -= HandleGameStarted;
+        _input.Dispose();
     }
 
     private void HandleGameStarted()
@@ -104,12 +93,12 @@ public class FPSController : MonoBehaviour, IPusheable
 
         _movementSpeedStat = PlayerStatsManager.Instance.GetStatByName("MovementSpeed");
 
-        jumpForceStat = PlayerStatsManager.Instance.GetStatByName("JumpHeight");
-        jumpCountStat = PlayerStatsManager.Instance.GetStatByName("JumpCount");
+        _jumpForceStat = PlayerStatsManager.Instance.GetStatByName("JumpHeight");
+        _jumpCountStat = PlayerStatsManager.Instance.GetStatByName("JumpCount");
 
-        if (jumpCountStat != null)
+        if (_jumpCountStat != null)
         {
-            currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
+            _currentJumpCount = Mathf.RoundToInt(_jumpCountStat.Value);
         }
     }
 
@@ -136,21 +125,21 @@ public class FPSController : MonoBehaviour, IPusheable
 
     private void Look()
     {
-        float mouseX = lookInput.x * mouseSensitivity * Time.deltaTime;
-        float mouseY = lookInput.y * mouseSensitivity * Time.deltaTime;
+        float mouseX = _lookInput.x * mouseSensitivity * Time.deltaTime;
+        float mouseY = _lookInput.y * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        _xRotation -= mouseY;
+        _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
 
-        cameraPivot.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        cameraPivot.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
 
     private void CheckGrounded()
     {
         Vector3 origin = transform.position + Vector3.up * 0.1f;
-        RaycastHit[] hits = Physics.SphereCastAll(origin, groundCheckRadius, Vector3.down, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
-        
+        RaycastHit[] hits = Physics.SphereCastAll(origin, _groundCheckRadius, Vector3.down, _groundCheckDistance, _groundMask, QueryTriggerInteraction.Ignore);
+
         bool foundGround = false;
         for (int i = 0; i < hits.Length; i++)
         {
@@ -161,18 +150,18 @@ public class FPSController : MonoBehaviour, IPusheable
             }
         }
 
-        isGrounded = foundGround;
-        if (isGrounded && jumpCountStat != null)
+        _isGrounded = foundGround;
+        if (_isGrounded && _jumpCountStat != null)
         {
-            currentJumpCount = Mathf.RoundToInt(jumpCountStat.Value);
+            _currentJumpCount = Mathf.RoundToInt(_jumpCountStat.Value);
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Gizmos.color = _isGrounded ? Color.green : Color.red;
         Vector3 origin = transform.position + Vector3.up * 0.1f;
-        Gizmos.DrawWireSphere(origin + Vector3.down * groundCheckDistance, groundCheckRadius);
+        Gizmos.DrawWireSphere(origin + Vector3.down * _groundCheckDistance, _groundCheckRadius);
     }
 
     private void Move()
@@ -184,34 +173,31 @@ public class FPSController : MonoBehaviour, IPusheable
 
         float speed = _movementSpeedStat.Value;
 
-        if (isRunning)
+        if (_isRunning)
         {
             speed *= _sprintMultiplier;
         }
 
-        Vector3 moveDir = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized;
+        Vector3 moveDir = (transform.right * _moveInput.x + transform.forward * _moveInput.y).normalized;
         Vector3 targetVelocity = moveDir * speed;
 
-        rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
+        _rb.velocity = new Vector3(targetVelocity.x, _rb.velocity.y, targetVelocity.z);
     }
 
     private void Jump()
     {
-        if (!_isGameStarted || jumpForceStat == null)
+        if (!_isGameStarted || _jumpForceStat == null)
         {
             return;
         }
 
-        if (isGrounded || currentJumpCount > 0)
+        if (_isGrounded || _currentJumpCount > 0)
         {
-            float yVelocity = Mathf.Sqrt(jumpForceStat.Value * -2f * gravity);
-            rb.velocity = new Vector3(rb.velocity.x, yVelocity, rb.velocity.z);
-            currentJumpCount--;
+            float yVelocity = Mathf.Sqrt(_jumpForceStat.Value * -2f * _gravity);
+            _rb.velocity = new Vector3(_rb.velocity.x, yVelocity, _rb.velocity.z);
+            _currentJumpCount--;
 
-            if (GameEventsManager.Instance != null)
-            {
-                GameEventsManager.Instance.TriggerPlayerJump();
-            }
+            GameEventsManager.Instance.TriggerPlayerJump();
         }
     }
 
@@ -226,6 +212,6 @@ public class FPSController : MonoBehaviour, IPusheable
         {
             pushDirection.Normalize();
         }
-        rb.AddForce(pushDirection * strenght, ForceMode.Impulse);
+        _rb.AddForce(pushDirection * strenght, ForceMode.Impulse);
     }
 }
