@@ -110,10 +110,4 @@ public class PauseManager : MonoBehaviour
 
         OnPauseChanged?.Invoke(_isPaused);
     }
-
-    [ContextMenu("Test Toggle Pause")]
-    private void TestTogglePause()
-    {
-        TogglePause();
-    }
 }

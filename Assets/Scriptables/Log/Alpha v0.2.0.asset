@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ba04ae24abf83048b2750cab53bc4a1, type: 3}
+  m_Name: Alpha v0.2.0
+  m_EditorClassIdentifier: 
+  versionName: Alpha v0.2.0
+  logcontent: '<b><size=120%>Added:</size></b>
+
+    <size=85%>- New Input System
+    integration (PlayerInputActions) across all player mechanics and UI
+
+    - Enemy
+    cluster spawning system with on-screen warnings
+
+    - Scaling enemy health and
+    damage over time
+
+    - On-screen floating damage numbers and hit indicator pool
+
+    -
+    Fast Enemy and Tank Enemy data configurations
+
+    - Death screen logic and flow
+
+    -
+    Armor, Life Steal, and Experience Multiplier stats
+
+    - Auto-fill shield on
+    first unlock
+
+    - Time freeze while selecting upgrades
+
+    - Generic on-screen
+    notification system</size>
+
+
+    <b><size=120%>Changed:</size></b>
+
+    <size=85%>-
+    Release balance adjustments
+
+    - Buffed orb pickup speed and attraction radius
+
+    -
+    Enemy spawner variable configuration logic
+
+    - Merged walk and run speed into
+    single movement speed stat</size>
+
+
+    <b><size=120%>Fixed:</size></b>
+
+    <size=85%>-
+    Fixed enemy first attack timing bug
+
+    - Fixed shield orb spawning before shield
+    unlock
+
+    - Fixed upgrade generator offering percentage upgrades on zero-value
+    stats</size>
+
+
+    <b><size=120%>Removed:</size></b>
+
+    <size=85%>- Legacy
+    Unity Input Manager polling
+
+    - Crouch speed stat
+
+    - Separate walk/run
+    speed stats</size>'
