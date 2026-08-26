@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   weaponName: Pistol
-  damage: 10
-  chargerAmmo: 12
-  maxAmmo: 60
-  reloadTime: 2
-  fireRate: 0.4
+  damage: 12
+  chargerAmmo: 15
+  maxAmmo: 80
+  reloadTime: 1.8
+  fireRate: 0.3
   recoilPitchKick: 1.8
   recoilYawKick: 0.9
   recoilRollKick: 0.4

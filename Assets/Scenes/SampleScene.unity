@@ -2382,8 +2382,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentExp: 0
   currentLevel: 1
-  expToNextLevel: 100
-  expToNextLevelMultiplier: 1.3
+  expToNextLevel: 80
+  expToNextLevelMultiplier: 1.2
   _experienceMultiplierStat:
     statName: 
     displayName: 
@@ -5760,7 +5760,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 600
+      time: 900
       value: 0.25
       inSlope: 0
       outSlope: 0
@@ -5876,16 +5876,16 @@ MonoBehaviour:
       time: 0
       value: 1
       inSlope: 0
-      outSlope: 0.0025
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 600
+      time: 900
       value: 2.5
       inSlope: 0.0025
-      outSlope: 0
+      outSlope: 0.0025
       tangentMode: 0
       weightedMode: 0
       inWeight: 0

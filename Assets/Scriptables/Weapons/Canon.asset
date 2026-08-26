@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Canon
   damage: 30
-  chargerAmmo: 5
-  maxAmmo: 25
-  reloadTime: 3
-  fireRate: 1
+  chargerAmmo: 8
+  maxAmmo: 30
+  reloadTime: 2.5
+  fireRate: 0.8
   recoilPitchKick: 10
   recoilYawKick: 2
   recoilRollKick: 1

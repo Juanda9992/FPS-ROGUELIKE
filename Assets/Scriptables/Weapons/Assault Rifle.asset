@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Assault Rifle
   m_EditorClassIdentifier: 
   weaponName: Assault Rifle
-  damage: 8
+  damage: 9
   chargerAmmo: 30
-  maxAmmo: 150
-  reloadTime: 2
+  maxAmmo: 180
+  reloadTime: 1.8
   fireRate: 0.1
   recoilPitchKick: 1.8
   recoilYawKick: 0.9
