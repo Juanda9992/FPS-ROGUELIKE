@@ -39,8 +39,6 @@ MonoBehaviour:
       flatScalingValues:
       - 1
       - 2
-      - 3
-      - 5
   - statName: MovementSpeed
     displayName: Movement Speed
     BaseValue: 5
@@ -138,13 +136,13 @@ MonoBehaviour:
       allowPercentageScaling: 1
       allowFlatScaling: 1
       percentageScalingValues:
-      - 0.1
-      - 0.2
-      - 0.3
-      flatScalingValues:
       - 1
       - 2
       - 3
+      flatScalingValues:
+      - 0.1
+      - 0.2
+      - 0.3
   - statName: InvulnerabilityTime
     displayName: Invencibility Time
     BaseValue: 0.2
@@ -153,8 +151,8 @@ MonoBehaviour:
       allowFlatScaling: 1
       percentageScalingValues: []
       flatScalingValues:
+      - 0.05
       - 0.1
-      - 0.2
   - statName: ShieldRegen
     displayName: Shield Regen.
     BaseValue: 0

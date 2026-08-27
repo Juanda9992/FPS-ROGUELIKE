@@ -2354,7 +2354,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   cameraPivot: {fileID: 868575727}
-  mouseSensitivity: 100
+  mouseSensitivity: 50
+  _smoothLook: 1
+  _smoothFactor: 40
+  _invertY: 0
+  _minPitch: -89.5
+  _maxPitch: 89.5
 --- !u!114 &671077420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2560,8 +2565,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b75cf3229948448be83b66cefc01d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grenadePrefab: {fileID: 0}
-  _throwPoint: {fileID: 0}
+  _grenadePrefab: {fileID: 9034208388849409352, guid: 266849e212d891d4db45ef18f9222a5f, type: 3}
+  _throwPoint: {fileID: 1248407492}
   _throwForce: 15
   _upwardForce: 2
   _baseCooldown: 5
@@ -3038,6 +3043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 639a7cfc2cc6b904d8d29ab53fe5ad36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enableBobbing: 1
   _fpsController: {fileID: 671077419}
   _motionTransform: {fileID: 774716253}
   _idleProfile:
