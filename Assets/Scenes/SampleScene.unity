@@ -1652,7 +1652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e8d9c0b1a234567890abcdef123456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amuletCreatorUI: {fileID: 0}
+  _amuletCreatorUI: {fileID: 1282660377}
   _availableAmulets:
   - {fileID: 11400000, guid: a1b2c3d4e5f67890123456789abcdef1, type: 2}
   - {fileID: 11400000, guid: a1b2c3d4e5f67890123456789abcdef2, type: 2}
@@ -1761,7 +1761,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -4382,7 +4382,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &978140716
 RectTransform:
@@ -6036,9 +6036,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e8f9a0b1c234567890abcdef345678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _titleText: {fileID: 0}
-  _amuletImage: {fileID: 0}
-  _descriptionText: {fileID: 0}
+  _titleText: {fileID: 1462521447}
+  _amuletImage: {fileID: 1112214252}
+  _descriptionText: {fileID: 776395229}
+  _statDescriptionText: {fileID: 445898691}
+  _creatorPanel: {fileID: 1561175820}
+  _selectButton: {fileID: 1083490354}
 --- !u!114 &1282660378
 MonoBehaviour:
   m_ObjectHideFlags: 0
