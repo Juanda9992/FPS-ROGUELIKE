@@ -47,6 +47,7 @@ public class AmuletCreatorUI : MonoBehaviour
             CursorManager.SetCursorVisible(false);
             Time.timeScale = 1f;
             AmuletCreator.Instance.SelectAmulet(_currentAmuletInstance);
+            _creatorPanel.SetActive(false);
         }
     }
 }
