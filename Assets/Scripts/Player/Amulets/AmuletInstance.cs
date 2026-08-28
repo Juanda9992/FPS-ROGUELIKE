@@ -14,6 +14,7 @@ public class AmuletInstance
     public AmuletInstance(AmuletSO data, List<StatModifierData> modifiers)
     {
         _data = data;
+        _modifiers = modifiers;
         if (_modifiers == null)
         {
             _modifiers = new List<StatModifierData>();
