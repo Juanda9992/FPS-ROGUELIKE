@@ -6,11 +6,15 @@ public class AmuletCreator : MonoBehaviour
 {
     public static AmuletCreator Instance { get; private set; }
 
+    [Header("UI References")]
+    [SerializeField] private AmuletCreatorUI _amuletCreatorUI;
+
     [Header("Available Amulets")]
     [SerializeField] private List<AmuletSO> _availableAmulets = new List<AmuletSO>();
 
     [Header("Rarity Spawn Weights")]
-    [SerializeField] private List<RarityWeight> _rarityWeights = new List<RarityWeight>
+    [SerializeField]
+    private List<RarityWeight> _rarityWeights = new List<RarityWeight>
     {
         new RarityWeight(AmuletRarity.Common, 50f),
         new RarityWeight(AmuletRarity.Uncommon, 25f),
@@ -60,54 +64,9 @@ public class AmuletCreator : MonoBehaviour
             selectedAmuletSO = _availableAmulets[randomIndex];
         }
 
-        return selectedAmuletSO.CreateInstance();
-    }
-
-    public List<AmuletInstance> CreateRandomAmulets(int count, bool allowDuplicates = false)
-    {
-        List<AmuletInstance> generatedList = new List<AmuletInstance>();
-
-        if (_availableAmulets == null || _availableAmulets.Count == 0)
-        {
-            return generatedList;
-        }
-
-        List<AmuletSO> pool = new List<AmuletSO>(_availableAmulets);
-
-        for (int i = 0; i < count; i++)
-        {
-            if (pool.Count == 0 && !allowDuplicates)
-            {
-                break;
-            }
-
-            AmuletRarity selectedRarity = GetRandomRarity();
-            List<AmuletSO> matchingAmulets = pool.FindAll(a => a != null && a.Rarity == selectedRarity);
-
-            AmuletSO selectedSO;
-
-            if (matchingAmulets.Count > 0)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, matchingAmulets.Count);
-                selectedSO = matchingAmulets[randomIndex];
-            }
-            else
-            {
-                int randomIndex = UnityEngine.Random.Range(0, pool.Count);
-                selectedSO = pool[randomIndex];
-            }
-
-            if (selectedSO != null)
-            {
-                generatedList.Add(selectedSO.CreateInstance());
-                if (!allowDuplicates)
-                {
-                    pool.Remove(selectedSO);
-                }
-            }
-        }
-
-        return generatedList;
+        AmuletInstance instance = selectedAmuletSO.CreateInstance();
+        _amuletCreatorUI.SetUpVisuals(instance);
+        return instance;
     }
 
     public void SelectAmulet(AmuletInstance amuletInstance)

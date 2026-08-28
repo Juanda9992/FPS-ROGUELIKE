@@ -248,3 +248,33 @@ MonoBehaviour:
       - 0.3
       - 0.5
       - 0
+  - statName: CritChance
+    displayName: Critical Chance
+    BaseValue: 0
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 2
+      - 3
+      - 5
+      flatScalingValues:
+      - 0.1
+      - 0.2
+      - 0.3
+  - statName: CritDamage
+    displayName: Critical Damage
+    BaseValue: 2
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 2
+      - 3
+      - 5
+      flatScalingValues:
+      - 0.1
+      - 0.2
+      - 0.3

@@ -73,4 +73,15 @@ public class AmuletInstance
 
         return string.Join("\n", lines);
     }
+
+    public string GetFormattedStatsDescription()
+    {
+        List<string> lines = new List<string>();
+        foreach (var modifier in _modifiers)
+        {
+            lines.Add(modifier.GetFormattedString());
+        }
+
+        return string.Join("\n", lines);
+    }
 }

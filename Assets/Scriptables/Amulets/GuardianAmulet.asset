@@ -24,6 +24,3 @@ MonoBehaviour:
   - _statName: ShieldRegen
     _value: 1
     _modifierType: 0
-  _hasRandomModifiers: 0
-  _randomModifierCount: 1
-  _randomModifierPool: []
