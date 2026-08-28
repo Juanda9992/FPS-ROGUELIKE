@@ -15,11 +15,13 @@ public class PlayerStatVisualizerUI : MonoBehaviour
     {
         upgradeManager.OnUpgradeSelected += UpdateStatDisplay;
         PauseManager.Instance.OnPauseChanged += OnPauseChanged;
+        PlayerStatsManager.Instance.OnStatUpdated += UpdateStatDisplayByStat;
     }
     private void OnDisable()
     {
         upgradeManager.OnUpgradeSelected -= UpdateStatDisplay;
         PauseManager.Instance.OnPauseChanged -= OnPauseChanged;
+        PlayerStatsManager.Instance.OnStatUpdated -= UpdateStatDisplayByStat;
     }
     private void OnPauseChanged(bool isPaused)
     {
@@ -38,11 +40,21 @@ public class PlayerStatVisualizerUI : MonoBehaviour
     }
     public void UpdateStatDisplay(UpgradeData stat)
     {
+        UpdateStatDisplayByStat(stat.targetStat);
+    }
+
+    public void UpdateStatDisplayByStat(Stat stat)
+    {
+        if (stat == null)
+        {
+            return;
+        }
+
         foreach (StatDisplaydataUI statVisualizer in statVisualizersList)
         {
-            if (statVisualizer.GetAttachedStat().statName == stat.targetStat.statName)
+            if (statVisualizer.GetAttachedStat().statName == stat.statName)
             {
-                statVisualizer.SetStat(stat.targetStat);
+                statVisualizer.SetStat(stat);
                 break;
             }
         }

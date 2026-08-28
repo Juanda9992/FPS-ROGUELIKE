@@ -45,6 +45,26 @@ public class PlayerStatsManager : MonoBehaviour
         }
     }
 
+    public event System.Action<Stat> OnStatUpdated;
+
+    public IReadOnlyList<Stat> AllStats => stats;
+
+    public void NotifyStatUpdated(Stat stat)
+    {
+        if (stat != null)
+        {
+            OnStatUpdated?.Invoke(stat);
+        }
+    }
+
+    public void NotifyAllStatsUpdated()
+    {
+        foreach (var stat in stats)
+        {
+            OnStatUpdated?.Invoke(stat);
+        }
+    }
+
     public Stat GetRandomStat()
     {
         if (stats.Count == 0)
