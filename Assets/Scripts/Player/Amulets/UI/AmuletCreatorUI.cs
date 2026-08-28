@@ -23,7 +23,8 @@ public class AmuletCreatorUI : MonoBehaviour
     }
     public void SetUpVisuals(AmuletInstance amuletInstance)
     {
-
+        Time.timeScale = 0f;
+        CursorManager.SetCursorVisible(true);
         _creatorPanel.SetActive(true);
 
         _currentAmuletInstance = amuletInstance;
@@ -43,6 +44,8 @@ public class AmuletCreatorUI : MonoBehaviour
     {
         if (_currentAmuletInstance != null)
         {
+            CursorManager.SetCursorVisible(false);
+            Time.timeScale = 1f;
             AmuletCreator.Instance.SelectAmulet(_currentAmuletInstance);
         }
     }
