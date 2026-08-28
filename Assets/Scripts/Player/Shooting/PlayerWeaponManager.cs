@@ -19,6 +19,8 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     [SerializeField] private Stat damageMultiplierStat;
     public Stat reloadSpeedStat;
     [SerializeField] private Stat fireRateMultiplierStat;
+    [SerializeField] private Stat _critChanceStat;
+    [SerializeField] private Stat _criticalDamageStat;
 
     private int currentIndex = 0;
     private PlayerWeaponInstance currentWeapon;
@@ -119,6 +121,8 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
         damageMultiplierStat = PlayerStatsManager.Instance.GetStatByName("DamageMultiplier");
         reloadSpeedStat = PlayerStatsManager.Instance.GetStatByName("ReloadSpeedMultiplier");
         fireRateMultiplierStat = PlayerStatsManager.Instance.GetStatByName("FireRateMultiplier");
+        _critChanceStat = PlayerStatsManager.Instance.GetStatByName("CritChance") ?? PlayerStatsManager.Instance.GetStatByName("CriticalChance") ?? PlayerStatsManager.Instance.GetStatByName("Crit Chance");
+        _criticalDamageStat = PlayerStatsManager.Instance.GetStatByName("CriticalDamage") ?? PlayerStatsManager.Instance.GetStatByName("CritDamage") ?? PlayerStatsManager.Instance.GetStatByName("Critical Damage");
 
         if (weapons != null && weapons.Length > 0)
         {
@@ -219,38 +223,38 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
             return;
         }
 
-        float fireRateMult = (fireRateMultiplierStat != null && fireRateMultiplierStat.Value != 0) ? fireRateMultiplierStat.Value : 1f;
+        float fireRateMult = fireRateMultiplierStat.Value;
         float fireRate = currentWeapon.fireRate / fireRateMult;
         nextFireTime = Time.time + fireRate;
 
         currentWeapon.DecreaseAmmo(1);
         NotifyAmmoChanged();
+        _recoilController.ApplyRecoil(currentWeapon.weaponData);
 
-        if (_recoilController != null)
+        float spreadAngle = _recoilController.CurrentSpread;
+        Vector3 shootDirection = playerCamera.transform.forward;
+
+        if (spreadAngle > 0.001f)
         {
-            _recoilController.ApplyRecoil(currentWeapon.weaponData);
+            float spreadAngleRad = spreadAngle * Mathf.Deg2Rad;
+            Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * Mathf.Tan(spreadAngleRad);
+            shootDirection = (playerCamera.transform.forward + playerCamera.transform.right * randomCircle.x + playerCamera.transform.up * randomCircle.y).normalized;
         }
 
-        if (playerCamera != null)
+        Ray ray = new Ray(playerCamera.transform.position, shootDirection);
+        if (Physics.Raycast(ray, out RaycastHit hit, 50f, hitMask))
         {
-            float spreadAngle = (_recoilController != null) ? _recoilController.CurrentSpread : 0f;
-            Vector3 shootDirection = playerCamera.transform.forward;
-
-            if (spreadAngle > 0.001f)
+            if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
             {
-                float spreadAngleRad = spreadAngle * Mathf.Deg2Rad;
-                Vector2 randomCircle = UnityEngine.Random.insideUnitCircle * Mathf.Tan(spreadAngleRad);
-                shootDirection = (playerCamera.transform.forward + playerCamera.transform.right * randomCircle.x + playerCamera.transform.up * randomCircle.y).normalized;
-            }
+                float dmgMult = damageMultiplierStat.Value;
+                float finalDamage = currentWeapon.damage * dmgMult;
 
-            Ray ray = new Ray(playerCamera.transform.position, shootDirection);
-            if (Physics.Raycast(ray, out RaycastHit hit, 50f, hitMask))
-            {
-                if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
+                if (UnityEngine.Random.Range(0f, 100f) < _critChanceStat.Value)
                 {
-                    float dmgMult = (damageMultiplierStat != null) ? damageMultiplierStat.Value : 1f;
-                    damageable.TakeDamage(Mathf.RoundToInt(currentWeapon.damage * dmgMult));
+                    finalDamage *= _criticalDamageStat.Value;
                 }
+
+                damageable.TakeDamage(Mathf.RoundToInt(finalDamage));
             }
         }
 
@@ -340,4 +344,30 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
     {
         return currentWeapon;
     }
+
+    #region Context Menu Tests
+    [ContextMenu("Test Next Weapon")]
+    private void TestNextWeapon()
+    {
+        NextWeapon();
+    }
+
+    [ContextMenu("Test Previous Weapon")]
+    private void TestPreviousWeapon()
+    {
+        PreviousWeapon();
+    }
+
+    [ContextMenu("Test Reload")]
+    private void TestReload()
+    {
+        TryReload();
+    }
+
+    [ContextMenu("Test Add 50 Ammo")]
+    private void TestAddAmmo()
+    {
+        AddAmmoToCurrentWeapon(50);
+    }
+    #endregion
 }
