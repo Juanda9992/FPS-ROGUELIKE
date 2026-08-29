@@ -9,7 +9,7 @@ public class ExpOrb : OrbBase
 
     protected override void ApplyEffect(GameObject player)
     {
-        PlayerExpManager expManager = player.GetComponent<PlayerExpManager>();
+        PlayerExpManager expManager = player.GetComponentInParent<PlayerExpManager>();
         if (expManager != null)
         {
             expManager.AddExperience(ValueAmount);

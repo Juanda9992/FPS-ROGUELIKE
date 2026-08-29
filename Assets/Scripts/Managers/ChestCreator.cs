@@ -74,6 +74,26 @@ public class ChestCreator : MonoBehaviour
         Quaternion randomRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
         return GenerateChest(targetPos, randomRotation);
     }
+    public bool TrySpawnChestFromKill(Vector3 position)
+    {
+        Stat luckStat = PlayerStatsManager.Instance.GetStatByName("Luck");
+        float luckValue = luckStat != null ? luckStat.Value : 0f;
+
+        if (luckValue <= 0f)
+        {
+            return false;
+        }
+
+        float roll = Random.Range(0f, 100f);
+        if (roll < luckValue)
+        {
+            Quaternion randomRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+            GenerateChest(position, randomRotation);
+            return true;
+        }
+
+        return false;
+    }
 
     #region ContextMenu Tests
     [ContextMenu("Test Generate Chest At Position")]
@@ -87,6 +107,14 @@ public class ChestCreator : MonoBehaviour
     private void TestGenerateChestOnRandomPlace()
     {
         GenerateChestOnRandomPlace();
+    }
+
+    [ContextMenu("Test Try Spawn Chest From Kill")]
+    private void TestTrySpawnChestFromKill()
+    {
+        Vector3 spawnPos = transform.position + transform.forward * 3f;
+        bool spawned = TrySpawnChestFromKill(spawnPos);
+        Debug.Log($"[ChestCreator Test] TrySpawnChestFromKill result: {spawned}");
     }
     #endregion
 }

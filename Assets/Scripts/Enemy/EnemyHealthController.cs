@@ -116,6 +116,11 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
             _orbGenerator.SpawnOrbs();
         }
 
+        if (ChestCreator.Instance != null)
+        {
+            ChestCreator.Instance.TrySpawnChestFromKill(transform.position);
+        }
+
         Destroy(gameObject);
     }
 

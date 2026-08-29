@@ -278,3 +278,19 @@ MonoBehaviour:
       - 0.1
       - 0.2
       - 0.3
+  - statName: Luck
+    displayName: Luck
+    BaseValue: 5
+    upgradeParameters:
+      allowPercentageScaling: 1
+      allowFlatScaling: 1
+      percentageScalingValues:
+      - 1
+      - 2
+      - 3
+      - 5
+      flatScalingValues:
+      - 1
+      - 2
+      - 3
+      - 5

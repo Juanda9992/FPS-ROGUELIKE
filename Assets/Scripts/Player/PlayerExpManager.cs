@@ -47,6 +47,7 @@ public class PlayerExpManager : MonoBehaviour
         if (_experienceMultiplierStat != null)
         {
             multiplier = _experienceMultiplierStat.Value;
+            Debug.Log($"[PlayerExpManager] Multiplier: {multiplier}");
         }
 
         int finalExp = Mathf.RoundToInt(amount * multiplier);
