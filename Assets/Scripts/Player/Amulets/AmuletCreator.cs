@@ -9,8 +9,8 @@ public class AmuletCreator : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private AmuletCreatorUI _amuletCreatorUI;
 
-    [Header("Available Amulets")]
-    [SerializeField] private List<AmuletSO> _availableAmulets = new List<AmuletSO>();
+    [Header("Amulets Database")]
+    [SerializeField] private AmuletsDatabaseSO _amuletsDatabase;
 
     [Header("Rarity Spawn Weights")]
     [SerializeField]
@@ -25,7 +25,8 @@ public class AmuletCreator : MonoBehaviour
 
     public event Action<AmuletInstance> OnAmuletSelected;
 
-    public IReadOnlyList<AmuletSO> AvailableAmulets => _availableAmulets;
+    public AmuletsDatabaseSO AmuletsDatabase => _amuletsDatabase;
+    public IReadOnlyList<AmuletSO> AvailableAmulets => _amuletsDatabase != null ? _amuletsDatabase.Amulets : null;
 
     private void Awake()
     {
@@ -41,14 +42,14 @@ public class AmuletCreator : MonoBehaviour
 
     public AmuletInstance CreateRandomAmulet()
     {
-        if (_availableAmulets == null || _availableAmulets.Count == 0)
+        if (_amuletsDatabase == null || _amuletsDatabase.Amulets == null || _amuletsDatabase.Amulets.Count == 0)
         {
-            Debug.LogWarning("[AmuletCreator] No amulets available in _availableAmulets list.");
+            Debug.LogWarning("[AmuletCreator] No AmuletsDatabaseSO assigned or database is empty.");
             return null;
         }
 
         AmuletRarity selectedRarity = GetRandomRarity();
-        List<AmuletSO> matchingAmulets = _availableAmulets.FindAll(a => a != null && a.Rarity == selectedRarity);
+        List<AmuletSO> matchingAmulets = _amuletsDatabase.GetAmuletsByRarity(selectedRarity);
 
         AmuletSO selectedAmuletSO;
 
@@ -59,9 +60,24 @@ public class AmuletCreator : MonoBehaviour
         }
         else
         {
+            List<AmuletSO> allValid = new List<AmuletSO>();
+            for (int i = 0; i < _amuletsDatabase.Amulets.Count; i++)
+            {
+                if (_amuletsDatabase.Amulets[i] != null)
+                {
+                    allValid.Add(_amuletsDatabase.Amulets[i]);
+                }
+            }
+
+            if (allValid.Count == 0)
+            {
+                Debug.LogWarning("[AmuletCreator] Database contains no valid amulets.");
+                return null;
+            }
+
             // Fallback if no amulet exists for the rolled rarity
-            int randomIndex = UnityEngine.Random.Range(0, _availableAmulets.Count);
-            selectedAmuletSO = _availableAmulets[randomIndex];
+            int randomIndex = UnityEngine.Random.Range(0, allValid.Count);
+            selectedAmuletSO = allValid[randomIndex];
         }
 
         AmuletInstance instance = selectedAmuletSO.CreateInstance();
