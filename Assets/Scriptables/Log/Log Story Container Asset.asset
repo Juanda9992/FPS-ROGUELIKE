@@ -15,3 +15,4 @@ MonoBehaviour:
   logStoryList:
   - {fileID: 11400000, guid: 7584b0e8c7ff4194ea60e9a8715da110, type: 2}
   - {fileID: 11400000, guid: b953f257524171e4fa132348c7c57fad, type: 2}
+  - {fileID: 11400000, guid: 562d1aedac044adb99dacaa704e8e484, type: 2}

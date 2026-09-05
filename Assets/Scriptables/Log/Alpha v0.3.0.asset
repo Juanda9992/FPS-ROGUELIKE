@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ba04ae24abf83048b2750cab53bc4a1, type: 3}
+  m_Name: Alpha v0.3.0
+  m_EditorClassIdentifier: 
+  versionName: Alpha v0.3.0
+  logcontent: '<b><size=120%>Added:</size></b>
+
+    <size=85%>- Dynamic Amulet & Item
+    system with 14 unique collectable amulets
+
+    - Interactive Chest system with
+    ChestCreator spawn manager
+
+    - World interaction system (IInteractable) and
+    Interact action (E key)
+
+    - Amulet selection UI modal with interactive card
+    drafting
+
+    - Critical Strike Chance and Critical Damage mechanics
+
+    -
+    Luck stat affecting chest drop rates and loot opportunities
+
+    - Centralized
+    AmuletsDatabaseSO and runtime dynamic amulet generator
+
+    - PlayerAmuletManager
+    for dynamic stat modifications and passive buffs</size>
+
+
+    <b><size=120%>Changed:</size></b>
+
+    <size=85%>-
+    Updated Player Stat Visualizer UI to display Crit Chance, Crit Damage, and Luck
+
+    -
+    Extended PlayerInputActions with world interaction binding</size>
+
+
+    <b><size=120%>Fixed:</size></b>
+
+    <size=85%>-
+    Fixed fire rate stat calculation having inverted properties</size>'
