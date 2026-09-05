@@ -9,12 +9,14 @@ public class PlayerSkillsManager : MonoBehaviour, IPausable
 
     [Header("Skill Slots")]
     [SerializeField] private SkillSlot[] _slots;
+    [SerializeField] private SkillSlot _capsuleSlot;
     [SerializeField] private SkillUIManager _skillUIManager;
 
     private PlayerInputActions _input;
     private bool _isGameStarted;
 
     public SkillSlot[] Slots => _slots;
+    public SkillSlot CapsuleSlot => _capsuleSlot;
 
     private void Awake()
     {
@@ -25,7 +27,10 @@ public class PlayerSkillsManager : MonoBehaviour, IPausable
             _slots[i] = new SkillSlot();
         }
 
+        _capsuleSlot = new SkillSlot();
+
         _input = new PlayerInputActions();
+        _input.Player.Capsule.performed += _ => TryUseCapsule();
         _input.Player.Skill1.performed += _ => TryUseSkill(0);
         _input.Player.Skill2.performed += _ => TryUseSkill(1);
         _input.Player.Skill3.performed += _ => TryUseSkill(2);
@@ -143,6 +148,56 @@ public class PlayerSkillsManager : MonoBehaviour, IPausable
             }
         }
         return false;
+    }
+
+    public void SetCapsule(ActiveSkillSO capsuleSkill)
+    {
+        if (capsuleSkill == null)
+        {
+            return;
+        }
+
+        SkillInstance instance = capsuleSkill.CreateInstance();
+        SetCapsuleInstance(instance);
+    }
+
+    public void SetCapsuleInstance(SkillInstance instance)
+    {
+        if (instance == null)
+        {
+            return;
+        }
+
+        _capsuleSlot.SetSkill(instance);
+
+        _skillUIManager.SetCapsuleSlot(instance);
+    }
+
+    public void TryUseCapsule()
+    {
+        if (!_isGameStarted)
+        {
+            return;
+        }
+
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused)
+        {
+            return;
+        }
+
+        if (_capsuleSlot == null || !_capsuleSlot.CanUse())
+        {
+            Debug.Log("Capsule in dedicated slot is on cooldown or not assigned.");
+            return;
+        }
+
+        if (_capsuleSlot.Use(gameObject))
+        {
+            if (_skillUIManager != null)
+            {
+                _skillUIManager.TriggerCapsuleCooldown();
+            }
+        }
     }
 
     public void TryUseSkill(int index)

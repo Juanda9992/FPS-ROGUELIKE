@@ -6,6 +6,9 @@ public class SkillUIManager : MonoBehaviour
     [Header("UI Slots")]
     public SkillUISlot[] slots;
 
+    [Header("Capsule Slot")]
+    [SerializeField] private SkillUISlot capsuleSlot;
+
     private void Awake()
     {
         if (slots != null)
@@ -18,6 +21,8 @@ public class SkillUIManager : MonoBehaviour
                 }
             }
         }
+
+        capsuleSlot.SetActive(false);
     }
 
     public void Update()
@@ -32,6 +37,8 @@ public class SkillUIManager : MonoBehaviour
                 }
             }
         }
+
+        capsuleSlot.UpdateCooldown();
     }
 
     public void TurnSkillSlotOn(int index, SkillInstance skillInstance)
@@ -63,6 +70,17 @@ public class SkillUIManager : MonoBehaviour
         {
             slot.TriggerCooldown();
         }
+    }
+
+    public void SetCapsuleSlot(SkillInstance skillInstance)
+    {
+        capsuleSlot.SetActive(true);
+        capsuleSlot.SetSkill(skillInstance);
+    }
+
+    public void TriggerCapsuleCooldown()
+    {
+        capsuleSlot.TriggerCooldown();
     }
 }
 

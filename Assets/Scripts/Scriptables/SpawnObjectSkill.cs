@@ -37,6 +37,8 @@ public class SpawnObjectSkill : ActiveSkillSO
     [Header("Custom Parameters")]
     [SerializeField] private SpawnParams spawnParams;
 
+    public SpawnParams SpawnParams => spawnParams;
+
 
     public override void Activate(GameObject owner, SkillInstance instance = null)
     {
