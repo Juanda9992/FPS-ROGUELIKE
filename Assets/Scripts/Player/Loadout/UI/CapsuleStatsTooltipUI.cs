@@ -10,7 +10,6 @@ public class CapsuleStatsTooltipUI : MonoBehaviour
 
     [Header("Header Elements")]
     [SerializeField] private TextMeshProUGUI _capsuleTitleText;
-    [SerializeField] private TextMeshProUGUI _effectTypeBadgeText;
     [SerializeField] private Image _capsuleIcon;
 
     [Header("Description & Stats")]
@@ -62,15 +61,6 @@ public class CapsuleStatsTooltipUI : MonoBehaviour
 
         SpawnParams parameters = capsule.SpawnParams;
 
-        if (parameters != null)
-        {
-            _effectTypeBadgeText.text = $"[{parameters.effectType.ToString().ToUpper()}]";
-        }
-        else
-        {
-            _effectTypeBadgeText.text = "[CAPSULE]";
-        }
-
         if (capsule.icon != null)
         {
             _capsuleIcon.sprite = capsule.icon;
@@ -95,7 +85,6 @@ public class CapsuleStatsTooltipUI : MonoBehaviour
 
         // Base Skill Settings
         sb.AppendLine($"<color=#70C0FF><b>Cooldown:</b></color> {capsule.cooldown:0.#}s");
-        sb.AppendLine($"<color=#70C0FF><b>Placement:</b></color> {FormatPlacementMode(capsule)}");
 
         if (parameters != null)
         {
@@ -154,28 +143,8 @@ public class CapsuleStatsTooltipUI : MonoBehaviour
             {
                 sb.AppendLine($"<color=#FFAA70><b>Vulnerability:</b></color> +{parameters.vulnerabilityPercentage:0.#}% ({parameters.vulnerabilityDuration:0.#}s)");
             }
-
-            if (parameters.affectPlayer)
-            {
-                sb.AppendLine("<color=#FF5555><b>Affects Player:</b> True</color>");
-            }
         }
 
         return sb.ToString().TrimEnd();
-    }
-
-    private string FormatPlacementMode(SpawnObjectSkill capsule)
-    {
-        switch (capsule.placementMode)
-        {
-            case PlacementMode.Raycast:
-                return $"Raycast (Max {capsule.maxRaycastDistance:0.#}m)";
-            case PlacementMode.PhysicsForce:
-                return $"Physics Throw (Force {capsule.throwForce:0.#})";
-            case PlacementMode.AtOwnerPosition:
-                return "Owner Position";
-            default:
-                return capsule.placementMode.ToString();
-        }
     }
 }
