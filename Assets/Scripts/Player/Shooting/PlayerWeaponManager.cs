@@ -218,8 +218,14 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
 
     private void Shoot()
     {
-        if (currentWeapon == null || currentWeapon.currentAmmo <= 0)
+        if (currentWeapon == null)
         {
+            return;
+        }
+
+        if (currentWeapon.currentAmmo <= 0)
+        {
+            TryReload();
             return;
         }
 
