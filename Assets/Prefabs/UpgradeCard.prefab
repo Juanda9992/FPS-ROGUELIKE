@@ -97,6 +97,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statNameText: {fileID: 8281543778469978010}
   upgradeValueText: {fileID: 360984335730224699}
+  cardBackgroundImage: {fileID: 7325393254618599293}
+  cardButton: {fileID: 6556907544883609918}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.25, g: 0.75, b: 0.45, a: 1}
 --- !u!222 &7335832590667852066
 CanvasRenderer:
   m_ObjectHideFlags: 0

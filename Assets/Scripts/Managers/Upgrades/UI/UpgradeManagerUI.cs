@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+
 public class UpgradeManagerUI : MonoBehaviour
 {
     public static UpgradeManagerUI Instance { get; private set; }
+
     [Header("Upgrade UI Elements")]
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private GameObject upgradeCardPrefab;
@@ -16,7 +19,11 @@ public class UpgradeManagerUI : MonoBehaviour
     [SerializeField] private Button refreshUpgradesButton;
     [SerializeField] private TextMeshProUGUI refreshAmmountText;
     [SerializeField] private UpgradeManager upgradeManager;
-    private UpgradeData selectedUpgrade;
+
+    private UpgradeData _selectedUpgrade;
+    private UpgradeCardUI _selectedCardUI;
+    private readonly List<UpgradeCardUI> _activeCardUIs = new List<UpgradeCardUI>();
+
     private void Awake()
     {
         upgradeButton.gameObject.SetActive(false);
@@ -34,8 +41,10 @@ public class UpgradeManagerUI : MonoBehaviour
         selectUpgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
         refreshUpgradesButton.onClick.AddListener(OnRefreshUpgradesButtonClicked);
     }
+
     public void DisplayUpgrades(UpgradeData[] upgrades)
     {
+        ClearSelection();
         ClearUpgradeCards();
 
         upgradePanel.SetActive(true);
@@ -47,30 +56,61 @@ public class UpgradeManagerUI : MonoBehaviour
             GameObject card = Instantiate(upgradeCardPrefab, upgradeCardContainer);
             UpgradeCardUI cardUI = card.GetComponent<UpgradeCardUI>();
             cardUI.SetUpgradeData(upgrade);
+            _activeCardUIs.Add(cardUI);
         }
     }
 
     private void ClearUpgradeCards()
     {
+        _activeCardUIs.Clear();
         foreach (Transform child in upgradeCardContainer)
         {
             Destroy(child.gameObject);
         }
     }
 
-    public void OnUpgradeCardSelected(UpgradeData upgrade)
+    public void ClearSelection()
     {
-        selectedUpgrade = upgrade;
+        _selectedUpgrade = null;
+        if (_selectedCardUI != null)
+        {
+            _selectedCardUI.SetSelected(false);
+            _selectedCardUI = null;
+        }
+
+        foreach (var cardUI in _activeCardUIs)
+        {
+            if (cardUI != null)
+            {
+                cardUI.SetSelected(false);
+            }
+        }
+
+        upgradeButton.gameObject.SetActive(false);
+    }
+
+    public void OnUpgradeCardSelected(UpgradeCardUI cardUI, UpgradeData upgrade)
+    {
+        if (_selectedCardUI != null && _selectedCardUI != cardUI)
+        {
+            _selectedCardUI.SetSelected(false);
+        }
+
+        _selectedCardUI = cardUI;
+        _selectedUpgrade = upgrade;
+
+        _selectedCardUI.SetSelected(true);
+
         upgradeButton.gameObject.SetActive(true);
     }
 
     private void OnUpgradeButtonClicked()
     {
-        if (selectedUpgrade != null)
+        if (_selectedUpgrade != null)
         {
-            upgradeManager.SelectUpgrade(selectedUpgrade);
+            upgradeManager.SelectUpgrade(_selectedUpgrade);
+            ClearSelection();
             ClearUpgradeCards();
-            upgradeButton.gameObject.SetActive(false);
             CursorManager.SetCursorVisible(false);
             upgradePanel.SetActive(false);
             Time.timeScale = 1f;
@@ -79,6 +119,7 @@ public class UpgradeManagerUI : MonoBehaviour
 
     private void OnRefreshUpgradesButtonClicked()
     {
+        ClearSelection();
         upgradeManager.RefreshUpgrades();
     }
 
