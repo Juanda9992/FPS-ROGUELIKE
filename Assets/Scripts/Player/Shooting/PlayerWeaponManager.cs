@@ -254,13 +254,15 @@ public class PlayerWeaponManager : MonoBehaviour, IPausable
             {
                 float dmgMult = damageMultiplierStat.Value;
                 float finalDamage = currentWeapon.damage * dmgMult;
+                bool isCrit = false;
 
                 if (UnityEngine.Random.Range(0f, 100f) < _critChanceStat.Value)
                 {
                     finalDamage *= _criticalDamageStat.Value;
+                    isCrit = true;
                 }
 
-                damageable.TakeDamage(Mathf.RoundToInt(finalDamage));
+                damageable.TakeDamage(Mathf.RoundToInt(finalDamage), isCrit);
             }
         }
 

@@ -17,9 +17,12 @@ public class ExplosiveObject : MonoBehaviour, IDamageable
         Health = maxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isCrit = false)
     {
-        if (exploded) return;
+        if (exploded)
+        {
+            return;
+        }
 
         Health -= damage;
 

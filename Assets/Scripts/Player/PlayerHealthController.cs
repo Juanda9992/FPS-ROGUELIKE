@@ -126,7 +126,7 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
             OnShieldChanged?.Invoke(Mathf.RoundToInt(currentShield), Mathf.RoundToInt(shieldStat.Value));
         }
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isCrit = false)
     {
         if (!canBeHit)
         {

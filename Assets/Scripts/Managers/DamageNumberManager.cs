@@ -14,7 +14,7 @@ public class DamageNumberManager : MonoBehaviour
 
     [Header("Color Settings")]
     [SerializeField] private Color _normalDamageColor = Color.white;
-    [SerializeField] private Color _critDamageColor = Color.yellow;
+    [SerializeField] private Color _critDamageColor = Color.red;
 
     private ObjectPool<DamagePopup> _pool;
 
@@ -83,4 +83,18 @@ public class DamageNumberManager : MonoBehaviour
     {
         _pool.Release(popup);
     }
+
+    #region Context Menu Tests
+    [ContextMenu("Test Normal Damage Number")]
+    private void TestNormalDamageNumber()
+    {
+        SpawnDamageNumber(25, transform.position + Vector3.up * 2f, false);
+    }
+
+    [ContextMenu("Test Crit Damage Number")]
+    private void TestCritDamageNumber()
+    {
+        SpawnDamageNumber(50, transform.position + Vector3.up * 2f, true);
+    }
+    #endregion
 }

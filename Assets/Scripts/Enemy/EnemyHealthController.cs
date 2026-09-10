@@ -71,7 +71,7 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
         _vulnerabilityPercentage = 1f;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isCrit = false)
     {
         int finalDamage = Mathf.RoundToInt(damage * _vulnerabilityPercentage);
         _health -= finalDamage;
@@ -94,7 +94,7 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
         if (DamageNumberManager.Instance != null)
         {
             Vector3 spawnPos = transform.position + Vector3.up * 1f;
-            DamageNumberManager.Instance.SpawnDamageNumber(finalDamage, spawnPos);
+            DamageNumberManager.Instance.SpawnDamageNumber(finalDamage, spawnPos, isCrit);
         }
 
         if (_health <= 0)
@@ -124,9 +124,17 @@ public class EnemyHealthController : MonoBehaviour, IDamageable, IVulnerable
         Destroy(gameObject);
     }
 
-    [ContextMenu("Take Damage")]
-    private void TakeDamageContextMenu()
+    #region Context Menu Tests
+    [ContextMenu("Take Normal Damage (10)")]
+    private void TakeNormalDamageContextMenu()
     {
-        TakeDamage(10);
+        TakeDamage(10, false);
     }
+
+    [ContextMenu("Take Crit Damage (25)")]
+    private void TakeCritDamageContextMenu()
+    {
+        TakeDamage(25, true);
+    }
+    #endregion
 }
