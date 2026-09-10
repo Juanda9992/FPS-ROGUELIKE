@@ -12,6 +12,9 @@ public class PlayerExpManager : MonoBehaviour
 
     [SerializeField] private Stat _experienceMultiplierStat;
 
+    public int CurrentExp => currentExp;
+    public int CurrentLevel => currentLevel;
+
     private void Start()
     {
         if (GameEventsManager.Instance != null)
@@ -73,10 +76,12 @@ public class PlayerExpManager : MonoBehaviour
         CheckLevelUp();
         OnExpChanged?.Invoke(currentExp);
     }
-    [ContextMenu("Add 50 Exp")]
-    private void TestAddExp()
-    {
-        AddExperience(50);
-    }
 
+    #region Context Menu Tests
+    [ContextMenu("Test Level Up")]
+    private void TestLevelUp()
+    {
+        LevelUp();
+    }
+    #endregion
 }

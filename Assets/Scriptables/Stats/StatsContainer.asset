@@ -260,9 +260,9 @@ MonoBehaviour:
       - 3
       - 5
       flatScalingValues:
-      - 0.1
-      - 0.2
-      - 0.3
+      - 1
+      - 2
+      - 3
   - statName: CritDamage
     displayName: Critical Damage
     BaseValue: 2
