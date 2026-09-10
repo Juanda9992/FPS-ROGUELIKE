@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillId: 
   skillName: Slow Capsule
-  description: 
+  description: Slows the enemies on the range
   icon: {fileID: 0}
-  cooldown: 1
+  cooldown: 5
   prefab: {fileID: 7622777351935170254, guid: ac041c26e0bff0a468a98ee4b6b336a3, type: 3}
   placementMode: 1
   positionOffset: {x: 0, y: 0, z: 0}
@@ -41,3 +41,5 @@ MonoBehaviour:
     pushForce: 0
     silenceDuration: 0
     blindDuration: 0
+    vulnerabilityPercentage: 0
+    vulnerabilityDuration: 0
