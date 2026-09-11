@@ -44,13 +44,18 @@ public class EnemyFollow : MonoBehaviour, ISlowable, IStuneable, IPusheable, IBl
         _speed = speed;
     }
 
-    public void TickMovement(float deltaTime, Vector3 playerPosition)
+    protected void ApplyPushMovement(float deltaTime)
     {
         if (_pushVelocity.sqrMagnitude > 0.0001f)
         {
             transform.position += _pushVelocity * deltaTime;
             _pushVelocity = Vector3.Lerp(_pushVelocity, Vector3.zero, _pushDecay * deltaTime);
         }
+    }
+
+    public virtual void TickMovement(float deltaTime, Vector3 playerPosition)
+    {
+        ApplyPushMovement(deltaTime);
 
         if (_isBlind)
         {
