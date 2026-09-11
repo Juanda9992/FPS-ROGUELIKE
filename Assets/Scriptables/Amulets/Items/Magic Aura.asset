@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a1f2b3c4d5e6f7a8b9c0d1e2f3a4b5, type: 3}
   m_Name: Magic Aura
   m_EditorClassIdentifier: 
-  _amuletName: Amulet of Luck
-  _displayName: Amulet of Luck
-  _description: Let the demons bless your stance
+  _amuletName: Magic Aura
+  _displayName: Magic Aura
+  _description: All your habilities will be conjured faster
   _icon: {fileID: 0}
   _rarity: 2
   _statModifiers:
-  - _statName: Luck
+  - _statName: CooldownMultiplier
     _value: 5
     _modifierType: 1

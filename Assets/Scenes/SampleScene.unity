@@ -8177,7 +8177,7 @@ MonoBehaviour:
   playerExpManager: {fileID: 671077425}
   expFillImage: {fileID: 995982616}
   _levelText: {fileID: 1425735755}
-  _expText: {fileID: 0}
+  _expText: {fileID: 643164998}
   _levelFormat: Lvl. {0}
 --- !u!114 &1386484577
 MonoBehaviour:
