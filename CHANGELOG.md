@@ -4,6 +4,42 @@ All notable changes to **ROGUELIKE FPS SURVIVAL** will be documented in this fil
 
 ---
 
+## [Alpha 0.4.0] - 2026-09-11
+
+### Added
+- **Active Capsule Loadout System**:
+  - Main Menu Loadout panel (`LoadoutPanelUI`) allowing players to configure and equip active ability capsules before starting a match.
+  - Dedicated `LoadoutManager` integrating equipped capsule skills directly with `PlayerSkillsManager`.
+  - UI components for loadout management: `CapsuleCardUI`, `CapsuleListItemUI`, `CapsuleSlotUI`, and `CapsuleStatsTooltipUI`.
+  - Dedicated "Capsule" input action bound to **Q** key in `PlayerInputActions`.
+  - In-game dynamic cooldown HUD visual feedback for equipped capsules.
+- **Flying Enemy Archetype**:
+  - Added new aerial enemy type (`FlyingEnemy.prefab` and `FlyingEnemy.asset`) with custom pink material.
+  - Custom flight locomotion (`EnemyFlyingFollow`) featuring hover elevation, vertical sine-wave bobbing, and player tracking.
+  - Scaling spawn curve weights for flying enemies over time.
+- **Enemy Status Effect Mutations**:
+  - Procedural enemy mutations spawning dynamically after 60s of elapsed survival time, with scaling chance.
+  - 4 distinct enemy mutation variants:
+    - *Damage*: High damage variant with red visual tint.
+    - *Slowness*: Inflicts movement slow on contact (`ISlowable`) with cyan visual tint.
+    - *Weakness*: Inflicts vulnerability / increased damage taken on contact (`IVulnerable`) with purple visual tint.
+    - *Stun*: Inflicts temporary stun on contact (`IStuneable`) with gold/yellow visual tint.
+  - `EnemyEffectVisuals` providing distinct dynamic color feedback for mutated enemies.
+  - Player controller support for slow, stun, and damage vulnerability effects.
+- **Items & Stats**:
+  - **Magic Aura Amulet**: Added to `AmuletsDatabaseSO`, granting cooldown reduction on abilities (`CooldownMultiplier`).
+- **UI & HUD**:
+  - Added numerical level label ("Lvl. {0}") and XP progress text ("current/max") to the player experience bar (`PlayerExperienceUI`).
+  - Added visual selection state and green highlight feedback for upgrade cards in `UpgradeCardUI` and `UpgradeManagerUI`.
+
+### Changed
+- **Shooting Quality of Life**: Triggering fire while weapon magazine is empty now automatically initiates weapon reload (`PlayerWeaponManager`).
+- **Combat Feedback**: Floating damage popups for Critical Hits now render with distinct vivid red text.
+- **Capsule Balancing**: Standardized all capsule abilities (Blind, Damage, Health, Pull, Push, Silence, Slow, Stun, Vulnerability) to 5-second base cooldowns and updated in-game descriptions.
+- **Enemy Spawner**: Enhanced spawn rates, weight curves, and cluster scaling over match progression.
+
+---
+
 ## [Alpha 0.3.0] - 2026-09-02
 
 ### Added

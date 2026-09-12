@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ba04ae24abf83048b2750cab53bc4a1, type: 3}
+  m_Name: Alpha v0.4.0
+  m_EditorClassIdentifier: 
+  versionName: Alpha v0.4.0
+  logcontent: '<b><size=120%>Added:</size></b>
+
+    <size=85%>- Active Capsule Loadout
+    System: Customize and equip ability capsules in the Main Menu
+
+    - Dedicated
+    Capsule Skill action bound to Q key with HUD cooldown display
+
+    - New Flying
+    Enemy archetype with hover locomotion and player tracking
+
+    - Dynamic Enemy
+    Mutations (Damage, Slowness, Weakness, Stun) with distinct visual colors
+
+    -
+    Magic Aura Amulet: Reduces ability cooldowns
+
+    - Experience bar HUD labels
+    with Level and numerical XP tracking
+
+    - Interactive selection highlighting
+    on upgrade cards</size>
+
+
+    <b><size=120%>Changed:</size></b>
+
+    <size=85%>-
+    Automatic reload when attempting to shoot with empty magazine
+
+    - Vivid
+    red floating damage numbers on landing Critical Hits
+
+    - Standardized capsule
+    cooldowns and updated skill descriptions
+
+    - Enemy spawn rates and
+    difficulty curves adjusted over match duration</size>'
