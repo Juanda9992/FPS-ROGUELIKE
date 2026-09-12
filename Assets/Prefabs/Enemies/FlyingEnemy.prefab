@@ -239,7 +239,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3d9914e92c1db3f4caed885c92e0b7e9, type: 2}
+  - {fileID: 2100000, guid: e4da97581344f4a4d8eafd42f64299b4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -352,6 +352,13 @@ MonoBehaviour:
   _damageDistance: 3.8
   _damage: 10
   _attackRate: 1
+  _effectType: 0
+  _damageEffectMultiplier: 1.5
+  _slowDuration: 2.5
+  _slowStrength: 0.5
+  _weaknessPercentage: 50
+  _weaknessDuration: 3
+  _stunDuration: 0.75
   _enemyFollow: {fileID: 3436559161361006786}
   _isSilenced: 0
 --- !u!54 &1968058130699331068
@@ -435,6 +442,7 @@ MonoBehaviour:
   _enemyHealthController: {fileID: 7469619403595506559}
   _enemyFollow: {fileID: 3436559161361006786}
   _enemyDamageOnContact: {fileID: 3439306612756211383}
+  _enemyEffectVisuals: {fileID: 0}
 --- !u!1 &7936636760464814300
 GameObject:
   m_ObjectHideFlags: 0
