@@ -34,6 +34,15 @@ public class DamageFeedback : MonoBehaviour
             .SetTarget(this);
     }
 
+    public void SetOriginalColor(Color newColor)
+    {
+        originalColor = newColor;
+        if (materialInstance != null)
+        {
+            materialInstance.color = newColor;
+        }
+    }
+
     private void OnDestroy()
     {
         currentTween?.Kill();

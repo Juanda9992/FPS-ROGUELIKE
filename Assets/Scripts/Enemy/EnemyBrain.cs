@@ -6,6 +6,7 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private EnemyHealthController _enemyHealthController;
     [SerializeField] private EnemyFollow _enemyFollow;
     [SerializeField] private EnemyDamageOnContact _enemyDamageOnContact;
+    [SerializeField] private EnemyEffectVisuals _enemyEffectVisuals;
 
     public EnemyHealthController EnemyHealthController
     {
@@ -20,6 +21,11 @@ public class EnemyBrain : MonoBehaviour
     public EnemyDamageOnContact EnemyDamageOnContact
     {
         get => _enemyDamageOnContact;
+    }
+
+    public EnemyEffectVisuals EnemyEffectVisuals
+    {
+        get => _enemyEffectVisuals;
     }
 
     public void InitializeStats(int health, float speed, int damage)
@@ -48,6 +54,28 @@ public class EnemyBrain : MonoBehaviour
         }
 
         InitializeStats(statsData.Health, statsData.Speed, statsData.Damage);
+    }
+
+    public void InitializeEffect(EnemyEffectType effectType)
+    {
+        if (_enemyDamageOnContact != null)
+        {
+            _enemyDamageOnContact.InitializeEffect(effectType);
+        }
+
+        if (_enemyEffectVisuals != null)
+        {
+            _enemyEffectVisuals.ApplyVisuals(effectType);
+        }
+        else if (TryGetComponent<EnemyEffectVisuals>(out var visuals))
+        {
+            visuals.ApplyVisuals(effectType);
+        }
+        else
+        {
+            var addedVisuals = gameObject.AddComponent<EnemyEffectVisuals>();
+            addedVisuals.ApplyVisuals(effectType);
+        }
     }
 
     private void OnDisable()

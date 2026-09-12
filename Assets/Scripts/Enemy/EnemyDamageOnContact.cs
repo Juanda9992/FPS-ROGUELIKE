@@ -7,6 +7,15 @@ public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
     [SerializeField] private int _damage = 10;
     [SerializeField] private float _attackRate = 1f;
 
+    [Header("Effect Settings")]
+    [SerializeField] private EnemyEffectType _effectType = EnemyEffectType.None;
+    [SerializeField] private float _damageEffectMultiplier = 1.5f;
+    [SerializeField] private float _slowDuration = 2.5f;
+    [SerializeField] private float _slowStrength = 0.5f;
+    [SerializeField] private float _weaknessPercentage = 50f;
+    [SerializeField] private float _weaknessDuration = 3f;
+    [SerializeField] private float _stunDuration = 0.75f;
+
     [Header("References")]
     [SerializeField] private EnemyFollow _enemyFollow;
 
@@ -31,10 +40,20 @@ public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
         get => _damageDistance;
     }
 
+    public EnemyEffectType EffectType
+    {
+        get => _effectType;
+    }
+
     public void InitializeDamage(int damage)
     {
         _damage = damage;
         _attackTimer = _attackRate;
+    }
+
+    public void InitializeEffect(EnemyEffectType effectType)
+    {
+        _effectType = effectType;
     }
 
     public void TickDamage(float deltaTime, Vector3 playerPosition, PlayerHealthController playerHealth)
@@ -56,9 +75,46 @@ public class EnemyDamageOnContact : MonoBehaviour, ISilenceable
 
             if (_attackTimer >= _attackRate)
             {
-                playerHealth.TakeDamage(_damage);
+                int dealtDamage = _damage;
+                if (_effectType == EnemyEffectType.Damage)
+                {
+                    dealtDamage = Mathf.RoundToInt(_damage * _damageEffectMultiplier);
+                }
+
+                playerHealth.TakeDamage(dealtDamage);
+                ApplyStatusEffectToPlayer(playerHealth);
                 _attackTimer = 0f;
             }
+        }
+    }
+
+    private void ApplyStatusEffectToPlayer(PlayerHealthController playerHealth)
+    {
+        if (playerHealth == null)
+        {
+            return;
+        }
+
+        switch (_effectType)
+        {
+            case EnemyEffectType.Slowness:
+                if (playerHealth.TryGetComponent<ISlowable>(out var slowable))
+                {
+                    slowable.ApplySlowEffect(_slowDuration, _slowStrength);
+                }
+                break;
+            case EnemyEffectType.Weakness:
+                if (playerHealth.TryGetComponent<IVulnerable>(out var vulnerable))
+                {
+                    vulnerable.ApplyVulnerability(_weaknessPercentage, _weaknessDuration);
+                }
+                break;
+            case EnemyEffectType.Stun:
+                if (playerHealth.TryGetComponent<IStuneable>(out var stuneable))
+                {
+                    stuneable.ApplyStunEffect(_stunDuration);
+                }
+                break;
         }
     }
 

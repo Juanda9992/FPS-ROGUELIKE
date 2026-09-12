@@ -20,6 +20,15 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private List<EnemySpawnDataSO> _enemySpawnDataList = new List<EnemySpawnDataSO>();
     [SerializeField] private int _maxActiveEnemies = 50;
 
+    [Header("Enemy Status Effect Settings")]
+    [SerializeField] private bool _enableEnemyEffects = true;
+    [SerializeField] private float _effectSpawnStartTime = 60f;
+    [SerializeField] private AnimationCurve _effectSpawnChanceOverTime = AnimationCurve.Linear(60f, 0.15f, 600f, 0.5f);
+    [SerializeField] private float _damageEffectWeight = 25f;
+    [SerializeField] private float _slownessEffectWeight = 25f;
+    [SerializeField] private float _weaknessEffectWeight = 25f;
+    [SerializeField] private float _stunEffectWeight = 25f;
+
     public static EnemySpawner Instance { get; private set; }
 
     private float _spawnTimer;
@@ -126,7 +135,53 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public void SpawnSingleEnemy()
+    public EnemyEffectType RollEnemyEffect()
+    {
+        if (!_enableEnemyEffects)
+        {
+            return EnemyEffectType.None;
+        }
+
+        float totalSeconds = TimeManager.Instance != null ? TimeManager.Instance.TotalSeconds : 0f;
+        if (totalSeconds < _effectSpawnStartTime)
+        {
+            return EnemyEffectType.None;
+        }
+
+        float effectChance = _effectSpawnChanceOverTime.Evaluate(totalSeconds);
+        if (Random.value > effectChance)
+        {
+            return EnemyEffectType.None;
+        }
+
+        float totalWeight = _damageEffectWeight + _slownessEffectWeight + _weaknessEffectWeight + _stunEffectWeight;
+        if (totalWeight <= 0f)
+        {
+            return EnemyEffectType.None;
+        }
+
+        float roll = Random.Range(0f, totalWeight);
+        if (roll < _damageEffectWeight)
+        {
+            return EnemyEffectType.Damage;
+        }
+        roll -= _damageEffectWeight;
+
+        if (roll < _slownessEffectWeight)
+        {
+            return EnemyEffectType.Slowness;
+        }
+        roll -= _slownessEffectWeight;
+
+        if (roll < _weaknessEffectWeight)
+        {
+            return EnemyEffectType.Weakness;
+        }
+
+        return EnemyEffectType.Stun;
+    }
+
+    public void SpawnSingleEnemy(EnemyEffectType forcedEffect = EnemyEffectType.None, bool forceEffect = false)
     {
         EnemySpawnDataSO spawnData = SelectEnemySpawnData();
         if (spawnData == null || spawnData.EnemyPrefab == null)
@@ -137,6 +192,8 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPosition = GetRandomSpawnPosition();
         GameObject enemyObj = Instantiate(spawnData.EnemyPrefab, spawnPosition, Quaternion.identity);
         _currentActiveEnemies++;
+
+        EnemyEffectType effectType = forceEffect ? forcedEffect : RollEnemyEffect();
 
         if (enemyObj.TryGetComponent<EnemyBrain>(out var enemyBrain))
         {
@@ -151,6 +208,8 @@ public class EnemySpawner : MonoBehaviour
 
                 enemyBrain.InitializeStats(scaledHealth, spawnData.EnemyStatsData.Speed, scaledDamage);
             }
+
+            enemyBrain.InitializeEffect(effectType);
 
             if (EnemyManager.Instance != null)
             {
@@ -224,4 +283,30 @@ public class EnemySpawner : MonoBehaviour
     {
         _currentActiveEnemies = Mathf.Max(0, _currentActiveEnemies - 1);
     }
+
+    #region Context Menu Tests
+    [ContextMenu("Spawn Enemy with Damage Effect")]
+    private void TestSpawnDamageEffectEnemyContextMenu()
+    {
+        SpawnSingleEnemy(EnemyEffectType.Damage, true);
+    }
+
+    [ContextMenu("Spawn Enemy with Slowness Effect")]
+    private void TestSpawnSlownessEffectEnemyContextMenu()
+    {
+        SpawnSingleEnemy(EnemyEffectType.Slowness, true);
+    }
+
+    [ContextMenu("Spawn Enemy with Weakness Effect")]
+    private void TestSpawnWeaknessEffectEnemyContextMenu()
+    {
+        SpawnSingleEnemy(EnemyEffectType.Weakness, true);
+    }
+
+    [ContextMenu("Spawn Enemy with Stun Effect")]
+    private void TestSpawnStunEffectEnemyContextMenu()
+    {
+        SpawnSingleEnemy(EnemyEffectType.Stun, true);
+    }
+    #endregion
 }

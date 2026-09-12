@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class PlayerHealthController : MonoBehaviour, IDamageable
+public class PlayerHealthController : MonoBehaviour, IDamageable, IVulnerable
 {
     [Header("Health Stats")]
     [SerializeField] private Stat maxHealthStat;
@@ -16,11 +16,15 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     [SerializeField] private Stat shieldRegenStat;
     [SerializeField] private float currentShield = 0;
 
+    [Header("Status Effects")]
+    [SerializeField] private float _vulnerabilityMultiplier = 1f;
+
     public int Health
     {
         get => Mathf.RoundToInt(health);
         set => health = value;
     }
+    public float VulnerabilityMultiplier => _vulnerabilityMultiplier;
     [SerializeField] private bool canBeHit = true;
 
     // Eventos
@@ -133,11 +137,11 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
             return;
         }
 
-        int finalDamage = damage;
+        int finalDamage = Mathf.RoundToInt(damage * _vulnerabilityMultiplier);
         if (armorStat.Value > 0f)
         {
             float reductionMultiplier = Mathf.Clamp01(1f - (armorStat.Value / 100f));
-            finalDamage = Mathf.RoundToInt(damage * reductionMultiplier);
+            finalDamage = Mathf.RoundToInt(finalDamage * reductionMultiplier);
         }
 
         if (shieldStat.Value > 0)
@@ -175,6 +179,18 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
         }
 
         StartCoroutine(InvulnerabilityCoroutine());
+    }
+
+    public void ApplyVulnerability(float percentage, float duration)
+    {
+        _vulnerabilityMultiplier = 1f + (percentage / 100f);
+        CancelInvoke(nameof(UndoVulnerability));
+        Invoke(nameof(UndoVulnerability), duration);
+    }
+
+    public void UndoVulnerability()
+    {
+        _vulnerabilityMultiplier = 1f;
     }
 
     public int MaxHealth => maxHealthStat != null ? Mathf.RoundToInt(maxHealthStat.Value) : 100;
@@ -242,5 +258,17 @@ public class PlayerHealthController : MonoBehaviour, IDamageable
     private void RestoreHealthContextMenu()
     {
         OnHealthRestored(20);
+    }
+
+    [ContextMenu("Test Apply Vulnerability (50% for 3s)")]
+    private void TestApplyVulnerabilityContextMenu()
+    {
+        ApplyVulnerability(50f, 3f);
+    }
+
+    [ContextMenu("Test Undo Vulnerability")]
+    private void TestUndoVulnerabilityContextMenu()
+    {
+        UndoVulnerability();
     }
 }

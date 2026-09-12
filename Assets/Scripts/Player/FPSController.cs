@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class FPSController : MonoBehaviour, IPusheable
+public class FPSController : MonoBehaviour, IPusheable, ISlowable, IStuneable
 {
     [Header("Movimiento")]
     [SerializeField] private Stat _movementSpeedStat;
@@ -24,6 +24,10 @@ public class FPSController : MonoBehaviour, IPusheable
     [SerializeField] public Transform cameraPivot;
     [SerializeField] public float mouseSensitivity = 100f;
 
+    [Header("Status Effects")]
+    [SerializeField] private float _slowMultiplier = 1f;
+    [SerializeField] private bool _isStunned = false;
+
     private Rigidbody _rb;
     private PlayerInputActions _input;
 
@@ -37,6 +41,8 @@ public class FPSController : MonoBehaviour, IPusheable
     public bool IsGrounded => _isGrounded;
     public bool IsRunning => _isRunning;
     public bool IsMoving => _moveInput.sqrMagnitude > 0.01f;
+    public bool IsStunned => _isStunned;
+    public float SlowMultiplier => _slowMultiplier;
     public Vector2 MoveInput => _moveInput;
     public Vector3 Velocity => _rb != null ? _rb.velocity : Vector3.zero;
 
@@ -125,6 +131,11 @@ public class FPSController : MonoBehaviour, IPusheable
 
     private void Look()
     {
+        if (_isStunned)
+        {
+            return;
+        }
+
         float mouseX = _lookInput.x * mouseSensitivity * Time.deltaTime;
         float mouseY = _lookInput.y * mouseSensitivity * Time.deltaTime;
 
@@ -171,7 +182,13 @@ public class FPSController : MonoBehaviour, IPusheable
             return;
         }
 
-        float speed = _movementSpeedStat.Value;
+        if (_isStunned)
+        {
+            _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
+            return;
+        }
+
+        float speed = _movementSpeedStat.Value * _slowMultiplier;
 
         if (_isRunning)
         {
@@ -186,7 +203,7 @@ public class FPSController : MonoBehaviour, IPusheable
 
     private void Jump()
     {
-        if (!_isGameStarted || _jumpForceStat == null)
+        if (!_isGameStarted || _jumpForceStat == null || _isStunned)
         {
             return;
         }
@@ -213,5 +230,29 @@ public class FPSController : MonoBehaviour, IPusheable
             pushDirection.Normalize();
         }
         _rb.AddForce(pushDirection * strenght, ForceMode.Impulse);
+    }
+
+    public void ApplySlowEffect(float duration, float strength)
+    {
+        _slowMultiplier = Mathf.Clamp(strength, 0.05f, 1f);
+        CancelInvoke(nameof(RemoveSlowEffect));
+        Invoke(nameof(RemoveSlowEffect), duration);
+    }
+
+    public void RemoveSlowEffect()
+    {
+        _slowMultiplier = 1f;
+    }
+
+    public void ApplyStunEffect(float duration)
+    {
+        _isStunned = true;
+        CancelInvoke(nameof(RemoveStunEffect));
+        Invoke(nameof(RemoveStunEffect), duration);
+    }
+
+    public void RemoveStunEffect()
+    {
+        _isStunned = false;
     }
 }
